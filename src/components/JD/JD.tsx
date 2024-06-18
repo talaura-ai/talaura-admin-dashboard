@@ -111,21 +111,19 @@ const JD: React.FC<IJD> = ({
     formData.append("file", attachedFile);
 
     try {
-      // const response = await fetch(`${AI_API_URL}upload_jd`, {
-      //   method: "POST",
-      //   body: formData,
-      // });
+      const response = await fetch(`${AI_API_URL}upload_jd`, {
+        method: "POST",
+        body: formData,
+      });
 
-      // if (response.ok) {
-      //   const result = await response.json();
-      //   setJDData(result?.initial_jd);
-      //   console.log("Success:", result);
-      // } else {
-      //   toast.error(`Error: ${response?.statusText}`);
-      // }
-
-      setJDData("Sample Job Description Job Title: Human Resources Assistant Job Description: This position reports to the Human Resources (HR) director and interfaces with company managers and HR staff. Company XYZ is committed to an employee -orientated, hig h performance culture that emphasizes empowerment, quality, continuous improvement, and the recruitment and ongoing development of a superior workforce. The intern will gain exposure to these functional areas: HR Information Systems ; Employee relations ;");
-
+      if (response.ok) {
+        const result = await response.json();
+        setJDData(result?.initial_jd);
+        console.log("Success:", result);
+      } else {
+        toast.error(`Error: ${response?.statusText}`);
+      }
+      // setJDData("Sample Job Description Job Title: Human Resources Assistant Job Description: This position reports to the Human Resources (HR) director and interfaces with company managers and HR staff. Company XYZ is committed to an employee -orientated, hig h performance culture that emphasizes empowerment, quality, continuous improvement, and the recruitment and ongoing development of a superior workforce. The intern will gain exposure to these functional areas: HR Information Systems ; Employee relations ;");
       setJdVisible(true);
       setActionButtonsVisible(false);
     } catch (error) {
