@@ -53,6 +53,7 @@ import { setAll, setSkills } from "../../app/features/skillsSlice";
 import ReviewQuestions from "../ReviewQuestions/Review";
 import ModuleCard from "../Modules/ModuleCard";
 import Modules from "../Modules/Modules";
+import ReviewAssessments from "../ReviewAssessments/ReviewAssessments";
 const AI_API_URL = import.meta.env.VITE_AI_API_URL;
 
 // const steps = [
@@ -556,7 +557,6 @@ const CreateAssessment = () => {
   ]
 
   const slides = [
-    <ReviewQuestions questions={questionsList} />,
     <InitialQuestion
       value={initialQuestionValue}
       setInitialQuestionValue={setInitialQuestionValue}
@@ -582,6 +582,8 @@ const CreateAssessment = () => {
       generateSkills={generateSkills}
     />,
     <Modules />,
+    <ReviewAssessments />,
+    <ReviewQuestions questions={questionsList} />
   ];
 
   const createAssesmentMethod = async () => {

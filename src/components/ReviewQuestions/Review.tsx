@@ -1,13 +1,4 @@
-import {
-  Dialog,
-  DialogPanel,
-  Radio,
-  RadioGroup,
-  Transition,
-  TransitionChild,
-} from "@headlessui/react";
 import IMAGES from "../../assets/images/Images";
-
 export interface ReviewQuestionsProps {
   questions: any
 }
@@ -33,8 +24,8 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({
                   />
                 </div>
                 <div className="ml-4">
-                  <h3>{ v?.title }</h3>
-                  <h3>{ v?.description }</h3>
+                  <h3 className="text-[16px] text-[#BDBDBD] font-Sansation">{ v?.title }</h3>
+                  <h3 className="text-[16px] text-[#000000] font-Sansation">{ v?.description }</h3>
                 </div>
               </div>
             )) }
@@ -46,7 +37,7 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({
             </div>
             <div className="flex flex-row mt-6 justify-center">
               <button
-                className={ "mt-2 mx-3  items-center justify-center rounded-md border   px-6 py-3 text-base font-medium  shadow-sm hover:bg-orange-text focus:outline-none focus:ring-0 active:animate-pulse bg-orange-text text-white" }
+                className={ "mt-2 mx-3 items-center justify-center rounded-md border px-6 py-3 text-base font-medium  shadow-sm hover:bg-orange-text focus:outline-none focus:ring-0 active:animate-pulse bg-orange-text text-white" }
               >
                 Done
               </button>
