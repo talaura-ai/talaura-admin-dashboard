@@ -11,7 +11,7 @@ export const rootReducers = combineReducers({
   admin: adminReducer,
   assessments: assessmentsReducer,
   assessmentProfles: assessmentProfilesReducer,
-  skills : skillsReducer,
+  skills: skillsReducer,
   [authApi.reducerPath]: authApi.reducer,
   [assessmentApi.reducerPath]: assessmentApi.reducer,
   [assessmentProfilesApi.reducerPath]: assessmentProfilesApi.reducer,

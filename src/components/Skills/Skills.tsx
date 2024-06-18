@@ -10,7 +10,11 @@ import { allowedFileTypes } from "../JD/JD";
 import { classNames } from "../Core/classNames";
 import { useSwiper } from "swiper/react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { addSkill, removeSelectedSkill, setSelectedSkill } from "../../app/features/skillsSlice";
+import {
+  addSkill,
+  removeSelectedSkill,
+  setSelectedSkill,
+} from "../../app/features/skillsSlice";
 
 export interface ISkils {
   setSkillsData: any;
@@ -31,33 +35,30 @@ export interface ISkils {
 // ];
 
 const Skills: React.FC<ISkils> = () => {
-   const {skills, selectedSkills} =  useAppSelector(state => state.skills);
+  const { skills, selectedSkills } = useAppSelector((state) => state.skills);
 
-//    const [skillsState, setSkillsState] = useState(() => skills)
-   
+  //    const [skillsState, setSkillsState] = useState(() => skills)
+
   const [open, setOpen] = useState(false);
   const [customSkill, setCustomSkill] = useState("");
-//   const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  //   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const dispatch = useAppDispatch();
-
- 
-  
 
   const handleSubmitNewSkill = () => {
     // setSkillsState((oldSkills) => [...oldSkills, customSkill]);
-    
-    dispatch(addSkill(customSkill))
+
+    dispatch(addSkill(customSkill));
     setOpen(false);
   };
 
-  const handleCheckboxChange = (event: { target: { value: any; checked: any; }; }) => {
+  const handleCheckboxChange = (event: {
+    target: { value: any; checked: any };
+  }) => {
     const { value, checked } = event.target;
-    console.log('value, checked', value, checked)
-    
+    console.log("value, checked", value, checked);
 
-    
     if (checked) {
-     dispatch(setSelectedSkill(value))
+      dispatch(setSelectedSkill(value));
     } else {
       dispatch(removeSelectedSkill(value));
     }
@@ -84,7 +85,6 @@ const Skills: React.FC<ISkils> = () => {
                   checked={selectedSkills.includes(skill)}
                   onChange={handleCheckboxChange}
                   value={skill}
-
                   className="h-4 w-4 rounded border-gray-300 text-brand-color focus:ring-brand-color"
                 />
               </div>

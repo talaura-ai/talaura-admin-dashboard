@@ -12,7 +12,15 @@ import "swiper/css/scrollbar";
 import "swiper/css/virtual";
 import InitialQuestion from "./InitialQuestion";
 import { classNames } from "../Core/classNames";
-import { JSXElementConstructor, Key, ReactElement, ReactNode, useContext, useEffect, useState } from "react";
+import {
+  JSXElementConstructor,
+  Key,
+  ReactElement,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -43,6 +51,8 @@ import Loading from "../Loading/Loading";
 import LoadingScreen from "../Loading/LoadingScreen";
 import { setAll, setSkills } from "../../app/features/skillsSlice";
 import ReviewQuestions from "../ReviewQuestions/Review";
+import ModuleCard from "../Modules/ModuleCard";
+import Modules from "../Modules/Modules";
 const AI_API_URL = import.meta.env.VITE_AI_API_URL;
 
 // const steps = [
@@ -66,79 +76,94 @@ const AI_API_URL = import.meta.env.VITE_AI_API_URL;
 //   },
 // ];
 
-export const Step:React.FC<any> = ({steps, setSteps}) => {
+export const Step: React.FC<any> = ({ steps, setSteps }) => {
   return (
     <nav aria-label="Progress" className="mt-10 mx-9 w-ful">
       <ol role="list" className="flex items-center ">
-        {steps.map((step: { name: boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | Key | null | undefined; status: string; icon: string | undefined; }, stepIdx: number) => (
-          <li
-            key={step.name}
-            className={classNames(
-              stepIdx !== steps.length - 1 ? "w-full pr-8 sm:pr-20" : "",
-              "relative ",
-            )}
-          >
-            {step.status === "complete" ? (
-              <>
-                <div
-                  className="absolute inset-0 flex items-center w-full"
-                  aria-hidden="true"
-                >
+        {steps.map(
+          (
+            step: {
+              name:
+                | boolean
+                | ReactElement<any, string | JSXElementConstructor<any>>
+                | Iterable<ReactNode>
+                | Key
+                | null
+                | undefined;
+              status: string;
+              icon: string | undefined;
+            },
+            stepIdx: number,
+          ) => (
+            <li
+              key={step.name}
+              className={classNames(
+                stepIdx !== steps.length - 1 ? "w-full pr-8 sm:pr-20" : "",
+                "relative ",
+              )}
+            >
+              {step.status === "complete" ? (
+                <>
                   <div
-                    className="h-2 w-full 
+                    className="absolute inset-0 flex items-center w-full"
+                    aria-hidden="true"
+                  >
+                    <div
+                      className="h-2 w-full 
                     bg-gradient-to-r from-[#E5A971] from-8% via-[#F3BC84] via-37% to-white to-80% 
                   "
-                  />
-                </div>
-                <a className="relative flex h-10 w-10 items-center justify-center rounded-full bg-white hover:bg-white border border-spacing-2 border-brand-color outline outline-1 outline-brand-color shadow-md shadow-brand-color">
-                  {/* <CheckIcon className="h-5 w-5 text-white" aria-hidden="true" /> */}
-                  <img src={step.icon} className="h-5 w-5" />
-                  <span className="sr-only">{step.name}</span>
-                </a>
-              </>
-            ) : step.status === "current" ? (
-              <>
-                <div
-                  className="absolute inset-0 flex items-center"
-                  aria-hidden="true"
-                >
-                  <div className="h-2 w-full bg-gray-200" />
-                </div>
-                <a
-                  className="relative flex h-10 w-10 items-center justify-center rounded-full border-2 border-brand-color bg-white outline outline-1 outline-brand-color shadow-md shadow-brand-color"
-                  aria-current="step"
-                >
-                  {/* <span className="h-2.5 w-2.5 rounded-full bg-brand-color" aria-hidden="true" /> */}
-                  <img src={step.icon} className="h-5 w-5" />
+                    />
+                  </div>
+                  <a className="relative flex h-10 w-10 items-center justify-center rounded-full bg-white hover:bg-white border border-spacing-2 border-brand-color outline outline-1 outline-brand-color shadow-md shadow-brand-color">
+                    {/* <CheckIcon className="h-5 w-5 text-white" aria-hidden="true" /> */}
+                    <img src={step.icon} className="h-5 w-5" />
+                    <span className="sr-only">{step.name}</span>
+                  </a>
+                </>
+              ) : step.status === "current" ? (
+                <>
+                  <div
+                    className="absolute inset-0 flex items-center"
+                    aria-hidden="true"
+                  >
+                    <div className="h-2 w-full bg-gray-200" />
+                  </div>
+                  <a
+                    className="relative flex h-10 w-10 items-center justify-center rounded-full border-2 border-brand-color bg-white outline outline-1 outline-brand-color shadow-md shadow-brand-color"
+                    aria-current="step"
+                  >
+                    {/* <span className="h-2.5 w-2.5 rounded-full bg-brand-color" aria-hidden="true" /> */}
+                    <img src={step.icon} className="h-5 w-5" />
 
-                  <span className="sr-only">{step.name}</span>
-                </a>
-              </>
-            ) : (
-              <>
-                <div
-                  className="absolute inset-0 flex items-center"
-                  aria-hidden="true"
-                >
-                  <div className="h-2 w-full bg-gray-200" />
-                </div>
-                <a className="group relative flex h-10 w-10 items-center justify-center rounded-full border-2 border-gray-300 bg-white hover:border-gray-400 outline-brand-color shadow-md shadow-brand-color">
-                  {/* <span
+                    <span className="sr-only">{step.name}</span>
+                  </a>
+                </>
+              ) : (
+                <>
+                  <div
+                    className="absolute inset-0 flex items-center"
+                    aria-hidden="true"
+                  >
+                    <div className="h-2 w-full bg-gray-200" />
+                  </div>
+                  <a className="group relative flex h-10 w-10 items-center justify-center rounded-full border-2 border-gray-300 bg-white hover:border-gray-400 outline-brand-color shadow-md shadow-brand-color">
+                    {/* <span
                     className="h-2.5 w-2.5 rounded-full bg-transparent group-hover:bg-gray-300"
                     aria-hidden="true"
                   /> */}
-                  <img src={step.icon} className="h-5 w-5" />
+                    <img src={step.icon} className="h-5 w-5" />
 
-                  <span className="sr-only">{step.name}</span>
-                </a>
-              </>
-            )}
-          </li>
-        ))}
+                    <span className="sr-only">{step.name}</span>
+                  </a>
+                </>
+              )}
+            </li>
+          ),
+        )}
       </ol>
     </nav>
   );
-}
+};
 
 interface ISliderNav {
   children: any;
@@ -433,17 +458,15 @@ const CreateAssessment = () => {
   const [skillsPage, setSkillsPage] = useState(0);
   const [modulesPage, setModulesPage] = useState(0);
 
-  const { skills, selectedSkills} = useAppSelector(state => state.skills)
-
-  
-  useEffect(() => {
-    setSkillsPage(() => jdPage+1)
-  }, [jdPage ])
+  const { skills, selectedSkills } = useAppSelector((state) => state.skills);
 
   useEffect(() => {
-    setModulesPage(() => skillsPage+1)
-  }, [skillsPage ])
-  
+    setSkillsPage(() => jdPage + 1);
+  }, [jdPage]);
+
+  useEffect(() => {
+    setModulesPage(() => skillsPage + 1);
+  }, [skillsPage]);
 
   const [jdData, setJDData] = useState("");
   const [conversation_id, setConversationID] = useState<string>("");
@@ -484,10 +507,10 @@ const CreateAssessment = () => {
 
       console.log("response", response);
       const resJSON = await response.json();
-      console.log('resJSON', resJSON)
+      console.log("resJSON", resJSON);
       if (response.ok) {
         setSkillsData(resJSON.skills);
-        dispatch(setSkills(resJSON.skills))
+        dispatch(setSkills(resJSON.skills));
         return Promise.resolve(true);
       }
     } catch (error) {
@@ -496,10 +519,9 @@ const CreateAssessment = () => {
   };
 
   const generateModule = async () => {
-    
-    console.log('generateModule')
+    console.log("generateModule");
     const payloads = {
-     skills:  selectedSkills
+      skills: selectedSkills,
     };
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -513,9 +535,9 @@ const CreateAssessment = () => {
 
       console.log("response", response);
       const resJSON = await response.json();
-      console.log('resJSON', resJSON)
+      console.log("resJSON", resJSON);
       if (response.ok) {
-        console.log('OK')
+        console.log("OK");
         // setSkillsData(resJSON.skills);
         // dispatch(setSkills(resJSON.skills))
         return Promise.resolve(true);
@@ -554,7 +576,12 @@ const CreateAssessment = () => {
       setJDData={setJDData}
       conversation_id={conversation_id}
     />,
-    <Skills skills={skillsData} setSkillsData={setSkillsData} generateSkills={generateSkills} />,
+    <Skills
+      skills={skillsData}
+      setSkillsData={setSkillsData}
+      generateSkills={generateSkills}
+    />,
+    <Modules />,
   ];
 
   const createAssesmentMethod = async () => {
@@ -580,14 +607,14 @@ const CreateAssessment = () => {
       icon: IMAGES.plus,
     },
     {
-      id:2,
+      id: 2,
       name: "Test Modules",
       href: "#",
       status: "upcoming",
       icon: IMAGES.rectangle_3,
     },
     {
-      id:3,
+      id: 3,
       name: "Review",
       href: "#",
       status: "upcoming",
@@ -601,7 +628,6 @@ const CreateAssessment = () => {
   //     return [...oldSteps, ]
   //   })
   // }, [page])
-  
 
   //   const [slides, setSlides] = useState([])
 
@@ -732,8 +758,6 @@ const CreateAssessment = () => {
     };
     getQuestionMethod();
   }, [initialQuestionProfile.name]);
-
-  
 
   const getActions = ({ idx }) => {
     //  ? actionButton.action :
