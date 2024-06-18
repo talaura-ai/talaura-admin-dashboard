@@ -42,6 +42,7 @@ import { v4 as uuid } from "uuid";
 import Loading from "../Loading/Loading";
 import LoadingScreen from "../Loading/LoadingScreen";
 import { setAll, setSkills } from "../../app/features/skillsSlice";
+import ReviewQuestions from "../ReviewQuestions/Review";
 const AI_API_URL = import.meta.env.VITE_AI_API_URL;
 
 // const steps = [
@@ -524,9 +525,16 @@ const CreateAssessment = () => {
     }
   };
 
-
+  const questionsList:any=[
+    {title:"UI/UX Critique:", description:"Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines."},
+    {title:"UI/UX Critique:", description:"Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines."},
+    {title:"UI/UX Critique:", description:"Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines."},
+    {title:"UI/UX Critique:", description:"Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines."},
+    {title:"UI/UX Critique:", description:"Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines."}
+  ]
 
   const slides = [
+    <ReviewQuestions questions={questionsList} />,
     <InitialQuestion
       value={initialQuestionValue}
       setInitialQuestionValue={setInitialQuestionValue}
