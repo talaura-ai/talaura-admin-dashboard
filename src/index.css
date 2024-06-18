@@ -47,7 +47,8 @@
 
   .scrollbar::-webkit-scrollbar-track {
     border-top-right-radius: 75vh;
-    border-bottom-left-radius: 75vh;    background: #acacac;
+    border-bottom-left-radius: 75vh;
+    background: #acacac;
   }
 
   .scrollbar::-webkit-scrollbar-thumb {
