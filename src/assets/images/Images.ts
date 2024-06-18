@@ -14,6 +14,7 @@ import Upload from "./JD/Upload.png";
 import Empty_Insight from "./JD/empty_insight.png";
 import Empty_JD from "./JD/empty_jd.png";
 import JD_Logo from "./JD/jd_logo.png";
+import Time from "./modules/Time.png";
 // import Assessments from './sidebar/Assessments.png'
 
 const ICONS = {
@@ -39,6 +40,9 @@ const LOGIN = {
   successEmailOnForgot,
   Cancel,
 };
+const MODULES = {
+  Time
+}
 
 const JD = {
   Upload,
@@ -53,6 +57,7 @@ const IMAGES = {
   ...LOGIN,
   ...HEADER,
   ...JD,
+  ...MODULES
 };
 
 export default IMAGES;
