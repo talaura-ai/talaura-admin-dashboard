@@ -55,6 +55,7 @@ import ModuleCard from "../Modules/ModuleCard";
 import Modules from "../Modules/Modules";
 import ReviewAssessments from "../ReviewAssessments/ReviewAssessments";
 import { setModules, setSelectedModule } from "../../app/features/moduleSlice";
+import AddNewModule from "../Modules/AddNewModule";
 const AI_API_URL = import.meta.env.VITE_AI_API_URL;
 
 // const steps = [
@@ -601,6 +602,7 @@ const CreateAssessment = () => {
       generateSkills={generateSkills}
     />,
     <Modules />,
+    <AddNewModule />,
     <ReviewAssessments />,
     <ReviewQuestions questions={questionsList} />,
   ];
