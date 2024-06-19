@@ -41,8 +41,8 @@ const LOGIN = {
   Cancel,
 };
 const MODULES = {
-  Time
-}
+  Time,
+};
 
 const JD = {
   Upload,
@@ -57,7 +57,7 @@ const IMAGES = {
   ...LOGIN,
   ...HEADER,
   ...JD,
-  ...MODULES
+  ...MODULES,
 };
 
 export default IMAGES;

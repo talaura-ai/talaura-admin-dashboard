@@ -54,6 +54,7 @@ import ReviewQuestions from "../ReviewQuestions/Review";
 import ModuleCard from "../Modules/ModuleCard";
 import Modules from "../Modules/Modules";
 import ReviewAssessments from "../ReviewAssessments/ReviewAssessments";
+import { setModules, setSelectedModule } from "../../app/features/moduleSlice";
 const AI_API_URL = import.meta.env.VITE_AI_API_URL;
 
 // const steps = [
@@ -533,14 +534,12 @@ const CreateAssessment = () => {
         body: JSON.stringify(payloads),
         headers: myHeaders,
       });
-
-      console.log("response", response);
       const resJSON = await response.json();
       console.log("resJSON", resJSON);
       if (response.ok) {
-        console.log("OK");
-        // setSkillsData(resJSON.skills);
-        // dispatch(setSkills(resJSON.skills))
+        dispatch(setModules(resJSON));
+        dispatch(setSelectedModule(resJSON));
+
         return Promise.resolve(true);
       }
     } catch (error) {
@@ -836,7 +835,7 @@ const CreateAssessment = () => {
             {slides.map((slideContent, slideIDX) => {
               console.log("slideIDX", slideIDX);
               return (
-                <SwiperSlide key={slideIDX} className="h-[60vh] max-h-[60vh]">
+                <SwiperSlide key={slideIDX} className="h-[65vh] max-h-[65vh]">
                   {slideContent}
                 </SwiperSlide>
               );
@@ -845,7 +844,7 @@ const CreateAssessment = () => {
               isJobDescriptionRequired={initialQuestionProfile.jobDetails}
             /> */}
 
-            <div className="px-5 w-full   flex flex-row justify-end">
+            <div className="px-5 w-full   flex flex-row justify-end absolute bottom-0 z-50">
               {actionButtons.map((actionButton, idx) => {
                 console.log("idx", idx);
                 // <SwiperButtonPrev disabled={true}>Back</SwiperButtonPrev>

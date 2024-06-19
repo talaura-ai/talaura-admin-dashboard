@@ -6,12 +6,14 @@ import assessmentProfilesReducer from "./features/assessmentProfiles";
 import { assessmentApi } from "./services/assessments";
 import { assessmentProfilesApi } from "./services/assessmentProfiles";
 import skillsReducer from "./features/skillsSlice";
+import moduleReducer from "./features/moduleSlice";
 
 export const rootReducers = combineReducers({
   admin: adminReducer,
   assessments: assessmentsReducer,
   assessmentProfles: assessmentProfilesReducer,
   skills: skillsReducer,
+  modules: moduleReducer,
   [authApi.reducerPath]: authApi.reducer,
   [assessmentApi.reducerPath]: assessmentApi.reducer,
   [assessmentProfilesApi.reducerPath]: assessmentProfilesApi.reducer,
