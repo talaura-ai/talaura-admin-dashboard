@@ -65,13 +65,13 @@ const OverView = () => {
           }) => {
             const { name, noOfQuestions, Weightage, time } = selectedModule;
             return (
-              <div className="mx-10">
+              <div className="mx-10 px-5 py-3">
                 <div className="flex flex-row items-center">
                   <div>
                     <h1 className="text-orange-text">{name}</h1>
                   </div>
                   <div className=" ml-3 grow">
-                    <span className="text-gray-300">
+                    <span className="text-gray-300 text-xs">
                       {noOfQuestions} Question
                     </span>
                   </div>
@@ -79,6 +79,22 @@ const OverView = () => {
                     {selectedModules.length > 1 ? (
                       <XCircleIcon className="h-5 w-5" />
                     ) : null}
+                  </div>
+                </div>
+                <div className="flex flex-row items-center justify-between">
+                  <div>
+                    <h1 className="">
+                      Weightage <span className="text-gray-300 text-sm mx-1">{Weightage} %</span>
+                    </h1>
+                  </div>
+                  <div className="flex justify-end items-center">
+                    <img
+                      src={IMAGES.Time}
+                      className="h-4 w-4 justify-center items-center"
+                    />
+                    <span className="justify-center items-center ml-1">
+                    {time} min
+                    </span>
                   </div>
                 </div>
               </div>

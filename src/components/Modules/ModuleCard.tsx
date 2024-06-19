@@ -34,7 +34,7 @@ const ModuleCard: React.FC<any> = ({
           <h3 className="text-xs  text-gray-300">{noOfQuestions} Question</h3>
         </div>
       </div>
-      <div className="flex flex-row items-center justify-between">
+      <div className="flex flex-row items-center justify-between mt-2">
         <div>
           <h1 className="">Skills</h1>
         </div>
@@ -48,7 +48,7 @@ const ModuleCard: React.FC<any> = ({
         </div>
         <div
           className="p-2 w-20 focus:ring-0 active:ring-0 focus:border-0 active:border-0"
-          contentEditable
+          //   contentEditable
         >
           <p className="text-gray-300">{Weightage}%</p>
         </div>
