@@ -548,13 +548,33 @@ const CreateAssessment = () => {
     }
   };
 
-  const questionsList:any=[
-    {title:"UI/UX Critique:", description:"Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines."},
-    {title:"UI/UX Critique:", description:"Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines."},
-    {title:"UI/UX Critique:", description:"Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines."},
-    {title:"UI/UX Critique:", description:"Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines."},
-    {title:"UI/UX Critique:", description:"Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines."}
-  ]
+  const questionsList: any = [
+    {
+      title: "UI/UX Critique:",
+      description:
+        "Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines.",
+    },
+    {
+      title: "UI/UX Critique:",
+      description:
+        "Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines.",
+    },
+    {
+      title: "UI/UX Critique:",
+      description:
+        "Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines.",
+    },
+    {
+      title: "UI/UX Critique:",
+      description:
+        "Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines.",
+    },
+    {
+      title: "UI/UX Critique:",
+      description:
+        "Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines.",
+    },
+  ];
 
   const slides = [
     <InitialQuestion
@@ -583,7 +603,7 @@ const CreateAssessment = () => {
     />,
     <Modules />,
     <ReviewAssessments />,
-    <ReviewQuestions questions={questionsList} />
+    <ReviewQuestions questions={questionsList} />,
   ];
 
   const createAssesmentMethod = async () => {

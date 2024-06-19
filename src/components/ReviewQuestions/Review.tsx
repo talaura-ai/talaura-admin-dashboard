@@ -1,19 +1,16 @@
 import IMAGES from "../../assets/images/Images";
 export interface ReviewQuestionsProps {
-  questions: any
+  questions: any;
 }
 
-const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({
-  questions
-}) => {
-
+const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ questions }) => {
   return (
     <>
       <div className="relative mt-10 w-90 mx-10">
         <div className="grid grid-cols-1 h-screen">
           <div className="flex flex-col h-[50vh] rounded-lg shadow-inner bg-white p-8 overflow-scroll">
-            { questions?.map((v: any, index: number) => (
-              <div key={ v?.title + index } className="flex my-2 items-center">
+            {questions?.map((v: any, index: number) => (
+              <div key={v?.title + index} className="flex my-2 items-center">
                 <div className="flex h-6 items-center">
                   <input
                     id="review"
@@ -24,20 +21,26 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({
                   />
                 </div>
                 <div className="ml-4">
-                  <h3 className="text-[16px] text-[#BDBDBD] font-Sansation">{ v?.title }</h3>
-                  <h3 className="text-[16px] text-[#000000] font-Sansation">{ v?.description }</h3>
+                  <h3 className="text-[16px] text-[#BDBDBD] font-Sansation">
+                    {v?.title}
+                  </h3>
+                  <h3 className="text-[16px] text-[#000000] font-Sansation">
+                    {v?.description}
+                  </h3>
                 </div>
               </div>
-            )) }
+            ))}
             <div>
               <button className="flex flex-row mt-4 items-center gap-3">
-                <img src={ IMAGES.plus } className="w-5 h-5" />
+                <img src={IMAGES.plus} className="w-5 h-5" />
                 <span className="text-light-orange">Add New Question</span>
               </button>
             </div>
             <div className="flex flex-row mt-6 justify-center">
               <button
-                className={ "mt-2 mx-3 items-center justify-center rounded-md border px-6 py-3 text-base font-medium  shadow-sm hover:bg-orange-text focus:outline-none focus:ring-0 active:animate-pulse bg-orange-text text-white" }
+                className={
+                  "mt-2 mx-3 items-center justify-center rounded-md border px-6 py-3 text-base font-medium  shadow-sm hover:bg-orange-text focus:outline-none focus:ring-0 active:animate-pulse bg-orange-text text-white"
+                }
               >
                 Done
               </button>
