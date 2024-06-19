@@ -447,6 +447,7 @@ const CreateAssessment = () => {
   ] = useCreateAssessmentMutation();
   const [getQuestions] = assessmentApi.endpoints.getQuestions.useLazyQuery();
   const [assessment, setAssessment] = useState(null);
+  const { selectedModules } = useAppSelector(state => state.modules)
 
   const [initialQuestionValue, setInitialQuestionValue] = useState("");
   const [initialQuestionProfile, setInitialQuestionProfile] = useState(
@@ -699,6 +700,18 @@ const CreateAssessment = () => {
     if (page === jdPage && (!jdData || !jdData.length)) {
       return true;
     }
+
+    if (page === modulesPage) {
+      const totalWeightage = selectedModules.reduce(
+        (acc: any, val: { Weightage: any }) =>
+          Number(val.Weightage) + Number(acc),
+        0,
+      )
+      if(totalWeightage > 100) return true;
+      
+      return false;
+    }
+    
 
     return false;
   };
