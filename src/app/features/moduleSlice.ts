@@ -42,7 +42,9 @@ export const modulesSlice = createSlice({
       state.modules = [...action.payload.modules];
     },
     addModule: (state, action: PayloadAction<any>) => {
-      state = [...state, action.payload];
+      console.log('action.payload', action.payload.name)
+      const moduleToAdd = state.modules.find((m: { name: any; }) => m.name === action.payload.name)
+      state.selectedModules = [...state.selectedModules, moduleToAdd];
     },
     setSelectedModule: (state, action: PayloadAction<any>) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It

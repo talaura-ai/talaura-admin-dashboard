@@ -8,12 +8,14 @@ export interface IMessageInput {
   assessmentId: string;
   jdData: string;
   setJdData: any;
+  assistantMessage:any,
+  setAssisstantMessage:any
 }
 
 const JDMessageInput: React.FC<IMessageInput> = ({
-  
+  assistantMessage, setAssisstantMessage
+
 }) => {
-  const [assistantMessage, setAssisstantMessage] = useState("");
   const [aiMessage, setAiMessage] = useState("");
 
   console.log('aiMessage', aiMessage)
@@ -65,7 +67,7 @@ const JDMessageInput: React.FC<IMessageInput> = ({
   };
 
   return (
-    <div>
+    <div className="absolute z-50 w-[50vw]">
       <div>
         <div className="relative mt-2 rounded-md shadow-sm">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"></div>

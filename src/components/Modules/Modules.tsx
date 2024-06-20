@@ -14,7 +14,7 @@ import AddNewModule from "./AddNewModule";
 // };
 
 const Modules = () => {
-  const { selectedModules } = useAppSelector((state) => state.modules);
+  const { selectedModules, modules } = useAppSelector((state) => state.modules);
   const [selectedModule, setSelectedModule] = useState({});
   const [editMode, setEditMode] = useState(false);
   const [createMode, setCreateMode] = useState(false);
@@ -58,7 +58,7 @@ const Modules = () => {
         <div className="dir-ltr">
           <div className="grid grid-cols-7 gap-4">
             <div className="col-span-4">
-              {selectedModules.map(
+              {modules.map(
                 (module: {
                   name: any;
                   type: any;
@@ -82,6 +82,7 @@ const Modules = () => {
                         setSelectedModule(module);
                         setEditMode(true);
                       }}
+                      editMode={false}
                     />
                   );
                 },

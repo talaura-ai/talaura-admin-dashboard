@@ -10,6 +10,8 @@ export interface IJDDesc {
   jdType?: any;
   conversation_id: string;
   setJdData: any;
+  assistantMessage:any;
+  setAssisstantMessage:any;
 }
 
 const JDDesc: React.FC<IJDDesc> = ({
@@ -18,6 +20,9 @@ const JDDesc: React.FC<IJDDesc> = ({
   conversation_id,
   jdData,
   setJdData,
+  assistantMessage,
+  setAssisstantMessage
+
 }) => {
   return (
     <>
@@ -72,6 +77,9 @@ const JDDesc: React.FC<IJDDesc> = ({
                   assessmentId={assessment.assessmentId}
                   jdData={jdData}
                   setJdData={setJdData}
+                  assistantMessage={assistantMessage}
+                  setAssisstantMessage={setAssisstantMessage}
+                  
                 />
               </div>
             </>

@@ -53,6 +53,8 @@ const JD: React.FC<IJD> = ({
   const [open, setOpen] = useState(false);
   const [jdVisible, setJdVisible] = useState(false);
   const [actionButtonsVisible, setActionButtonsVisible] = useState(true);
+  const [assistantMessage, setAssisstantMessage] = useState("");
+
 
   const label = isJobDescriptionRequired
     ? "Enter the Job Description here"
@@ -210,11 +212,18 @@ const JD: React.FC<IJD> = ({
                 setJdData={setJDData}
                 jdType={jdType}
                 conversation_id={conversation_id}
+                setAssisstantMessage={setAssisstantMessage}
+assistantMessage={assistantMessage}
               />
             </div>
 
             <div>
-              <Insights isJobDescriptionRequired={isJobDescriptionRequired} />
+              <Insights isJobDescriptionRequired={isJobDescriptionRequired} 
+                  jdData={jdData}
+                  setJdData={setJDData}
+                  jdType={jdType}
+                  setAssisstantMessage={setAssisstantMessage}
+              />
             </div>
           </div>
         )}

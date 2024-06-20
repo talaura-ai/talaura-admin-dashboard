@@ -4,11 +4,14 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { classNames } from "../Core/classNames";
 import {
+  addModule,
   removeModuleSkill,
+  removeSelectedModule,
   setModuleSkill,
+  setSelectedModule,
   updateWeightage,
 } from "../../app/features/moduleSlice";
-import { EyeIcon } from "@heroicons/react/24/outline";
+import { CheckCircleIcon, EyeIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 
 const ModuleCard: React.FC<any> = ({
   name,
@@ -24,6 +27,7 @@ const ModuleCard: React.FC<any> = ({
   const { selectedModules } = useAppSelector((state) => state.modules);
   const dispatch = useAppDispatch();
   const selectedModule = selectedModules.find((m: any) => m.name === name);
+  const { selectedSkills } = useAppSelector(state => state.skills);
 
   const handleCheckboxChange = (event: {
     target: { value: any; checked: any };
@@ -60,17 +64,20 @@ const ModuleCard: React.FC<any> = ({
   return (
     <div
       className="flex rounded-2xl shadow-inner bg-white p-5 mt-5 mx-2 flex-col"
-      onClick={handleClick}
+      // 
     >
       <div className="flex flex-row items-center justify-between">
         <div className="grow justify-start items-start">
           <h1 className="text-orange-text">{name}</h1>
         </div>
-        {editable && (
+        { selectedModules.includes(selectedModule) ? 
           <div className=" items-end ">
-            <PencilIcon className="h-3 w-3 text-orange-text" />
-          </div>
-        )}
+            <CheckCircleIcon className="h-6 w-6 text-orange-text" onClick={() => dispatch(removeSelectedModule({name}))} />
+          </div>: 
+          <div className=" items-end " onClick={() => dispatch(addModule({name}))}>
+          <PlusCircleIcon className="h-6 w-6 text-orange-text" />
+        </div>
+        }
         {reviewAble && (
           <div className=" items-end ">
             <EyeIcon className="h-3 w-3 text-orange-text" />
@@ -83,8 +90,15 @@ const ModuleCard: React.FC<any> = ({
         </div>
       </div>
       <div className="flex flex-row items-center justify-between mt-2">
-        <div>
+        <div className="flex flex-row">
           <h1 className="">Skills</h1>
+          {editable && (
+          <div className="p-1 mx-2"
+          onClick={handleClick}
+          >
+            <PencilIcon className="h-3 w-3 text-orange-text" />
+          </div>
+        )}
         </div>
       </div>
       <div
@@ -95,7 +109,7 @@ const ModuleCard: React.FC<any> = ({
       >
         {editMode ? (
           <>
-            {skills.map((skill: any) => {
+            {selectedSkills.map((skill: any) => {
               return (
                 <div className="relative flex items-start my-1" key={skill}>
                   <div className="flex h-6 items-center">
@@ -130,7 +144,9 @@ const ModuleCard: React.FC<any> = ({
           <p className="text-gray-300 text-sm">{skills.join(",")}</p>
         )}
       </div>
-      <div className="flex flex-row items-center">
+      {
+        !editMode ? 
+        <div className="flex flex-row items-center">
         <div>
           <h1>
             Weightage:{" "}
@@ -174,9 +190,10 @@ const ModuleCard: React.FC<any> = ({
             {time} min
           </span>
         </div>
-      </div>
+      </div>: null
+      }
       {editMode && (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center my-5">
           <button
             onClick={() => {
               setEditMode(false);

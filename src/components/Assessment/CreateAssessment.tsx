@@ -529,6 +529,15 @@ const CreateAssessment = () => {
   };
 
   const getQuestionAndAddToModule = async () => {
+     const totalWeightage = selectedModules.reduce(
+        (acc: any, val: { Weightage: any }) =>
+          Number(val.Weightage) + Number(acc),
+        0,
+      );
+    if(totalWeightage !== 100){
+      toast.error("Weightage should be equal to 100%")
+      return undefined;
+    }
     try {
       const promiseMap = selectedModules.map(async (selectedModule: any) => {
         const ModuleTypesURLS = {
@@ -765,12 +774,12 @@ const CreateAssessment = () => {
     }
 
     if (page === modulesPage) {
-      const totalWeightage = selectedModules.reduce(
-        (acc: any, val: { Weightage: any }) =>
-          Number(val.Weightage) + Number(acc),
-        0,
-      );
-      if (totalWeightage > 100) return true;
+      // const totalWeightage = selectedModules.reduce(
+      //   (acc: any, val: { Weightage: any }) =>
+      //     Number(val.Weightage) + Number(acc),
+      //   0,
+      // );
+      // if (totalWeightage > 100) return true;
 
       return false;
     }
