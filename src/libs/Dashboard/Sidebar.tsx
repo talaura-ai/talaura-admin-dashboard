@@ -12,36 +12,20 @@
   }
   ```
 */
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import {
-  DocumentChartBarIcon,
-  SwatchIcon,
-  UsersIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { NewspaperIcon } from "@heroicons/react/24/solid";
 import {
-  Link,
   NavLink,
   Outlet,
-  redirect,
-  useNavigate,
-  useNavigation,
 } from "react-router-dom";
 
 import Header from "./Header";
-import Home from "../../components/Home/Home";
-import CreateAssessment from "../../components/Assessment/CreateAssessment";
-import AssessmentPage from "../../components/Assessment/AssessmentPage";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppSelector } from "../../app/hooks";
 import IMAGES from "../../assets/images/Images";
-import { getAll } from "../../app/features/assessmentsSlice";
 import { classNames } from "../../components/Core/classNames";
-import {
-  useGetAllQuery,
-  useGetAssessmentByNameQuery,
-} from "../../app/services/assessments";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: IMAGES.Dashboard, current: true },

@@ -2,35 +2,26 @@ import { PencilIcon } from "@heroicons/react/24/solid";
 import IMAGES from "../../assets/images/Images";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import {
-  removeSelectedSkill,
-  setSelectedSkill,
-} from "../../app/features/skillsSlice";
-import TimePicker from "react-time-picker";
 import { classNames } from "../Core/classNames";
 import {
   removeModuleSkill,
   setModuleSkill,
   updateWeightage,
 } from "../../app/features/moduleSlice";
-import DurationPicker from "react-duration-picker";
 import { EyeIcon } from "@heroicons/react/24/outline";
 
 const ModuleCard: React.FC<any> = ({
   name,
-  type,
   noOfQuestions,
   skills,
   time,
-  Weightage,
   handleClick,
   editable = true,
   editMode,
   setEditMode,
   reviewAble,
 }) => {
-  const { selectedSkills } = useAppSelector((state) => state.skills);
-  const { selectedModules, modules } = useAppSelector((state) => state.modules);
+  const { selectedModules } = useAppSelector((state) => state.modules);
   const dispatch = useAppDispatch();
   const selectedModule = selectedModules.find((m: any) => m.name === name);
 
@@ -46,14 +37,14 @@ const ModuleCard: React.FC<any> = ({
       dispatch(removeModuleSkill({ name, skill: value }));
     }
   };
-  const [openTimer, setOpenTimer] = useState(false);
-  const [timer, setTimer] = useState("50:00");
+  // const [openTimer, setOpenTimer] = useState(false);
+  // const [timer, setTimer] = useState("50:00");
   const [weight, setWeight] = useState(() =>
     selectedModule && selectedModule.Weightage ? selectedModule.Weightage : 0,
   );
 
   console.log("selectedModule", selectedModule);
-  const onChangeWeightage = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChangeWeightage = (e: any) => {
     setWeight(e.target.value);
   };
   const handleChangeWeightage = async () => {
@@ -65,7 +56,7 @@ const ModuleCard: React.FC<any> = ({
     );
   };
 
-  const [duration, setDuration] = useState({});
+  // const [duration, setDuration] = useState({});
   return (
     <div
       className="flex rounded-2xl shadow-inner bg-white p-5 mt-5 mx-2 flex-col"
@@ -177,7 +168,7 @@ const ModuleCard: React.FC<any> = ({
           <span
             className="justify-center items-center ml-1"
             onClick={() => {
-              setOpenTimer(true);
+              // setOpenTimer(true);
             }}
           >
             {time} min

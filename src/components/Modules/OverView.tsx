@@ -6,17 +6,13 @@ import {
   updateWeightage,
 } from "../../app/features/moduleSlice";
 import {
-  ReactElement,
-  JSXElementConstructor,
-  ReactNode,
-  ReactPortal,
   ChangeEvent,
   useState,
 } from "react";
 
-const OverView: React.FC<any> = ({ setEditMode, editMode, module }) => {
+const OverView: React.FC<any> = ({ editMode, module }) => {
   const { selectedModules } = useAppSelector((state) => state.modules);
-  let selectedModule;
+  let selectedModule: any;
   if (editMode && module) {
     selectedModule = selectedModules.find(
       (m: { name: any }) => m.name === module.name,

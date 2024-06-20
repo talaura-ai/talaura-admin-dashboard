@@ -1,7 +1,5 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { AdminState } from "../features/adminSlice";
-import { AssessmentsState } from "../features/assessmentsSlice";
 import { RootState } from "../store";
 
 const BASE_URL = "https://fantasytradingleague.com/api/talaura/";
@@ -27,14 +25,14 @@ export const assessmentApi = createApi({
   tagTypes: ["Assessments"],
 
   endpoints: (builder) => ({
-    getAll: builder.query<AssessmentsState[], string>({
+    getAll: builder.query<any, string>({
       query: () => `organization/assessment/getAssessments`,
       providesTags: ["Assessments"],
     }),
-    getAssessmentByName: builder.query<AssessmentsState, string>({
+    getAssessmentByName: builder.query<any, string>({
       query: (name) => `organization/assessment/getAssessmentDetail/${name}`,
     }),
-    getAssessmentByID: builder.query<AssessmentsState, string>({
+    getAssessmentByID: builder.query<any, string>({
       query: (id) => `organization/assessment/getAssessmentDetail/${id}`,
     }),
     createAssessment: builder.mutation({

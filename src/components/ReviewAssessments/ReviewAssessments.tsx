@@ -1,6 +1,5 @@
 import { useAppSelector } from "../../app/hooks";
 import ModuleCard from "../Modules/ModuleCard";
-import Modules from "../Modules/Modules";
 export interface ReviewAssessmentsProps {}
 
 const ReviewAssessments: React.FC<ReviewAssessmentsProps> = () => {

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useAppSelector } from "../../app/hooks";
-import IMAGES from "../../assets/images/Images";
 import ModuleCard from "./ModuleCard";
 import OverView from "./OverView";
 import EditModule from "./EditModule";

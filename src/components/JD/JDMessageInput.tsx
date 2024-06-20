@@ -1,4 +1,3 @@
-import { Textarea } from "@headlessui/react";
 import { ArrowUpCircleIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -12,14 +11,12 @@ export interface IMessageInput {
 }
 
 const JDMessageInput: React.FC<IMessageInput> = ({
-  conversation_id,
-  assessmentId,
-  jdData,
-  setJdData,
+  
 }) => {
   const [assistantMessage, setAssisstantMessage] = useState("");
   const [aiMessage, setAiMessage] = useState("");
 
+  console.log('aiMessage', aiMessage)
   const sendAIRequestForJD = async () => {
     // event.preventDefault();
 
@@ -47,17 +44,20 @@ const JDMessageInput: React.FC<IMessageInput> = ({
         headers: myHeaders,
       });
 
-      const reader = response.body.getReader();
+      const reader = response?.body?.getReader();
 
       let decodedValue = "";
       while (true) {
-        const { done, value } = await reader.read();
+        if(reader){
+          const { done, value } = await reader.read();
 
-        if (done) {
+          if (done) {
+          }
+          decodedValue = decodedValue + new TextDecoder().decode(value);
+  
+          setAiMessage(decodedValue);
         }
-        decodedValue = decodedValue + new TextDecoder().decode(value);
-
-        setAiMessage(decodedValue);
+     
       }
     } catch (error) {
       console.log("error", error);

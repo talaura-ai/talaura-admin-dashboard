@@ -1,5 +1,4 @@
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { classNames } from "./classNames";
 import { IInput } from "./Input";
 import { useState } from "react";
 import IMAGES from "../../assets/images/Images";
@@ -21,7 +20,7 @@ const MultipleChoices: React.FC<IMultipleChoices> = ({
     const handleCheckboxChange = (event: {
       target: { value: any; checked: any };
     }) => {
-      const { value, checked } = event.target;
+      const { checked } = event.target;
   
       if (checked) {
         // dispatch(setSelectedSkill(value));
@@ -42,7 +41,7 @@ const MultipleChoices: React.FC<IMultipleChoices> = ({
         {label}
       </label>
       <div className="relative mt-10 ml-10 w-[75vw]">
-        {optionsState.map((option, idx) => {
+        {optionsState.map((option) => {
           return (
             <div className="relative flex items-start" key={option.name}>
               <div className="flex h-6 items-center">

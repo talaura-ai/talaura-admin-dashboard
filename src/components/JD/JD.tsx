@@ -1,24 +1,16 @@
 import {
   Dialog,
   DialogPanel,
-  DialogTitle,
   Radio,
   RadioGroup,
-  Textarea,
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import LoadingScreen from "../Loading/LoadingScreen";
 import { classNames } from "../Core/classNames";
 import IMAGES from "../../assets/images/Images";
-import { SetStateAction, useEffect, useRef, useState } from "react";
-import { v4 as uuid } from "uuid";
+import { SetStateAction, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import EmptyDataScreen from "../EmptyDataScreen/EmptyDataScreen";
-import EmptyJDdescriptions from "./EmptyJDdescriptions";
-import EmptyJDScreen from "./EmptyJDScreen";
 import Insights from "./Insights";
-import { AssessmentsState } from "../../app/features/assessmentsSlice";
 import JDDesc from "./JDDesc";
 const AI_API_URL = import.meta.env.VITE_AI_API_URL;
 
@@ -66,8 +58,8 @@ const JD: React.FC<IJD> = ({
     ? "Enter the Job Description here"
     : "Describe your requirments here";
 
-  const inputFile = useRef(null);
-  const [attachedFile, setAttachedFile] = useState(null);
+  const inputFile = useRef<any>(null);
+  const [attachedFile, setAttachedFile] = useState<any>(null);
 
   const handleOnChangeFile = (e: {
     target: { files: SetStateAction<null>[] };
@@ -273,6 +265,7 @@ const JD: React.FC<IJD> = ({
                             name="file"
                             id="file"
                             hidden
+                            // @ts-ignore
                             onChange={handleOnChangeFile}
                             ref={inputFile}
                             accept={`${allowedFileTypes.PDF},${allowedFileTypes.DOCX}`}

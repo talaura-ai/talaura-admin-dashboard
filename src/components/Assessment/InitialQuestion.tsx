@@ -18,14 +18,14 @@ import Loading from "../Loading/Loading";
 //     }
 // ]
 
-function InitialQuestion({
+const InitialQuestion: React.FC<any> = ({
   value,
   setInitialQuestionValue,
   initialQuestionProfile,
   setInitialQuestionProfile,
   assessmentsProfiles,
   loading,
-}) {
+}) =>  {
   if (loading) {
     return <Loading />;
   }
@@ -38,7 +38,7 @@ function InitialQuestion({
           onChange={setInitialQuestionProfile}
           className="flex flex-row  gap-5 rounded-md mt-5 "
         >
-          {assessmentsProfiles.map((profile, profileIdx) => (
+          {assessmentsProfiles.map((profile: any, profileIdx: number) => (
             <Radio
               key={profile.name}
               value={profile.name}

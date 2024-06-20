@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import IMAGES from "../../assets/images/Images";
 import {
   Transition,
@@ -6,9 +6,7 @@ import {
   TransitionChild,
   DialogPanel,
 } from "@headlessui/react";
-import { allowedFileTypes } from "../JD/JD";
 import { classNames } from "../Core/classNames";
-import { useSwiper } from "swiper/react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   addSkill,
@@ -71,7 +69,7 @@ const Skills: React.FC<ISkils> = () => {
         <span className="text-gray-400">(Select or Add skills)</span>
       </label>
       <div className="relative mt-10 ml-10 w-[75vw] flex-wrap grid grid-cols-3">
-        {skills.map((skill: any, idx: any) => {
+        {skills.map((skill: any) => {
           return (
             <div className="relative flex items-start" key={skill}>
               <div className="flex h-6 items-center">

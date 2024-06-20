@@ -1,6 +1,5 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { AdminState } from "../features/adminSlice";
 import { RootState } from "../store";
 
 const BASE_URL = "https://fantasytradingleague.com/api/talaura/";

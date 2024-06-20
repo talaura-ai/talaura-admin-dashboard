@@ -1,5 +1,4 @@
 import { useRouteError } from "react-router-dom";
-import IMAGES from "../../assets/images/Images";
 
 export default function EmptyDataScreen() {
   const error = useRouteError();

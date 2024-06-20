@@ -1,7 +1,4 @@
 import {
-  JSXElementConstructor,
-  ReactElement,
-  ReactNode,
   useState,
 } from "react";
 import IMAGES from "../../assets/images/Images";
@@ -38,7 +35,7 @@ const moduleTypes = [
 <option value="Voice to Text">Voice to Text</option> */
 }
 const AddNewModule: React.FC<any> = ({}) => {
-  const [moduleSkills, setModuleSkills] = useState(skills);
+  const [moduleSkills] = useState(skills);
   const [open, setOpen] = useState(false);
   const [moduleType, setModuleType] = useState("");
 
@@ -77,14 +74,7 @@ const AddNewModule: React.FC<any> = ({}) => {
               </option>
               {moduleTypes.map(
                 (
-                  moduleType:
-                    | string
-                    | number
-                    | boolean
-                    | ReactElement<any, string | JSXElementConstructor<any>>
-                    | Iterable<ReactNode>
-                    | null
-                    | undefined,
+                  moduleType: any
                 ) => {
                   return <option value={moduleType}>{moduleType}</option>;
                 },

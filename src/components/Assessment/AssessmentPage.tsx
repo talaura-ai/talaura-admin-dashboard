@@ -21,48 +21,48 @@ import { setAllProfiles } from "../../app/features/assessmentProfiles";
 import { useGetAllQuery } from "../../app/services/assessments";
 import { getAll } from "../../app/features/assessmentsSlice";
 
-const assessmentsData = [
-  {
-    id: 1,
-    name: "Graphic Designer",
-    department: "iOS Department",
-    duration: "125 mins",
-    status: "Active",
-    invites: 657,
-    completed: 625,
-    ongoing: 32,
-  },
-  {
-    id: 2,
-    name: "HR Manager",
-    department: "HR Department",
-    duration: "125 mins",
-    status: "Active",
-    invites: 657,
-    completed: 625,
-    ongoing: 32,
-  },
-  {
-    id: 3,
-    name: "Android Expert",
-    department: "Mobile Department",
-    duration: "125 mins",
-    status: "Active",
-    invites: 657,
-    completed: 625,
-    ongoing: 32,
-  },
-  {
-    id: 4,
-    name: "React Developer",
-    department: "IT Department",
-    duration: "125 mins",
-    status: "Active",
-    invites: 657,
-    completed: 625,
-    ongoing: 32,
-  },
-];
+// const assessmentsData = [
+//   {
+//     id: 1,
+//     name: "Graphic Designer",
+//     department: "iOS Department",
+//     duration: "125 mins",
+//     status: "Active",
+//     invites: 657,
+//     completed: 625,
+//     ongoing: 32,
+//   },
+//   {
+//     id: 2,
+//     name: "HR Manager",
+//     department: "HR Department",
+//     duration: "125 mins",
+//     status: "Active",
+//     invites: 657,
+//     completed: 625,
+//     ongoing: 32,
+//   },
+//   {
+//     id: 3,
+//     name: "Android Expert",
+//     department: "Mobile Department",
+//     duration: "125 mins",
+//     status: "Active",
+//     invites: 657,
+//     completed: 625,
+//     ongoing: 32,
+//   },
+//   {
+//     id: 4,
+//     name: "React Developer",
+//     department: "IT Department",
+//     duration: "125 mins",
+//     status: "Active",
+//     invites: 657,
+//     completed: 625,
+//     ongoing: 32,
+//   },
+// ];
 
 const omitFieldsToRenderInMap = [
   "id",
@@ -92,9 +92,6 @@ const AssessmentPage = () => {
   const { data: profileData } = useGetAssessmentProfilesQuery("");
   const {
     data: assessmentData,
-    isLoading,
-    isSuccess,
-    isFetching,
   } = useGetAllQuery("");
   const dispatch = useAppDispatch();
 
@@ -231,7 +228,6 @@ const AssessmentPage = () => {
               .slice()
 
               .sort((a, b) => {
-                const sortOrder = 1;
 
                 if (a[sortBy] > b[sortBy]) return 1;
                 if (a[sortBy] < b[sortBy]) return -1;

@@ -1,8 +1,4 @@
-import { Radio, RadioGroup, Textarea } from "@headlessui/react";
-import { classNames } from "../Core/classNames";
-import EmptyJDScreen from "./EmptyJDScreen";
-import { useState, useRef, SetStateAction } from "react";
-import toast from "react-hot-toast";
+import { Textarea } from "@headlessui/react";
 import IMAGES from "../../assets/images/Images";
 import JDMessageInput from "./JDMessageInput";
 
@@ -19,10 +15,8 @@ export interface IJDDesc {
 const JDDesc: React.FC<IJDDesc> = ({
   isJobDescriptionRequired,
   assessment,
-  JDactionButtons,
   conversation_id,
   jdData,
-  jdType,
   setJdData,
 }) => {
   return (

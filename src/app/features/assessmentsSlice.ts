@@ -2357,13 +2357,14 @@ export interface AssessmentsState {
   module: IAssessmentModule[];
 }
 
+
 const initialState: any[] = [];
 
 export const assessmentsSlice = createSlice({
   name: "assessments",
   initialState,
   reducers: {
-    getAll: (state, action: PayloadAction<any>) => {
+    getAll: (_state, action: PayloadAction<any>) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new

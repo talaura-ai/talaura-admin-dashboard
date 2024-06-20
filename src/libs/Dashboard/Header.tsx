@@ -1,4 +1,4 @@
-import { Bars3Icon, PowerIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon } from "@heroicons/react/24/outline";
 import { useAppDispatch } from "../../app/hooks";
 import { logout } from "../../app/features/adminSlice";
 import IMAGES from "../../assets/images/Images";

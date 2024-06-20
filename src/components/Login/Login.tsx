@@ -66,7 +66,9 @@ export default function Login() {
                     });
 
                     if (res.error) {
-                      return toast.error(
+    
+    return toast.error(
+      // @ts-ignore
                         `${res?.error?.status} - ${res?.error?.data?.message}`,
                       );
                     }
@@ -76,6 +78,7 @@ export default function Login() {
                       return dispatch(
                         login({
                           ...res.data,
+                          // @ts-ignore
                           rememberMe: checkRef.current.checked,
                         }),
                       );

@@ -15,7 +15,7 @@ export const assessmentProfilesSlice = createSlice({
       return state;
     },
 
-    setAllProfiles: (state, action: PayloadAction<any>) => {
+    setAllProfiles: (_state, action: PayloadAction<any>) => {
       return [...action.payload];
     },
   },

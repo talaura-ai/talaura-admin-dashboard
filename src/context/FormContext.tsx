@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 
 const FormContext = createContext({});
 
@@ -13,7 +13,7 @@ const FormProvider: React.FC<IFormProvider> = ({ children }) => {
     2: "Review",
   };
 
-  const [data, setData] = useState({});
+  const [data, setData] = useState<any>({});
   const [page, setPage] = useState(2);
 
   const handleChange = (e: {
@@ -25,7 +25,7 @@ const FormProvider: React.FC<IFormProvider> = ({ children }) => {
 
     const value = type === "checkbox" ? e.target.checked : e.target.value;
 
-    setData((prevData) => ({
+    setData((prevData: any) => ({
       ...prevData,
       [name]: value,
     }));

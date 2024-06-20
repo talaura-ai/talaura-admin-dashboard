@@ -1,7 +1,6 @@
-import { useRouteError } from "react-router-dom";
 import { classNames } from "../Core/classNames";
 
-export default function Loading(invert) {
+export default function Loading(invert: any) {
   return (
     <div id="loading">
       <div className="flex flex-row">

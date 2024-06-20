@@ -2,13 +2,11 @@ import {
   ArrowRightIcon,
   CheckIcon,
   ChevronDownIcon,
-  ChevronUpDownIcon,
 } from "@heroicons/react/24/outline";
 import { classNames } from "./classNames";
 import { questionTypes } from "../../app/features/assessmentsSlice";
 import {
   Listbox,
-  Label,
   ListboxButton,
   Transition,
   ListboxOptions,

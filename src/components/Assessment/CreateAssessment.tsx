@@ -13,23 +13,16 @@ import "swiper/css/virtual";
 import InitialQuestion from "./InitialQuestion";
 import { classNames } from "../Core/classNames";
 import {
-  JSXElementConstructor,
-  Key,
-  ReactElement,
-  ReactNode,
-  useContext,
   useEffect,
   useState,
 } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { useLocation, useNavigate } from "react-router-dom";
 import {
   assessmentApi,
   useCreateAssessmentMutation,
-  useGetQuestionsQuery,
   useSaveSkillsToAssessmentMutation,
 } from "../../app/services/assessments";
-import toast, { LoaderIcon } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { questionTypes } from "../../app/features/assessmentsSlice";
 import Input from "../Core/Input";
 import useFormContext from "../../hooks/useFormContext";
@@ -49,10 +42,8 @@ import { logout } from "../../app/features/adminSlice";
 import Skills from "../Skills/Skills";
 import { v4 as uuid } from "uuid";
 import Loading from "../Loading/Loading";
-import LoadingScreen from "../Loading/LoadingScreen";
-import { setAll, setSkills } from "../../app/features/skillsSlice";
+import { setSkills } from "../../app/features/skillsSlice";
 import ReviewQuestions from "../ReviewQuestions/Review";
-import ModuleCard from "../Modules/ModuleCard";
 import Modules from "../Modules/Modules";
 import ReviewAssessments from "../ReviewAssessments/ReviewAssessments";
 import {
@@ -60,10 +51,8 @@ import {
   setModules,
   setSelectedModule,
 } from "../../app/features/moduleSlice";
-import AddNewModule from "../Modules/AddNewModule";
 import {
   setQuestionsToApp,
-  updateQuestion,
 } from "../../app/features/questions";
 const AI_API_URL = import.meta.env.VITE_AI_API_URL;
 
@@ -88,7 +77,7 @@ const AI_API_URL = import.meta.env.VITE_AI_API_URL;
 //   },
 // ];
 
-export const Step: React.FC<any> = ({ steps, setSteps }) => {
+export const Step: React.FC<any> = ({ steps }) => {
   return (
     <nav aria-label="Progress" className="mt-10 mx-9 w-ful">
       <ol role="list" className="flex items-center ">
@@ -96,12 +85,7 @@ export const Step: React.FC<any> = ({ steps, setSteps }) => {
           (
             step: {
               name:
-                | boolean
-                | ReactElement<any, string | JSXElementConstructor<any>>
-                | Iterable<ReactNode>
-                | Key
-                | null
-                | undefined;
+                any
               status: string;
               icon: string | undefined;
             },
@@ -220,10 +204,14 @@ const SwiperNavButton: React.FC<ISliderNav> = ({
 
           console.log("resof action", res);
           if (res) {
+            // @ts-ignore
             swiper[slideTo]();
             return true;
           }
-        } else swiper[slideTo]();
+        } else {
+            // @ts-ignore
+
+          swiper[slideTo]()};
       }}
       className={classNames(
         "mt-2 mx-3  items-center justify-center rounded-md border   px-6 py-3 text-base font-medium  shadow-sm hover:bg-orange-text focus:outline-none focus:ring-0 active:animate-pulse ",
@@ -245,23 +233,12 @@ export interface IComp {
   assessmentsProfiles?: any;
 }
 
-const Comp: React.FC<IComp> = ({ question, assessmentsProfiles }) => {
-  const dispatch = useAppDispatch();
+const Comp: React.FC<IComp> = ({ question }) => {
 
 
   const {
-    steps,
-    page,
-    setPage,
     data,
     setData,
-    canSubmit,
-    handleChange,
-    disablePrev,
-    disableNext,
-    prevHide,
-    nextHide,
-    submitHide,
   } = useFormContext();
 
   console.log("question~~~~", question);
@@ -453,7 +430,6 @@ const CreateAssessment = () => {
   const assessmentsProfiles = useAppSelector(
     (state) => state.assessmentProfles,
   );
-  const { token } = useAppSelector((state) => state.admin);
 
   const questionReduxData = useAppSelector((state) => state.questions);
   console.log("questionReduxData", questionReduxData);
@@ -464,10 +440,9 @@ const CreateAssessment = () => {
   ] = useCreateAssessmentMutation();
   const [
     saveSkillsToAssessment,
-    { error: saveSkillsError, isLoading: saveSkillsLoading },
   ] = useSaveSkillsToAssessmentMutation();
   const [getQuestions] = assessmentApi.endpoints.getQuestions.useLazyQuery();
-  const [assessment, setAssessment] = useState(null);
+  const [assessment, setAssessment] = useState<any>(null);
   const { selectedModules } = useAppSelector((state) => state.modules);
 
   const [initialQuestionValue, setInitialQuestionValue] = useState("");
@@ -477,13 +452,13 @@ const CreateAssessment = () => {
   const [questions, setQuestions] = useState([]);
   const [page, setPage] = useState(0);
 
-  const [skillsData, setSkillsData] = useState([]);
+  const [skillsData, setSkillsData] = useState<any>([]);
   const [saveQuestionPage, setSaveQuestionPage] = useState(0);
   const [jdPage, setJdPage] = useState(0);
   const [skillsPage, setSkillsPage] = useState(0);
   const [modulesPage, setModulesPage] = useState(0);
 
-  const { skills, selectedSkills } = useAppSelector((state) => state.skills);
+  const { selectedSkills } = useAppSelector((state) => state.skills);
 
   useEffect(() => {}, []);
 
@@ -567,6 +542,7 @@ const CreateAssessment = () => {
         const headers = new Headers();
         headers.append("Content-Type", "application/json");
         const fetchModuleQuestionRes = await fetch(
+          // @ts-ignore
           `${AI_API_URL}${ModuleTypesURLS[selectedModule.type]}`,
           {
             method: "POST",
@@ -685,6 +661,7 @@ const CreateAssessment = () => {
       conversation_id={conversation_id}
     />,
     <Skills
+    // @ts-ignore
       skills={skillsData}
       setSkillsData={setSkillsData}
       generateSkills={generateSkills}
@@ -740,7 +717,7 @@ const CreateAssessment = () => {
 
   //   const [slides, setSlides] = useState([])
 
-  const [currentSlide, setCurrenSlide] = useState(slides[0]);
+  // const [currentSlide, setCurrenSlide] = useState(slides[0]);
 
   //   useEffect(() => {
   //     const  setSlidesMethod = async () => {
@@ -763,7 +740,8 @@ const CreateAssessment = () => {
   //   }, [])
 
   useEffect(() => {
-    if (createAssesmentError && createAssesmentError.status === 401) {
+    // @ts-ignore
+    if (createAssesmentError && createAssesmentError?.status === 401) {
       toast.error("Your login token got expire, please login again");
       dispatch(logout());
     }
@@ -878,7 +856,7 @@ const CreateAssessment = () => {
     getQuestionMethod();
   }, [initialQuestionProfile.name]);
 
-  const getActions = ({ idx }) => {
+  const getActions = ({ idx } : {idx: any}) => {
     //  ? actionButton.action :
     if (page === 0 && idx === 1) {
       const createAssessmentAction = async () => {

@@ -16,15 +16,15 @@ const mockInsights = [
   "Figma",
 ];
 
-const random1 = Math.floor(Math.random() * mockInsights.length);
-const random2 = Math.floor(Math.random() * mockInsights.length);
-const random3 = Math.floor(Math.random() * mockInsights.length);
+// const random1 = Math.floor(Math.random() * mockInsights.length);
+// const random2 = Math.floor(Math.random() * mockInsights.length);
+// const random3 = Math.floor(Math.random() * mockInsights.length);
 
-const randomInsights = () => [
-  mockInsights[random1],
-  mockInsights[random2],
-  mockInsights[random3],
-];
+// const randomInsights = () => [
+//   mockInsights[random1],
+//   mockInsights[random2],
+//   mockInsights[random3],
+// ];
 
 export interface IInsights {
   isJobDescriptionRequired: boolean;

@@ -24,6 +24,7 @@ export default function ErrorPage() {
             </h1>
             <p className="mt-6 text-base leading-7 text-gray-600">
               <p>
+                {/* @ts-ignore */}
                 <i>{error?.statusText || error?.message}</i>
               </p>
               Sorry, we couldn’t find the page you’re looking for.
