@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: any[] = [];
 
 export const assessmentProfilesSlice = createSlice({
-  name: "assessmentProfiles",
+  name: 'assessmentProfiles',
   initialState,
   reducers: {
     getAllProfiles: (state) => {

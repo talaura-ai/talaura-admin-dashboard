@@ -4,42 +4,83 @@
 
 @layer base {
   @font-face {
-    font-family: "Sansation_Regular";
+    font-family: 'Sansation_Regular';
     font-display: swap;
     src: url(/fonts/sansation/Sansation_Regular.ttf);
   }
   @font-face {
-    font-family: "Sansation_Light";
+    font-family: 'Sansation';
+    font-display: swap;
+    src: url(/fonts/sansation/Sansation_Regular.ttf);
+  }
+  @font-face {
+    font-family: 'Sansation_Light';
     font-display: swap;
     src: url(/fonts/sansation/Sansation_Light.ttf);
   }
   @font-face {
-    font-family: "Sansation_Light_Italic";
+    font-family: 'Sansation_Light_Italic';
     font-display: swap;
     src: url(/fonts/sansation/Sansation_Light_Italic.ttf);
   }
   @font-face {
-    font-family: "Sansation_Italic";
+    font-family: 'Sansation_Italic';
     font-display: swap;
     src: url(/fonts/sansation/Sansation_Italic.ttf);
   }
   @font-face {
-    font-family: "Sansation_Bold";
+    font-family: 'Sansation_Bold';
     font-display: swap;
     src: url(/fonts/sansation/Sansation_Bold.ttf);
   }
   @font-face {
-    font-family: "Sansation_Bold_Italic";
+    font-family: 'Sansation_Bold_Italic';
     font-display: swap;
     src: url(/fonts/sansation/Sansation_Bold_Italic.ttf);
   }
 
   html {
-    font-family: "Sansation_Regular", system-ui, sans-serif;
+    font-family: 'Sansation_Regular', system-ui, sans-serif;
   }
 }
 
 @layer utilities {
+  .progress-ring__circle {
+    transition: stroke-dashoffset 0.35s;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+  }
+  .hasImage:hover section {
+    background-color: rgba(5, 5, 5, 0.4);
+  }
+  .hasImage:hover button:hover {
+    background: rgba(5, 5, 5, 0.45);
+  }
+
+  #overlay p,
+  i {
+    opacity: 0;
+  }
+
+  #overlay.draggedover {
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+  #overlay.draggedover p,
+  #overlay.draggedover i {
+    opacity: 1;
+  }
+
+  .group:hover .group-hover\:text-blue-800 {
+    color: #2b6cb0;
+  }
+
+  .gradient-y-r {
+    border-radius: 92.361px;
+    background: var(
+      --Gradient-Miami,
+      linear-gradient(143deg, #ffbf1a 5.36%, #ff4080 94.64%)
+    );
+  }
   .scrollbar::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -63,7 +104,6 @@
     background: #f1bb83;
   }
 }
-
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

@@ -1,17 +1,18 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { authApi } from "./services/auth";
-import { setupListeners } from "@reduxjs/toolkit/query";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
-import { rootReducers } from "./rootReducers";
-import { assessmentApi } from "./services/assessments";
-import { assessmentProfilesApi } from "./services/assessmentProfiles";
-import { thunk } from "redux-thunk";
+import { configureStore } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
+import { persistReducer, persistStore } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+import { thunk } from 'redux-thunk';
+import { rootReducers } from './rootReducers';
+import { assessmentProfilesApi } from './services/assessmentProfiles';
+import { assessmentApi } from './services/assessments';
+import { authApi } from './services/auth';
+import { candidatesApi } from './services/candidates';
 
 const persistConfig = {
-  key: "root",
+  key: 'root',
   storage,
-  whitelist: ["admin"],
+  whitelist: ['admin', 'inviteCandidate'],
   // blacklist: ["admin"]
 };
 
@@ -28,7 +29,9 @@ export const store = configureStore({
       .concat(thunk)
       .concat(authApi.middleware)
       .concat(assessmentApi.middleware)
-      .concat(assessmentProfilesApi.middleware),
+      .concat(assessmentProfilesApi.middleware)
+      .concat(assessmentProfilesApi.middleware)
+      .concat(candidatesApi.middleware),
   devTools: true,
 });
 

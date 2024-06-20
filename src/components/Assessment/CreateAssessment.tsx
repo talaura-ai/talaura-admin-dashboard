@@ -1,33 +1,30 @@
-import { CheckIcon } from "@heroicons/react/20/solid";
-import IMAGES from "../../assets/images/Images";
-import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+import { CheckIcon } from '@heroicons/react/20/solid';
+import IMAGES from '../../assets/images/Images';
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 // import Swiper core and required modules
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 
 // Import Swiper styles
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/scrollbar";
-import "swiper/css/virtual";
-import InitialQuestion from "./InitialQuestion";
-import { classNames } from "../Core/classNames";
-import {
-  useEffect,
-  useState,
-} from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+import 'swiper/css/virtual';
+import InitialQuestion from './InitialQuestion';
+import { classNames } from '../Core/classNames';
+import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   assessmentApi,
   useCreateAssessmentMutation,
   useSaveSkillsToAssessmentMutation,
-} from "../../app/services/assessments";
-import toast from "react-hot-toast";
-import { questionTypes } from "../../app/features/assessmentsSlice";
-import Input from "../Core/Input";
-import useFormContext from "../../hooks/useFormContext";
-import EmptyDataScreen from "../EmptyDataScreen/EmptyDataScreen";
-import MultipleChoices from "../Core/MultipleChoices";
+} from '../../app/services/assessments';
+import toast from 'react-hot-toast';
+import { questionTypes } from '../../app/features/assessmentsSlice';
+import Input from '../Core/Input';
+import useFormContext from '../../hooks/useFormContext';
+import EmptyDataScreen from '../EmptyDataScreen/EmptyDataScreen';
+import MultipleChoices from '../Core/MultipleChoices';
 import {
   Label,
   Listbox,
@@ -35,25 +32,23 @@ import {
   ListboxOption,
   ListboxOptions,
   Transition,
-} from "@headlessui/react";
-import { ChevronUpDownIcon } from "@heroicons/react/20/solid";
-import JD from "../JD/JD";
-import { logout } from "../../app/features/adminSlice";
-import Skills from "../Skills/Skills";
-import { v4 as uuid } from "uuid";
-import Loading from "../Loading/Loading";
-import { setSkills } from "../../app/features/skillsSlice";
-import ReviewQuestions from "../ReviewQuestions/Review";
-import Modules from "../Modules/Modules";
-import ReviewAssessments from "../ReviewAssessments/ReviewAssessments";
+} from '@headlessui/react';
+import { ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import JD from '../JD/JD';
+import { logout } from '../../app/features/adminSlice';
+import Skills from '../Skills/Skills';
+import { v4 as uuid } from 'uuid';
+import Loading from '../Loading/Loading';
+import { setSkills } from '../../app/features/skillsSlice';
+import ReviewQuestions from '../ReviewQuestions/Review';
+import Modules from '../Modules/Modules';
+import ReviewAssessments from '../ReviewAssessments/ReviewAssessments';
 import {
   addQuestionToModule,
   setModules,
   setSelectedModule,
-} from "../../app/features/moduleSlice";
-import {
-  setQuestionsToApp,
-} from "../../app/features/questions";
+} from '../../app/features/moduleSlice';
+import { setQuestionsToApp } from '../../app/features/questions';
 const AI_API_URL = import.meta.env.VITE_AI_API_URL;
 
 // const steps = [
@@ -79,82 +74,76 @@ const AI_API_URL = import.meta.env.VITE_AI_API_URL;
 
 export const Step: React.FC<any> = ({ steps }) => {
   return (
-    <nav aria-label="Progress" className="mt-10 mx-9 w-ful">
-      <ol role="list" className="flex items-center ">
+    <nav aria-label='Progress' className='mt-10 mx-9 w-ful'>
+      <ol role='list' className='flex items-center '>
         {steps.map(
           (
             step: {
-              name:
-                any
+              name: any;
               status: string;
               icon: string | undefined;
             },
-            stepIdx: number,
+            stepIdx: number
           ) => (
             <li
               key={step.name}
               className={classNames(
-                stepIdx !== steps.length - 1 ? "w-full pr-8 sm:pr-20" : "",
-                "relative ",
-              )}
-            >
-              {step.status === "complete" ? (
+                stepIdx !== steps.length - 1 ? 'w-full pr-8 sm:pr-20' : '',
+                'relative '
+              )}>
+              {step.status === 'complete' ? (
                 <>
                   <div
-                    className="absolute inset-0 flex items-center w-full"
-                    aria-hidden="true"
-                  >
+                    className='absolute inset-0 flex items-center w-full'
+                    aria-hidden='true'>
                     <div
-                      className="h-2 w-full 
+                      className='h-2 w-full 
                     bg-gradient-to-r from-[#E5A971] from-8% via-[#F3BC84] via-37% to-white to-80% 
-                  "
+                  '
                     />
                   </div>
-                  <a className="relative flex h-10 w-10 items-center justify-center rounded-full bg-white hover:bg-white border border-spacing-2 border-brand-color outline outline-1 outline-brand-color shadow-md shadow-brand-color">
+                  <a className='relative flex h-10 w-10 items-center justify-center rounded-full bg-white hover:bg-white border border-spacing-2 border-brand-color outline outline-1 outline-brand-color shadow-md shadow-brand-color'>
                     {/* <CheckIcon className="h-5 w-5 text-white" aria-hidden="true" /> */}
-                    <img src={step.icon} className="h-5 w-5" />
-                    <span className="sr-only">{step.name}</span>
+                    <img src={step.icon} className='h-5 w-5' />
+                    <span className='sr-only'>{step.name}</span>
                   </a>
                 </>
-              ) : step.status === "current" ? (
+              ) : step.status === 'current' ? (
                 <>
                   <div
-                    className="absolute inset-0 flex items-center"
-                    aria-hidden="true"
-                  >
-                    <div className="h-2 w-full bg-gray-200" />
+                    className='absolute inset-0 flex items-center'
+                    aria-hidden='true'>
+                    <div className='h-2 w-full bg-gray-200' />
                   </div>
                   <a
-                    className="relative flex h-10 w-10 items-center justify-center rounded-full border-2 border-brand-color bg-white outline outline-1 outline-brand-color shadow-md shadow-brand-color"
-                    aria-current="step"
-                  >
+                    className='relative flex h-10 w-10 items-center justify-center rounded-full border-2 border-brand-color bg-white outline outline-1 outline-brand-color shadow-md shadow-brand-color'
+                    aria-current='step'>
                     {/* <span className="h-2.5 w-2.5 rounded-full bg-brand-color" aria-hidden="true" /> */}
-                    <img src={step.icon} className="h-5 w-5" />
+                    <img src={step.icon} className='h-5 w-5' />
 
-                    <span className="sr-only">{step.name}</span>
+                    <span className='sr-only'>{step.name}</span>
                   </a>
                 </>
               ) : (
                 <>
                   <div
-                    className="absolute inset-0 flex items-center"
-                    aria-hidden="true"
-                  >
-                    <div className="h-2 w-full bg-gray-200" />
+                    className='absolute inset-0 flex items-center'
+                    aria-hidden='true'>
+                    <div className='h-2 w-full bg-gray-200' />
                   </div>
-                  <a className="group relative flex h-10 w-10 items-center justify-center rounded-full border-2 border-gray-300 bg-white hover:border-gray-400 outline-brand-color shadow-md shadow-brand-color">
+                  <a className='group relative flex h-10 w-10 items-center justify-center rounded-full border-2 border-gray-300 bg-white hover:border-gray-400 outline-brand-color shadow-md shadow-brand-color'>
                     {/* <span
                     className="h-2.5 w-2.5 rounded-full bg-transparent group-hover:bg-gray-300"
                     aria-hidden="true"
                   /> */}
-                    <img src={step.icon} className="h-5 w-5" />
+                    <img src={step.icon} className='h-5 w-5' />
 
-                    <span className="sr-only">{step.name}</span>
+                    <span className='sr-only'>{step.name}</span>
                   </a>
                 </>
               )}
             </li>
-          ),
+          )
         )}
       </ol>
     </nav>
@@ -177,12 +166,12 @@ interface ISliderNav {
 const SwiperNavButton: React.FC<ISliderNav> = ({
   children,
   style,
-  className = "",
+  className = '',
   action,
   disabled,
   isPrimary,
   hidden,
-  slideTo = "slideNext",
+  slideTo = 'slideNext',
   setActionCalledLoading,
 }) => {
   const swiper = useSwiper();
@@ -202,27 +191,27 @@ const SwiperNavButton: React.FC<ISliderNav> = ({
           const res = await action();
           setActionCalledLoading(false);
 
-          console.log("resof action", res);
+          console.log('resof action', res);
           if (res) {
             // @ts-ignore
             swiper[slideTo]();
             return true;
           }
         } else {
-            // @ts-ignore
+          // @ts-ignore
 
-          swiper[slideTo]()};
+          swiper[slideTo]();
+        }
       }}
       className={classNames(
-        "mt-2 mx-3  items-center justify-center rounded-md border   px-6 py-3 text-base font-medium  shadow-sm hover:bg-orange-text focus:outline-none focus:ring-0 active:animate-pulse ",
+        'mt-2 mx-3  items-center justify-center rounded-md border   px-6 py-3 text-base font-medium  shadow-sm hover:bg-orange-text focus:outline-none focus:ring-0 active:animate-pulse ',
         className,
-        disabled ? "opacity-50" : "",
+        disabled ? 'opacity-50' : '',
         isPrimary
-          ? "bg-orange-text text-white"
-          : "bg-transparent hover:bg-transparent border-black",
+          ? 'bg-orange-text text-white'
+          : 'bg-transparent hover:bg-transparent border-black'
       )}
-      style={style}
-    >
+      style={style}>
       {children}
     </button>
   );
@@ -234,15 +223,10 @@ export interface IComp {
 }
 
 const Comp: React.FC<IComp> = ({ question }) => {
+  const { data, setData } = useFormContext();
 
-
-  const {
-    data,
-    setData,
-  } = useFormContext();
-
-  console.log("question~~~~", question);
-  console.log("daTTa~~~~", data);
+  console.log('question~~~~', question);
+  console.log('daTTa~~~~', data);
 
   useEffect(() => {
     // questions.forEach((question) => {
@@ -254,7 +238,7 @@ const Comp: React.FC<IComp> = ({ question }) => {
         question.type === questionTypes.DROPDOWN
           ? question.answer
             ? question.answer
-            : ""
+            : ''
           : question.answer
             ? question.answer
             : [],
@@ -263,9 +247,9 @@ const Comp: React.FC<IComp> = ({ question }) => {
   }, [question]);
 
   if (!question) return <EmptyDataScreen />;
-  console.log("data~~~~", data);
+  console.log('data~~~~', data);
   const { type, title, name, position, options = [] } = question;
-  console.log("name, title, type", question);
+  console.log('name, title, type', question);
 
   // return questions
   //   .slice()
@@ -351,14 +335,14 @@ const Comp: React.FC<IComp> = ({ question }) => {
 
   if (type === questionTypes.TEXT)
     return (
-      <div className="flex flex-col mt-10 px-5">
-        <div className="flex mt-10">
+      <div className='flex flex-col mt-10 px-5'>
+        <div className='flex mt-10'>
           <Input
             label={title}
             name={name}
-            value={data[name] || ""}
+            value={data[name] || ''}
             setValue={async (e: { target: { value: any } }) => {
-              console.log("e", e);
+              console.log('e', e);
               return setData((oldData: any) => {
                 return {
                   ...oldData,
@@ -374,14 +358,14 @@ const Comp: React.FC<IComp> = ({ question }) => {
 
   if (type === questionTypes.MULTIPLE_CHOICE)
     return (
-      <div className="flex flex-col mt-10 px-5">
-        <div className="flex mt-10">
+      <div className='flex flex-col mt-10 px-5'>
+        <div className='flex mt-10'>
           <MultipleChoices
             label={title}
             name={name}
-            value={data[name] || ""}
+            value={data[name] || ''}
             setValue={(e: { target: { value: any } }) => {
-              console.log("e", e);
+              console.log('e', e);
               return setData((oldData: any) => {
                 return {
                   ...oldData,
@@ -397,16 +381,16 @@ const Comp: React.FC<IComp> = ({ question }) => {
     );
 
   if (type === questionTypes.DROPDOWN) {
-    console.log("options~~~~+++++++~~~~)", options);
+    console.log('options~~~~+++++++~~~~)', options);
     return (
-      <div className="flex flex-col mt-10 px-5">
-        <div className="flex mt-10 flex-col">
+      <div className='flex flex-col mt-10 px-5'>
+        <div className='flex mt-10 flex-col'>
           <Input
             label={title}
             name={name}
-            value={data[name] || ""}
+            value={data[name] || ''}
             setValue={(e: { target: { value: any } }) => {
-              console.log("e", e);
+              console.log('e', e);
               return setData((oldData: any) => {
                 return {
                   ...oldData,
@@ -428,26 +412,24 @@ const CreateAssessment = () => {
   // const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const assessmentsProfiles = useAppSelector(
-    (state) => state.assessmentProfles,
+    (state) => state.assessmentProfles
   );
 
   const questionReduxData = useAppSelector((state) => state.questions);
-  console.log("questionReduxData", questionReduxData);
+  console.log('questionReduxData', questionReduxData);
 
   const [
     createAssessment,
     { error: createAssesmentError, isLoading: createAssesmentLoading },
   ] = useCreateAssessmentMutation();
-  const [
-    saveSkillsToAssessment,
-  ] = useSaveSkillsToAssessmentMutation();
+  const [saveSkillsToAssessment] = useSaveSkillsToAssessmentMutation();
   const [getQuestions] = assessmentApi.endpoints.getQuestions.useLazyQuery();
   const [assessment, setAssessment] = useState<any>(null);
   const { selectedModules } = useAppSelector((state) => state.modules);
 
-  const [initialQuestionValue, setInitialQuestionValue] = useState("");
+  const [initialQuestionValue, setInitialQuestionValue] = useState('');
   const [initialQuestionProfile, setInitialQuestionProfile] = useState(
-    assessmentsProfiles[0],
+    assessmentsProfiles[0]
   );
   const [questions, setQuestions] = useState([]);
   const [page, setPage] = useState(0);
@@ -470,15 +452,15 @@ const CreateAssessment = () => {
     setModulesPage(() => skillsPage + 1);
   }, [skillsPage]);
 
-  const [jdData, setJDData] = useState("");
-  const [conversation_id, setConversationID] = useState<string>("");
+  const [jdData, setJDData] = useState('');
+  const [conversation_id, setConversationID] = useState<string>('');
 
   const [actionLoading, setActionCalledLoading] = useState(false);
 
   useEffect(() => {
     setSaveQuestionPage(questions.length);
     setJdPage(questions.length + 1);
-    console.log("modulesPage", page, modulesPage);
+    console.log('modulesPage', page, modulesPage);
     if (page === modulesPage) {
       setSteps((oldSteps) => {
         const setState = oldSteps;
@@ -487,9 +469,9 @@ const CreateAssessment = () => {
         const testModuleStep = setState.findIndex((step) => step.id === 2);
         const reviewStep = setState.findIndex((step) => step.id === 2);
 
-        setState[createStep].status = "complete";
-        setState[testModuleStep].status = "complete";
-        setState[reviewStep].status = "upcoming";
+        setState[createStep].status = 'complete';
+        setState[testModuleStep].status = 'complete';
+        setState[reviewStep].status = 'upcoming';
 
         return setState;
       });
@@ -508,11 +490,11 @@ const CreateAssessment = () => {
       // conversation_id,
     };
     const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append('Content-Type', 'application/json');
 
     try {
       const response = await fetch(`${AI_API_URL}generate_skills`, {
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(payloads),
         headers: myHeaders,
       });
@@ -524,50 +506,50 @@ const CreateAssessment = () => {
         return Promise.resolve(true);
       }
     } catch (error) {
-      console.log("error", error);
+      console.log('error', error);
     }
   };
 
   const getQuestionAndAddToModule = async () => {
-     const totalWeightage = selectedModules.reduce(
-        (acc: any, val: { Weightage: any }) =>
-          Number(val.Weightage) + Number(acc),
-        0,
-      );
-    if(totalWeightage !== 100){
-      toast.error("Weightage should be equal to 100%")
+    const totalWeightage = selectedModules.reduce(
+      (acc: any, val: { Weightage: any }) =>
+        Number(val.Weightage) + Number(acc),
+      0
+    );
+    if (totalWeightage !== 100) {
+      toast.error('Weightage should be equal to 100%');
       return undefined;
     }
     try {
       const promiseMap = selectedModules.map(async (selectedModule: any) => {
         const ModuleTypesURLS = {
-          "Voice To Voice": "generate_voice_to_voice_questions",
-          Sandbox: "generate_sandbox_questions",
-          "AI Video Interview": "generate_ai_video_interview_questions",
-          Interview: "generate_voice_to_text_questions",
-          Quiz: "generate_quiz_questions",
+          'Voice To Voice': 'generate_voice_to_voice_questions',
+          Sandbox: 'generate_sandbox_questions',
+          'AI Video Interview': 'generate_ai_video_interview_questions',
+          Interview: 'generate_voice_to_text_questions',
+          Quiz: 'generate_quiz_questions',
         };
 
         const headers = new Headers();
-        headers.append("Content-Type", "application/json");
+        headers.append('Content-Type', 'application/json');
         const fetchModuleQuestionRes = await fetch(
           // @ts-ignore
           `${AI_API_URL}${ModuleTypesURLS[selectedModule.type]}`,
           {
-            method: "POST",
+            method: 'POST',
             body: JSON.stringify({ ...selectedModule }),
             headers,
-          },
+          }
         );
-        console.log("fetchModuleQuestionRes", fetchModuleQuestionRes);
+        console.log('fetchModuleQuestionRes', fetchModuleQuestionRes);
 
-        if (fetchModuleQuestionRes.statusText === "OK") {
+        if (fetchModuleQuestionRes.statusText === 'OK') {
           const resJSON = await fetchModuleQuestionRes.json();
           dispatch(
             addQuestionToModule({
               name: selectedModule.name,
               question: resJSON.questions,
-            }),
+            })
           );
           return Promise.resolve(true);
         }
@@ -585,11 +567,11 @@ const CreateAssessment = () => {
       skills: selectedSkills,
     };
     const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append('Content-Type', 'application/json');
 
     try {
       const response = await fetch(`${AI_API_URL}generate_modules`, {
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(payloads),
         headers: myHeaders,
       });
@@ -613,7 +595,7 @@ const CreateAssessment = () => {
         return Promise.resolve(true);
       }
     } catch (error) {
-      console.log("error", error);
+      console.log('error', error);
     }
   };
 
@@ -623,27 +605,27 @@ const CreateAssessment = () => {
 
   const questionsList: any = [
     {
-      title: "UI/UX Critique:",
+      title: 'UI/UX Critique:',
       description:
         "Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines.",
     },
     {
-      title: "UI/UX Critique:",
+      title: 'UI/UX Critique:',
       description:
         "Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines.",
     },
     {
-      title: "UI/UX Critique:",
+      title: 'UI/UX Critique:',
       description:
         "Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines.",
     },
     {
-      title: "UI/UX Critique:",
+      title: 'UI/UX Critique:',
       description:
         "Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines.",
     },
     {
-      title: "UI/UX Critique:",
+      title: 'UI/UX Critique:',
       description:
         "Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines.",
     },
@@ -662,7 +644,7 @@ const CreateAssessment = () => {
     ...questionReduxData.questions.map((q: any) => (
       <Comp question={q} assessmentsProfiles={assessmentsProfiles} />
     )),
-    <JD 
+    <JD
       isJobDescriptionRequired={initialQuestionProfile.jobDetails}
       assessment={assessment}
       jdData={jdData}
@@ -670,7 +652,7 @@ const CreateAssessment = () => {
       conversation_id={conversation_id}
     />,
     <Skills
-    // @ts-ignore
+      // @ts-ignore
       skills={skillsData}
       setSkillsData={setSkillsData}
       generateSkills={generateSkills}
@@ -696,23 +678,23 @@ const CreateAssessment = () => {
   const [steps, setSteps] = useState(() => [
     {
       id: 1,
-      name: "Create Assessment",
-      href: "#",
-      status: "current",
+      name: 'Create Assessment',
+      href: '#',
+      status: 'current',
       icon: IMAGES.plus,
     },
     {
       id: 2,
-      name: "Test Modules",
-      href: "#",
-      status: "upcoming",
+      name: 'Test Modules',
+      href: '#',
+      status: 'upcoming',
       icon: IMAGES.rectangle_3,
     },
     {
       id: 3,
-      name: "Review",
-      href: "#",
-      status: "upcoming",
+      name: 'Review',
+      href: '#',
+      status: 'upcoming',
       icon: IMAGES.playButtonCircled,
     },
   ]);
@@ -751,7 +733,7 @@ const CreateAssessment = () => {
   useEffect(() => {
     // @ts-ignore
     if (createAssesmentError && createAssesmentError?.status === 401) {
-      toast.error("Your login token got expire, please login again");
+      toast.error('Your login token got expire, please login again');
       dispatch(logout());
     }
   }, [createAssesmentError]);
@@ -821,29 +803,29 @@ const CreateAssessment = () => {
 
   const actionButtons = [
     {
-      id: "1",
-      title: "Back",
+      id: '1',
+      title: 'Back',
       // action: "",
-      type: "button",
+      type: 'button',
       hidden: isBackHidden(),
       disabled: isBackDisabled(),
-      slideTo: "slidePrev",
+      slideTo: 'slidePrev',
     },
     {
-      id: "2",
-      title: "Next",
-      type: "button",
+      id: '2',
+      title: 'Next',
+      type: 'button',
       hidden: isNextHidden(),
       disabled: isNextDisabled(),
       isPrimary: true,
       // action: ,
-      slideTo: "slideNext",
+      slideTo: 'slideNext',
     },
     {
-      id: "3",
-      title: "Done",
+      id: '3',
+      title: 'Done',
       // action: "",
-      type: "submit",
+      type: 'submit',
       hidden: isCompleteHidden(),
       disabled: isCompleteDisabled(),
       isPrimary: true,
@@ -853,8 +835,8 @@ const CreateAssessment = () => {
   useEffect(() => {
     const getQuestionMethod = async () => {
       const questionResult = await getQuestions(initialQuestionProfile.name);
-      console.log("questionResult", questionResult);
-      if (questionResult.isSuccess && questionResult.status === "fulfilled") {
+      console.log('questionResult', questionResult);
+      if (questionResult.isSuccess && questionResult.status === 'fulfilled') {
         const data = questionResult.data;
         if (data.status) {
           setQuestions(data.question);
@@ -865,7 +847,7 @@ const CreateAssessment = () => {
     getQuestionMethod();
   }, [initialQuestionProfile.name]);
 
-  const getActions = ({ idx } : {idx: any}) => {
+  const getActions = ({ idx }: { idx: any }) => {
     //  ? actionButton.action :
     if (page === 0 && idx === 1) {
       const createAssessmentAction = async () => {
@@ -914,11 +896,11 @@ const CreateAssessment = () => {
   // }
   return (
     <>
-      <h1 className="text-2xl font-Sansation_Bold">Create Assessment</h1>
-      <div className="flex flex-col">
+      <h1 className='text-2xl font-Sansation_Bold'>Create Assessment</h1>
+      <div className='flex flex-col'>
         <Step steps={steps} setSteps={setSteps} />
 
-        <div className="mx-5">
+        <div className='mx-5'>
           <Swiper
             // install Swiper modules
             modules={[Navigation, Pagination, Scrollbar, A11y]}
@@ -929,11 +911,10 @@ const CreateAssessment = () => {
             //   scrollbar={{ draggable: true }}
             onSwiper={(swiper) => console.log(swiper)}
             onSlideChange={(swiper) => setPage(swiper.activeIndex)}
-            allowTouchMove={false}
-          >
+            allowTouchMove={false}>
             {slides.map((slideContent, slideIDX) => {
               return (
-                <SwiperSlide key={slideIDX} className="h-[65vh] max-h-[65vh]">
+                <SwiperSlide key={slideIDX} className='h-[65vh] max-h-[65vh]'>
                   {slideContent}
                 </SwiperSlide>
               );
@@ -942,7 +923,7 @@ const CreateAssessment = () => {
               isJobDescriptionRequired={initialQuestionProfile.jobDetails}
             /> */}
 
-            <div className="px-5 w-full   flex flex-row justify-end absolute bottom-0 z-50">
+            <div className='px-5 w-full   flex flex-row justify-end absolute bottom-0 z-50'>
               {actionButtons.map((actionButton, idx) => {
                 // <SwiperButtonPrev disabled={true}>Back</SwiperButtonPrev>
                 return (
@@ -953,8 +934,7 @@ const CreateAssessment = () => {
 
                     {...actionButton}
                     action={getActions({ idx })}
-                    setActionCalledLoading={setActionCalledLoading}
-                  >
+                    setActionCalledLoading={setActionCalledLoading}>
                     {actionLoading ? <Loading /> : actionButton.title}
                   </SwiperNavButton>
                 );
@@ -984,16 +964,16 @@ const CreateAssessment = () => {
 export default CreateAssessment;
 
 const people = [
-  { id: 1, name: "Wade Cooper" },
-  { id: 2, name: "Arlene Mccoy" },
-  { id: 3, name: "Devon Webb" },
-  { id: 4, name: "Tom Cook" },
-  { id: 5, name: "Tanya Fox" },
-  { id: 6, name: "Hellen Schmidt" },
-  { id: 7, name: "Caroline Schultz" },
-  { id: 8, name: "Mason Heaney" },
-  { id: 9, name: "Claudie Smitham" },
-  { id: 10, name: "Emil Schaefer" },
+  { id: 1, name: 'Wade Cooper' },
+  { id: 2, name: 'Arlene Mccoy' },
+  { id: 3, name: 'Devon Webb' },
+  { id: 4, name: 'Tom Cook' },
+  { id: 5, name: 'Tanya Fox' },
+  { id: 6, name: 'Hellen Schmidt' },
+  { id: 7, name: 'Caroline Schultz' },
+  { id: 8, name: 'Mason Heaney' },
+  { id: 9, name: 'Claudie Smitham' },
+  { id: 10, name: 'Emil Schaefer' },
 ];
 
 export function SelctExample() {
@@ -1003,58 +983,54 @@ export function SelctExample() {
     <Listbox value={selected} onChange={setSelected}>
       {({ open }) => (
         <>
-          <Label className="block text-sm font-medium leading-6 text-gray-900">
+          <Label className='block text-sm font-medium leading-6 text-gray-900'>
             Assigned to
           </Label>
-          <div className="relative mt-2">
-            <ListboxButton className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
-              <span className="block truncate">{selected.name}</span>
-              <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+          <div className='relative mt-2'>
+            <ListboxButton className='relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6'>
+              <span className='block truncate'>{selected.name}</span>
+              <span className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2'>
                 <ChevronUpDownIcon
-                  className="h-5 w-5 text-gray-400"
-                  aria-hidden="true"
+                  className='h-5 w-5 text-gray-400'
+                  aria-hidden='true'
                 />
               </span>
             </ListboxButton>
 
             <Transition
               show={open}
-              leave="transition ease-in duration-100"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <ListboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+              leave='transition ease-in duration-100'
+              leaveFrom='opacity-100'
+              leaveTo='opacity-0'>
+              <ListboxOptions className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
                 {people.map((person) => (
                   <ListboxOption
                     key={person.id}
                     className={({ focus }) =>
                       classNames(
-                        focus ? "bg-indigo-600 text-white" : "",
-                        !focus ? "text-gray-900" : "",
-                        "relative cursor-default select-none py-2 pl-3 pr-9",
+                        focus ? 'bg-indigo-600 text-white' : '',
+                        !focus ? 'text-gray-900' : '',
+                        'relative cursor-default select-none py-2 pl-3 pr-9'
                       )
                     }
-                    value={person}
-                  >
+                    value={person}>
                     {({ selected, focus }) => (
                       <>
                         <span
                           className={classNames(
-                            selected ? "font-semibold" : "font-normal",
-                            "block truncate",
-                          )}
-                        >
+                            selected ? 'font-semibold' : 'font-normal',
+                            'block truncate'
+                          )}>
                           {person.name}
                         </span>
 
                         {selected ? (
                           <span
                             className={classNames(
-                              focus ? "text-white" : "text-indigo-600",
-                              "absolute inset-y-0 right-0 flex items-center pr-4",
-                            )}
-                          >
-                            <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                              focus ? 'text-white' : 'text-indigo-600',
+                              'absolute inset-y-0 right-0 flex items-center pr-4'
+                            )}>
+                            <CheckIcon className='h-5 w-5' aria-hidden='true' />
                           </span>
                         ) : null}
                       </>
