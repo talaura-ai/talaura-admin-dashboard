@@ -98,7 +98,7 @@ const AssessmentPage = () => {
       dispatch(setAllProfiles(profileData.assessmentProfile));
     }
     if (assessmentData && profileData.status) {
-      dispatch(getAll(assessmentData.assessments));
+      dispatch(getAll(''));
     }
   }, [dispatch, assessmentData, profileData]);
 

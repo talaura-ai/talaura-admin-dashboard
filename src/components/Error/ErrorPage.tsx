@@ -2,7 +2,7 @@ import { useRouteError } from 'react-router-dom';
 import IMAGES from '../../assets/images/Images';
 
 export default function ErrorPage() {
-  const error = useRouteError();
+  const error = useRouteError() as { message: string; statusText: string };
   if (error) {
     console.error(error);
   }

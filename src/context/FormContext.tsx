@@ -13,7 +13,7 @@ const FormProvider: React.FC<IFormProvider> = ({ children }) => {
     2: 'Review',
   };
 
-  const [data, setData] = useState<any>({});
+  const [data, setData] = useState<{ [key: string]: unknown }>({});
   const [page, setPage] = useState(2);
 
   const handleChange = (e: {
