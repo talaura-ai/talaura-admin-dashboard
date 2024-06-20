@@ -14,7 +14,7 @@ import AddNewModule from "./AddNewModule";
 // };
 
 const Modules = () => {
-  const { selectedModules, modules } = useAppSelector((state) => state.modules);
+  const { modules } = useAppSelector((state) => state.modules);
   const [selectedModule, setSelectedModule] = useState({});
   const [editMode, setEditMode] = useState(false);
   const [createMode, setCreateMode] = useState(false);

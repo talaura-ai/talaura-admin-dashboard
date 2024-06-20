@@ -8,7 +8,6 @@ import {
   removeModuleSkill,
   removeSelectedModule,
   setModuleSkill,
-  setSelectedModule,
   updateWeightage,
 } from "../../app/features/moduleSlice";
 import { CheckCircleIcon, EyeIcon, PlusCircleIcon } from "@heroicons/react/24/outline";

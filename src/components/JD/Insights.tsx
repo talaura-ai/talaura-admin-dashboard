@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
 const AI_API_URL = import.meta.env.VITE_AI_API_URL;
 
-const mockInsights = [
-  "push notification",
-  "Core Data",
-  "Secure your communications with Apple Push notification service",
-  "Communication",
-  "Enginnering",
-  "Social",
-  "Leadership",
-  "Motivation",
-  "Kubernets",
-  "Docker",
-  "Container",
-  "Cloud Services",
-  "Figma",
-];
+// const mockInsights = [
+//   "push notification",
+//   "Core Data",
+//   "Secure your communications with Apple Push notification service",
+//   "Communication",
+//   "Enginnering",
+//   "Social",
+//   "Leadership",
+//   "Motivation",
+//   "Kubernets",
+//   "Docker",
+//   "Container",
+//   "Cloud Services",
+//   "Figma",
+// ];
 
 // const random1 = Math.floor(Math.random() * mockInsights.length);
 // const random2 = Math.floor(Math.random() * mockInsights.length);
@@ -31,13 +31,12 @@ export interface IInsights {
   isJobDescriptionRequired: boolean;
   jdData:any,
   setJdData:any,
-  jdTyp:any,
+  jdType:any,
   setAssisstantMessage:any
 }
 
 const Insights: React.FC<IInsights> = ({ isJobDescriptionRequired,   jdData,
-  setJdData,
-  jdType ,
+ 
   setAssisstantMessage
 }) => {
   const [insightsData, setInsightData] = useState(() => []);
