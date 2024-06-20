@@ -35,7 +35,6 @@ export const modulesSlice = createSlice({
   initialState,
   reducers: {
     setModules: (state, action: PayloadAction<any>) => {
-      console.log("action", action);
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
@@ -61,6 +60,62 @@ export const modulesSlice = createSlice({
         (item: any) => item.name !== action.payload.name,
       );
     },
+    setModuleSkill: (state, action: PayloadAction<any>) => {
+      // Redux Toolkit allows us to write "mutating" logic in reducers. It
+      // doesn't actually mutate the state because it uses the Immer library,
+      // which detects changes to a "draft state" and produces a brand new
+      // immutable state based off those changes
+      const selectedModule = state.selectedModules.find((module: any) => {
+        console.log("module", module);
+        return module.name === action.payload.name;
+      });
+      console.log("selectedModule", selectedModule);
+      if (selectedModule) {
+        selectedModule.skills.push(action.payload.skill);
+      }
+    },
+    removeModuleSkill: (state, action: PayloadAction<any>) => {
+      // Redux Toolkit allows us to write "mutating" logic in reducers. It
+      // doesn't actually mutate the state because it uses the Immer library,
+      // which detects changes to a "draft state" and produces a brand new
+      // immutable state based off those changes
+      const selectedModule = state.selectedModules.find((module: any) => {
+        console.log("modulez~~~", module, module.name);
+        return module.name === action.payload.name;
+      });
+      if (selectedModule) {
+        console.log("selectedModule", selectedModule);
+        selectedModule.skills = selectedModule.skills.filter(
+          (s: any) => s !== action.payload.skill,
+        );
+      }
+    },
+    updateWeightage: (state, action: PayloadAction<any>) => {
+      // Redux Toolkit allows us to write "mutating" logic in reducers. It
+      // doesn't actually mutate the state because it uses the Immer library,
+      // which detects changes to a "draft state" and produces a brand new
+      // immutable state based off those changes
+      const selectedModule = state.selectedModules.find((module: any) => {
+        console.log("modulez~~~", module, module.name);
+        return module.name === action.payload.name;
+      });
+      if (selectedModule) {
+        console.log("selectedModule", selectedModule);
+        selectedModule.Weightage = action.payload.Weightage;
+      }
+    },
+    addQuestionToModule: (state, action: PayloadAction<any>) => {
+      // Redux Toolkit allows us to write "mutating" logic in reducers. It
+      // doesn't actually mutate the state because it uses the Immer library,
+      // which detects changes to a "draft state" and produces a brand new
+      // immutable state based off those changes
+      const selectedModule = state.selectedModules.find((module: any) => {
+        return module.name === action.payload.name;
+      });
+      if (selectedModule) {
+        selectedModule.question = action.payload.question;
+      }
+    },
   },
 });
 
@@ -70,6 +125,10 @@ export const {
   addModule,
   setSelectedModule,
   removeSelectedModule,
+  setModuleSkill,
+  removeModuleSkill,
+  updateWeightage,
+  addQuestionToModule,
 } = modulesSlice.actions;
 
 export default modulesSlice.reducer;

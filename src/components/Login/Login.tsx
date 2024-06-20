@@ -66,7 +66,6 @@ export default function Login() {
                     });
 
                     if (res.error) {
-                      console.log("res.error.data", res.error.data);
                       return toast.error(
                         `${res?.error?.status} - ${res?.error?.data?.message}`,
                       );

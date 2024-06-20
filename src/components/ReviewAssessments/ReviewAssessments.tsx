@@ -8,10 +8,15 @@ const ReviewAssessments: React.FC<ReviewAssessmentsProps> = () => {
 
   return (
     <>
-      <div className="relative mt-10 w-90 mx-10">
+      <div className="relative mt-10 w-90 mx-10 scrollbar overflow-y-auto">
         <div className="grid grid-cols-2 h-[50vh] gap-x-8 gap-y-3">
           {selectedModules?.map((v: any, index: number) => (
-            <ModuleCard key={v?.name + index} {...v} />
+            <ModuleCard
+              key={v?.name + index}
+              {...v}
+              reviewAble={true}
+              editable={false}
+            />
           ))}
         </div>
       </div>

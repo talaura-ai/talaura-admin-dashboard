@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { useAppSelector } from "../../app/hooks";
 import IMAGES from "../../assets/images/Images";
 import ModuleCard from "./ModuleCard";
 import OverView from "./OverView";
+import EditModule from "./EditModule";
+import AddNewModule from "./AddNewModule";
 // const moduleDetails = {
 //   type: "Quiz",
 //   name: "Microsoft Word Proficiency Test",
@@ -13,10 +16,29 @@ import OverView from "./OverView";
 
 const Modules = () => {
   const { selectedModules } = useAppSelector((state) => state.modules);
+  const [selectedModule, setSelectedModule] = useState({});
+  const [editMode, setEditMode] = useState(false);
+  const [createMode, setCreateMode] = useState(false);
+
+  if (editMode) {
+    return (
+      <EditModule
+        module={selectedModule}
+        editMode={editMode}
+        setEditMode={setEditMode}
+      />
+    );
+  }
+
+  if (createMode) {
+    return (
+      <AddNewModule setCreateMode={setCreateMode} createMode={createMode} />
+    );
+  }
 
   return (
     <>
-      <button
+      {/* <button
         className="inline-flex
     h-8 w-24
      items-center
@@ -28,10 +50,11 @@ const Modules = () => {
             focus:outline-none  
             m-3
                "
+        onClick={() => setCreateMode(true)}
       >
         <img src={IMAGES.Create} className="h-5 w-5" />
         <h3 className="px-1 text-white">Create</h3>
-      </button>
+      </button> */}
       <div className="scrollbar overflow-y-auto h-full dir-rtl">
         <div className="dir-ltr">
           <div className="grid grid-cols-7 gap-4">
@@ -56,6 +79,10 @@ const Modules = () => {
                       skills={skills}
                       time={time}
                       Weightage={Weightage}
+                      handleClick={() => {
+                        setSelectedModule(module);
+                        setEditMode(true);
+                      }}
                     />
                   );
                 },

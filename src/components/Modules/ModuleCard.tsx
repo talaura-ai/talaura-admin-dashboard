@@ -1,5 +1,20 @@
 import { PencilIcon } from "@heroicons/react/24/solid";
 import IMAGES from "../../assets/images/Images";
+import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  removeSelectedSkill,
+  setSelectedSkill,
+} from "../../app/features/skillsSlice";
+import TimePicker from "react-time-picker";
+import { classNames } from "../Core/classNames";
+import {
+  removeModuleSkill,
+  setModuleSkill,
+  updateWeightage,
+} from "../../app/features/moduleSlice";
+import DurationPicker from "react-duration-picker";
+import { EyeIcon } from "@heroicons/react/24/outline";
 
 const ModuleCard: React.FC<any> = ({
   name,
@@ -10,13 +25,50 @@ const ModuleCard: React.FC<any> = ({
   Weightage,
   handleClick,
   editable = true,
+  editMode,
+  setEditMode,
+  reviewAble,
 }) => {
+  const { selectedSkills } = useAppSelector((state) => state.skills);
+  const { selectedModules, modules } = useAppSelector((state) => state.modules);
+  const dispatch = useAppDispatch();
+  const selectedModule = selectedModules.find((m: any) => m.name === name);
+
+  const handleCheckboxChange = (event: {
+    target: { value: any; checked: any };
+  }) => {
+    const { value, checked } = event.target;
+    console.log("value, checked", value, checked);
+
+    if (checked) {
+      dispatch(setModuleSkill({ name, skill: value }));
+    } else {
+      dispatch(removeModuleSkill({ name, skill: value }));
+    }
+  };
+  const [openTimer, setOpenTimer] = useState(false);
+  const [timer, setTimer] = useState("50:00");
+  const [weight, setWeight] = useState(() =>
+    selectedModule && selectedModule.Weightage ? selectedModule.Weightage : 0,
+  );
+
+  console.log("selectedModule", selectedModule);
+  const onChangeWeightage = (e: ChangeEvent<HTMLInputElement>) => {
+    setWeight(e.target.value);
+  };
+  const handleChangeWeightage = async () => {
+    dispatch(
+      updateWeightage({
+        name: name,
+        Weightage: !isNaN(Number(weight)) ? Number(weight) : 0,
+      }),
+    );
+  };
+
+  const [duration, setDuration] = useState({});
   return (
     <div
-      className="flex rounded-2xl shadow-inner bg-white
-        p-5 mt-5 mx-2 
-     flex-col
-        "
+      className="flex rounded-2xl shadow-inner bg-white p-5 mt-5 mx-2 flex-col"
       onClick={handleClick}
     >
       <div className="flex flex-row items-center justify-between">
@@ -26,6 +78,11 @@ const ModuleCard: React.FC<any> = ({
         {editable && (
           <div className=" items-end ">
             <PencilIcon className="h-3 w-3 text-orange-text" />
+          </div>
+        )}
+        {reviewAble && (
+          <div className=" items-end ">
+            <EyeIcon className="h-3 w-3 text-orange-text" />
           </div>
         )}
       </div>
@@ -39,27 +96,119 @@ const ModuleCard: React.FC<any> = ({
           <h1 className="">Skills</h1>
         </div>
       </div>
-      <div className="flex flex-row items-center">
-        <p className="text-gray-300 text-sm">{skills.join(",")}</p>
+      <div
+        className={classNames(
+          "flex  ",
+          editMode ? "flex-col" : "flex-row items-center",
+        )}
+      >
+        {editMode ? (
+          <>
+            {skills.map((skill: any) => {
+              return (
+                <div className="relative flex items-start my-1" key={skill}>
+                  <div className="flex h-6 items-center">
+                    <input
+                      id={skill}
+                      aria-describedby={skill}
+                      name={skill}
+                      type="checkbox"
+                      checked={selectedModule.skills.includes(skill)}
+                      onChange={handleCheckboxChange}
+                      value={skill}
+                      className="h-6 w-6 rounded border-gray-300 text-brand-color focus:ring-brand-color"
+                    />
+                  </div>
+                  <div className="ml-3  leading-6">
+                    <label
+                      htmlFor={skill}
+                      className="font-medium text-gray-900 font-Sansation_Bold text-lg"
+                    >
+                      {skill}
+                    </label>
+                    {/* <span id="comments-description" className="text-gray-500">
+                                          <span className="sr-only">New comments </span>so you always know what's happening.
+                                      </span> */}
+                  </div>
+                  <div></div>
+                </div>
+              );
+            })}
+          </>
+        ) : (
+          <p className="text-gray-300 text-sm">{skills.join(",")}</p>
+        )}
       </div>
       <div className="flex flex-row items-center">
         <div>
-          <h1 className="">Weightage </h1>
+          <h1>
+            Weightage:{" "}
+            <span className="text-gray-300">
+              {selectedModule && selectedModule.Weightage ? (
+                <input
+                  className="w-6 p-0 inline ring-0 border-0 focus:ring-0 focus:border-b-1"
+                  type="text"
+                  value={weight}
+                  onChange={(e) => onChangeWeightage(e)}
+                  onBlur={() => handleChangeWeightage()}
+                />
+              ) : (
+                selectedModules.reduce(
+                  (acc: any, val: { Weightage: any }) =>
+                    Number(val.Weightage) + Number(acc),
+                  0,
+                )
+              )}
+              %
+            </span>
+          </h1>
         </div>
-        <div
+        {/* <div
           className="p-2 w-20 focus:ring-0 active:ring-0 focus:border-0 active:border-0"
           //   contentEditable
         >
-          <p className="text-gray-300">{Weightage}%</p>
-        </div>
+          <p className="text-gray-300">{selectedModule.Weightage}%</p>
+        </div> */}
         <div className="flex grow justify-end items-center">
           <img
             src={IMAGES.Time}
             className="h-4 w-4 justify-center items-center"
           />
-          <span className="justify-center items-center ml-1">{time} min</span>
+          <span
+            className="justify-center items-center ml-1"
+            onClick={() => {
+              setOpenTimer(true);
+            }}
+          >
+            {time} min
+          </span>
         </div>
       </div>
+      {editMode && (
+        <div className="flex items-center justify-center">
+          <button
+            onClick={() => {
+              setEditMode(false);
+            }}
+            type="button"
+            className="justify-center rounded-[6px] bg-orange-text px-7 py-1 text-sm font-semibold text-white shadow-sm ml-2"
+          >
+            Done
+          </button>
+        </div>
+      )}
+      {/* <div className="flex absolute w-[220px]  mx-auto p-1 left-[35vw] top-[27vh]">
+            {openTimer &&   <>
+              <DurationPicker 
+            noHours
+            
+            
+            onChange={duration => setDuration(duration)}
+            />
+          
+            </>
+        }
+          </div> */}
     </div>
   );
 };

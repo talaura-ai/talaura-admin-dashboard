@@ -48,6 +48,14 @@ export const assessmentApi = createApi({
     getQuestions: builder.query({
       query: (profile) => `organization/getQuestion/${profile}`,
     }),
+    saveSkillsToAssessment: builder.mutation({
+      query: (data) => ({
+        url: `organization/assessment/addSkills`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Assessments"],
+    }),
   }),
 });
 
@@ -58,4 +66,5 @@ export const {
   useGetAssessmentByNameQuery,
   useCreateAssessmentMutation,
   useGetQuestionsQuery,
+  useSaveSkillsToAssessmentMutation,
 } = assessmentApi;

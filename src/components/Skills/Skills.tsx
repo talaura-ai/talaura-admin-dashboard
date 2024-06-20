@@ -55,7 +55,6 @@ const Skills: React.FC<ISkils> = () => {
     target: { value: any; checked: any };
   }) => {
     const { value, checked } = event.target;
-    console.log("value, checked", value, checked);
 
     if (checked) {
       dispatch(setSelectedSkill(value));
@@ -73,7 +72,6 @@ const Skills: React.FC<ISkils> = () => {
       </label>
       <div className="relative mt-10 ml-10 w-[75vw] flex-wrap grid grid-cols-3">
         {skills.map((skill: any, idx: any) => {
-          console.log("skill~~~~~tttt", skill);
           return (
             <div className="relative flex items-start" key={skill}>
               <div className="flex h-6 items-center">

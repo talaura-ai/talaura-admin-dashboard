@@ -27,6 +27,7 @@ import {
   assessmentApi,
   useCreateAssessmentMutation,
   useGetQuestionsQuery,
+  useSaveSkillsToAssessmentMutation,
 } from "../../app/services/assessments";
 import toast, { LoaderIcon } from "react-hot-toast";
 import { questionTypes } from "../../app/features/assessmentsSlice";
@@ -54,8 +55,16 @@ import ReviewQuestions from "../ReviewQuestions/Review";
 import ModuleCard from "../Modules/ModuleCard";
 import Modules from "../Modules/Modules";
 import ReviewAssessments from "../ReviewAssessments/ReviewAssessments";
-import { setModules, setSelectedModule } from "../../app/features/moduleSlice";
+import {
+  addQuestionToModule,
+  setModules,
+  setSelectedModule,
+} from "../../app/features/moduleSlice";
 import AddNewModule from "../Modules/AddNewModule";
+import {
+  setQuestionsToApp,
+  updateQuestion,
+} from "../../app/features/questions";
 const AI_API_URL = import.meta.env.VITE_AI_API_URL;
 
 // const steps = [
@@ -237,6 +246,9 @@ export interface IComp {
 }
 
 const Comp: React.FC<IComp> = ({ question, assessmentsProfiles }) => {
+  const dispatch = useAppDispatch();
+
+
   const {
     steps,
     page,
@@ -252,10 +264,8 @@ const Comp: React.FC<IComp> = ({ question, assessmentsProfiles }) => {
     submitHide,
   } = useFormContext();
 
-  console.log("assessmentsProfiles", assessmentsProfiles);
-
-  console.log("useFormContext()", useFormContext());
   console.log("question~~~~", question);
+  console.log("daTTa~~~~", data);
 
   useEffect(() => {
     // questions.forEach((question) => {
@@ -278,6 +288,7 @@ const Comp: React.FC<IComp> = ({ question, assessmentsProfiles }) => {
   if (!question) return <EmptyDataScreen />;
   console.log("data~~~~", data);
   const { type, title, name, position, options = [] } = question;
+  console.log("name, title, type", question);
 
   // return questions
   //   .slice()
@@ -369,7 +380,7 @@ const Comp: React.FC<IComp> = ({ question, assessmentsProfiles }) => {
             label={title}
             name={name}
             value={data[name] || ""}
-            setValue={(e: { target: { value: any } }) => {
+            setValue={async (e: { target: { value: any } }) => {
               console.log("e", e);
               return setData((oldData: any) => {
                 return {
@@ -442,13 +453,22 @@ const CreateAssessment = () => {
   const assessmentsProfiles = useAppSelector(
     (state) => state.assessmentProfles,
   );
+  const { token } = useAppSelector((state) => state.admin);
+
+  const questionReduxData = useAppSelector((state) => state.questions);
+  console.log("questionReduxData", questionReduxData);
+
   const [
     createAssessment,
     { error: createAssesmentError, isLoading: createAssesmentLoading },
   ] = useCreateAssessmentMutation();
+  const [
+    saveSkillsToAssessment,
+    { error: saveSkillsError, isLoading: saveSkillsLoading },
+  ] = useSaveSkillsToAssessmentMutation();
   const [getQuestions] = assessmentApi.endpoints.getQuestions.useLazyQuery();
   const [assessment, setAssessment] = useState(null);
-  const { selectedModules } = useAppSelector(state => state.modules)
+  const { selectedModules } = useAppSelector((state) => state.modules);
 
   const [initialQuestionValue, setInitialQuestionValue] = useState("");
   const [initialQuestionProfile, setInitialQuestionProfile] = useState(
@@ -458,11 +478,14 @@ const CreateAssessment = () => {
   const [page, setPage] = useState(0);
 
   const [skillsData, setSkillsData] = useState([]);
+  const [saveQuestionPage, setSaveQuestionPage] = useState(0);
   const [jdPage, setJdPage] = useState(0);
   const [skillsPage, setSkillsPage] = useState(0);
   const [modulesPage, setModulesPage] = useState(0);
 
   const { skills, selectedSkills } = useAppSelector((state) => state.skills);
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
     setSkillsPage(() => jdPage + 1);
@@ -478,14 +501,24 @@ const CreateAssessment = () => {
   const [actionLoading, setActionCalledLoading] = useState(false);
 
   useEffect(() => {
+    setSaveQuestionPage(questions.length);
     setJdPage(questions.length + 1);
-    console.log("jdPage", jdPage, page);
+    console.log("modulesPage", page, modulesPage);
+    if (page === modulesPage) {
+      setSteps((oldSteps) => {
+        const setState = oldSteps;
 
-    // if(page === modulesPage){
-    //   setSteps((oldSteps) => oldSteps.map(oldStep => {
-    //     return oldStep
-    //   }))
-    // }
+        const createStep = setState.findIndex((step) => step.id === 1);
+        const testModuleStep = setState.findIndex((step) => step.id === 2);
+        const reviewStep = setState.findIndex((step) => step.id === 2);
+
+        setState[createStep].status = "complete";
+        setState[testModuleStep].status = "complete";
+        setState[reviewStep].status = "upcoming";
+
+        return setState;
+      });
+    }
   }, [questions, initialQuestionProfile.name, page]);
 
   useEffect(() => {
@@ -509,9 +542,7 @@ const CreateAssessment = () => {
         headers: myHeaders,
       });
 
-      console.log("response", response);
       const resJSON = await response.json();
-      console.log("resJSON", resJSON);
       if (response.ok) {
         setSkillsData(resJSON.skills);
         dispatch(setSkills(resJSON.skills));
@@ -522,8 +553,49 @@ const CreateAssessment = () => {
     }
   };
 
+  const getQuestionAndAddToModule = async () => {
+    try {
+      const promiseMap = selectedModules.map(async (selectedModule: any) => {
+        const ModuleTypesURLS = {
+          "Voice To Voice": "generate_voice_to_voice_questions",
+          Sandbox: "generate_sandbox_questions",
+          "AI Video Interview": "generate_ai_video_interview_questions",
+          Interview: "generate_voice_to_text_questions",
+          Quiz: "generate_quiz_questions",
+        };
+
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        const fetchModuleQuestionRes = await fetch(
+          `${AI_API_URL}${ModuleTypesURLS[selectedModule.type]}`,
+          {
+            method: "POST",
+            body: JSON.stringify({ ...selectedModule }),
+            headers,
+          },
+        );
+        console.log("fetchModuleQuestionRes", fetchModuleQuestionRes);
+
+        if (fetchModuleQuestionRes.statusText === "OK") {
+          const resJSON = await fetchModuleQuestionRes.json();
+          dispatch(
+            addQuestionToModule({
+              name: selectedModule.name,
+              question: resJSON.questions,
+            }),
+          );
+          return Promise.resolve(true);
+        }
+      });
+
+      await Promise.all(promiseMap);
+      return Promise.resolve(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const generateModule = async () => {
-    console.log("generateModule");
     const payloads = {
       skills: selectedSkills,
     };
@@ -537,16 +609,31 @@ const CreateAssessment = () => {
         headers: myHeaders,
       });
       const resJSON = await response.json();
-      console.log("resJSON", resJSON);
       if (response.ok) {
         dispatch(setModules(resJSON));
         dispatch(setSelectedModule(resJSON));
+        if (assessment?.assessmentId) {
+          const saveResult = await saveSkillsToAssessment({
+            ...payloads,
+            assessmentId: assessment.assessmentId,
+          });
+
+          if (saveResult.data.status) {
+            toast.success(saveResult.data.message);
+          } else {
+            toast.error(saveResult.data.message);
+          }
+        }
 
         return Promise.resolve(true);
       }
     } catch (error) {
       console.log("error", error);
     }
+  };
+
+  const saveQuestionsToAssessment = async () => {
+    return Promise.resolve(true);
   };
 
   const questionsList: any = [
@@ -587,10 +674,10 @@ const CreateAssessment = () => {
       loading={createAssesmentLoading}
     />,
 
-    ...questions.map((q) => (
+    ...questionReduxData.questions.map((q: any) => (
       <Comp question={q} assessmentsProfiles={assessmentsProfiles} />
     )),
-    <JD
+    <JD 
       isJobDescriptionRequired={initialQuestionProfile.jobDetails}
       assessment={assessment}
       jdData={jdData}
@@ -603,19 +690,17 @@ const CreateAssessment = () => {
       generateSkills={generateSkills}
     />,
     <Modules />,
-    <AddNewModule />,
+    // <AddNewModule />,
     <ReviewAssessments />,
     <ReviewQuestions questions={questionsList} />,
   ];
 
   const createAssesmentMethod = async () => {
-    console.log("here");
     const result = await createAssessment({
       profile: initialQuestionProfile.name,
       name: initialQuestionValue,
     });
 
-    console.log("result", result);
     if (result.data.status === true) {
       setAssessment(result.data);
     }
@@ -678,8 +763,6 @@ const CreateAssessment = () => {
   //   }, [])
 
   useEffect(() => {
-    console.log("createAssesmentError", createAssesmentError);
-
     if (createAssesmentError && createAssesmentError.status === 401) {
       toast.error("Your login token got expire, please login again");
       dispatch(logout());
@@ -708,12 +791,11 @@ const CreateAssessment = () => {
         (acc: any, val: { Weightage: any }) =>
           Number(val.Weightage) + Number(acc),
         0,
-      )
-      if(totalWeightage > 100) return true;
-      
+      );
+      if (totalWeightage > 100) return true;
+
       return false;
     }
-    
 
     return false;
   };
@@ -789,6 +871,7 @@ const CreateAssessment = () => {
         const data = questionResult.data;
         if (data.status) {
           setQuestions(data.question);
+          dispatch(setQuestionsToApp(data.question));
         }
       }
     };
@@ -809,6 +892,13 @@ const CreateAssessment = () => {
       return createAssessmentAction;
     }
 
+    if (page === saveQuestionPage) {
+      const saveQuestionActions = async () => {
+        return saveQuestionsToAssessment();
+      };
+      return saveQuestionActions;
+    }
+
     if (page === jdPage) {
       const jdActions = async () => {
         return generateSkills();
@@ -821,6 +911,13 @@ const CreateAssessment = () => {
         return generateModule();
       };
       return skillsActions;
+    }
+
+    if (page === modulesPage) {
+      const moduleActions = async () => {
+        return getQuestionAndAddToModule();
+      };
+      return moduleActions;
     }
 
     return undefined;
@@ -848,7 +945,6 @@ const CreateAssessment = () => {
             allowTouchMove={false}
           >
             {slides.map((slideContent, slideIDX) => {
-              console.log("slideIDX", slideIDX);
               return (
                 <SwiperSlide key={slideIDX} className="h-[65vh] max-h-[65vh]">
                   {slideContent}
@@ -861,7 +957,6 @@ const CreateAssessment = () => {
 
             <div className="px-5 w-full   flex flex-row justify-end absolute bottom-0 z-50">
               {actionButtons.map((actionButton, idx) => {
-                console.log("idx", idx);
                 // <SwiperButtonPrev disabled={true}>Back</SwiperButtonPrev>
                 return (
                   <SwiperNavButton

@@ -15,8 +15,21 @@ const MultipleChoices: React.FC<IMultipleChoices> = ({
   options,
 }) => {
   const [optionsState, setOptions] = useState(options);
+  
 
   const [customValue, setCustomValue] = useState("");
+    const handleCheckboxChange = (event: {
+      target: { value: any; checked: any };
+    }) => {
+      const { value, checked } = event.target;
+  
+      if (checked) {
+        // dispatch(setSelectedSkill(value));
+      } else {
+        // dispatch(removeSelectedSkill(value));
+      }
+    };
+  
 
   return (
     <div>
@@ -30,7 +43,6 @@ const MultipleChoices: React.FC<IMultipleChoices> = ({
       </label>
       <div className="relative mt-10 ml-10 w-[75vw]">
         {optionsState.map((option, idx) => {
-          console.log("option~~~~~tttt", option);
           return (
             <div className="relative flex items-start" key={option.name}>
               <div className="flex h-6 items-center">
@@ -38,6 +50,8 @@ const MultipleChoices: React.FC<IMultipleChoices> = ({
                   id={option.name}
                   aria-describedby={option.name}
                   name={option.name}
+                  value={option.name}
+                  onChange={handleCheckboxChange}
                   type="checkbox"
                   className="h-4 w-4 rounded border-gray-300 text-brand-color focus:ring-brand-color"
                 />

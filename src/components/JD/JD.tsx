@@ -69,8 +69,6 @@ const JD: React.FC<IJD> = ({
   const inputFile = useRef(null);
   const [attachedFile, setAttachedFile] = useState(null);
 
-  //   console.log("inputFile", inputFile, inputFile.current, attachedFile?.name);
-
   const handleOnChangeFile = (e: {
     target: { files: SetStateAction<null>[] };
   }) => {
@@ -119,7 +117,6 @@ const JD: React.FC<IJD> = ({
       if (response.ok) {
         const result = await response.json();
         setJDData(result?.initial_jd);
-        console.log("Success:", result);
       } else {
         toast.error(`Error: ${response?.statusText}`);
       }
@@ -139,7 +136,6 @@ const JD: React.FC<IJD> = ({
   // };
 
   function setInitialQuestionAction(value: string): void {
-    console.log("value!~~", value);
     if (value === "Upload") {
       setOpen(true);
     }

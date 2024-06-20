@@ -7,6 +7,7 @@ import { assessmentApi } from "./services/assessments";
 import { assessmentProfilesApi } from "./services/assessmentProfiles";
 import skillsReducer from "./features/skillsSlice";
 import moduleReducer from "./features/moduleSlice";
+import questionsReducer from "./features/questions";
 
 export const rootReducers = combineReducers({
   admin: adminReducer,
@@ -14,6 +15,7 @@ export const rootReducers = combineReducers({
   assessmentProfles: assessmentProfilesReducer,
   skills: skillsReducer,
   modules: moduleReducer,
+  questions: questionsReducer,
   [authApi.reducerPath]: authApi.reducer,
   [assessmentApi.reducerPath]: assessmentApi.reducer,
   [assessmentProfilesApi.reducerPath]: assessmentProfilesApi.reducer,
