@@ -1,12 +1,14 @@
 // Need to use the React-specific entry point to import createApi
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { RootState } from "../store";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { RootState } from '../store';
+import { AssessmentsState } from '../features/assessmentsSlice';
+import { IAssessmentDetails } from '../../components/Assessment/AssessmentView/types';
 
-const BASE_URL = "https://fantasytradingleague.com/api/talaura/";
+const BASE_URL = 'https://fantasytradingleague.com/api/talaura/';
 
 // Define a service using a base URL and expected endpoints
 export const assessmentApi = createApi({
-  reducerPath: "assessmentApi",
+  reducerPath: 'assessmentApi',
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
     prepareHeaders: (headers, { getState }) => {
@@ -14,34 +16,49 @@ export const assessmentApi = createApi({
 
       // If we have a token set in state, let's assume that we should be passing it.
       if (token) {
-        headers.set("authorization", `Bearer ${token}`);
+        headers.set('authorization', `Bearer ${token}`);
       }
 
-      headers.set("Access-Control-Allow-Origin", "*");
+      headers.set('Access-Control-Allow-Origin', '*');
 
       return headers;
     },
   }),
-  tagTypes: ["Assessments"],
+  tagTypes: ['Assessments'],
+
+  // endpoints: (builder) => ({
+  //   getAll: builder.query<any, string>({
+  //     query: () => `organization/assessment/getAssessments`,
+  //     providesTags: ["Assessments"],
+  //   }),
+  //   getAssessmentByName: builder.query<any, string>({
+  //     query: (name) => `organization/assessment/getAssessmentDetail/${name}`,
+  //   }),
+  //   getAssessmentByID: builder.query<any, string>({
+  // tagTypes: ['Assessments'],
 
   endpoints: (builder) => ({
-    getAll: builder.query<any, string>({
+    getAll: builder.query<AssessmentsState[], string>({
       query: () => `organization/assessment/getAssessments`,
-      providesTags: ["Assessments"],
+      providesTags: ['Assessments'],
     }),
-    getAssessmentByName: builder.query<any, string>({
+    getAssessmentByName: builder.query<AssessmentsState, string>({
       query: (name) => `organization/assessment/getAssessmentDetail/${name}`,
     }),
-    getAssessmentByID: builder.query<any, string>({
+    getAssessmentByID: builder.query<IAssessmentDetails, string>({
       query: (id) => `organization/assessment/getAssessmentDetail/${id}`,
     }),
     createAssessment: builder.mutation({
       query: (data) => ({
         url: `organization/assessment/create`,
-        method: "POST",
+        method: 'POST',
         body: data,
       }),
-      invalidatesTags: ["Assessments"],
+      // invalidatesTags: ["Assessments"],
+      //   method: 'POST',
+      //   body: data,
+      // }),
+      invalidatesTags: ['Assessments'],
     }),
     getQuestions: builder.query({
       query: (profile) => `organization/getQuestion/${profile}`,
@@ -49,10 +66,10 @@ export const assessmentApi = createApi({
     saveSkillsToAssessment: builder.mutation({
       query: (data) => ({
         url: `organization/assessment/addSkills`,
-        method: "POST",
+        method: 'POST',
         body: data,
       }),
-      invalidatesTags: ["Assessments"],
+      invalidatesTags: ['Assessments'],
     }),
   }),
 });
@@ -65,4 +82,5 @@ export const {
   useCreateAssessmentMutation,
   useGetQuestionsQuery,
   useSaveSkillsToAssessmentMutation,
+  useGetAssessmentByIDQuery,
 } = assessmentApi;

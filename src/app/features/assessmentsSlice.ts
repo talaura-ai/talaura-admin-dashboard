@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 // export const mockData = [
 
@@ -2325,9 +2325,9 @@ export interface IAssessmentQuestionOptions {
 }
 
 export enum questionTypes {
-  DROPDOWN = "dropdown",
-  TEXT = "text",
-  MULTIPLE_CHOICE = "multiple-choice",
+  DROPDOWN = 'dropdown',
+  TEXT = 'text',
+  MULTIPLE_CHOICE = 'multiple-choice',
 }
 export interface IAssessmentQuestion {
   _id: any;
@@ -2341,7 +2341,7 @@ export interface IAssessmentQuestion {
 export interface IAssessmentModule {
   _id: any;
   name: string;
-  type: "Code Sandbox" | "Quizzes";
+  type: 'Code Sandbox' | 'Quizzes';
   noOfQuestion: number;
   skills: string[];
   weightage: string;
@@ -2357,11 +2357,10 @@ export interface AssessmentsState {
   module: IAssessmentModule[];
 }
 
-
 const initialState: any[] = [];
 
 export const assessmentsSlice = createSlice({
-  name: "assessments",
+  name: 'assessments',
   initialState,
   reducers: {
     getAll: (_state, action: PayloadAction<any>) => {

@@ -1,12 +1,12 @@
 // Need to use the React-specific entry point to import createApi
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { RootState } from "../store";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { RootState } from '../store';
 
-const BASE_URL = "https://fantasytradingleague.com/api/talaura/";
+const BASE_URL = 'https://fantasytradingleague.com/api/talaura/';
 
 // Define a service using a base URL and expected endpoints
 export const assessmentProfilesApi = createApi({
-  reducerPath: "assessmentProfilesApi",
+  reducerPath: 'assessmentProfilesApi',
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
     prepareHeaders: (headers, { getState }) => {
@@ -14,10 +14,10 @@ export const assessmentProfilesApi = createApi({
 
       // If we have a token set in state, let's assume that we should be passing it.
       if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
+        headers.set('Authorization', `Bearer ${token}`);
       }
 
-      headers.set("Access-Control-Allow-Origin", "*");
+      headers.set('Access-Control-Allow-Origin', '*');
 
       return headers;
     },
@@ -34,7 +34,7 @@ export const assessmentProfilesApi = createApi({
     createAssessmentProfiles: builder.mutation({
       query: (data) => ({
         url: `organization/assessmentProfiles/create/`,
-        method: "POST",
+        method: 'POST',
         body: data,
       }),
     }),

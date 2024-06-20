@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState } from 'react';
 
 const FormContext = createContext({});
 
@@ -8,9 +8,9 @@ export interface IFormProvider {
 
 const FormProvider: React.FC<IFormProvider> = ({ children }) => {
   const steps = {
-    0: "Create Assessment",
-    1: "Test Module",
-    2: "Review",
+    0: 'Create Assessment',
+    1: 'Test Module',
+    2: 'Review',
   };
 
   const [data, setData] = useState<any>({});
@@ -23,9 +23,9 @@ const FormProvider: React.FC<IFormProvider> = ({ children }) => {
 
     const name = e.target.name;
 
-    const value = type === "checkbox" ? e.target.checked : e.target.value;
+    const value = type === 'checkbox' ? e.target.checked : e.target.value;
 
-    setData((prevData: any) => ({
+    setData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
@@ -52,11 +52,11 @@ const FormProvider: React.FC<IFormProvider> = ({ children }) => {
     (page === 0 && !canNextPage1) ||
     (page === 1 && !canNextPage2);
 
-  const prevHide = page === 1 && "remove-button";
+  const prevHide = page === 1 && 'remove-button';
 
-  const nextHide = page === Object.keys(steps).length - 1 && "remove-button";
+  const nextHide = page === Object.keys(steps).length - 1 && 'remove-button';
 
-  const submitHide = page !== Object.keys(steps).length - 1 && "remove-button";
+  const submitHide = page !== Object.keys(steps).length - 1 && 'remove-button';
 
   return (
     <FormContext.Provider
@@ -73,8 +73,7 @@ const FormProvider: React.FC<IFormProvider> = ({ children }) => {
         prevHide,
         nextHide,
         submitHide,
-      }}
-    >
+      }}>
       {children}
     </FormContext.Provider>
   );
