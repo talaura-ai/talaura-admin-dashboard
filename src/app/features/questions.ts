@@ -28,12 +28,11 @@ export const questionsSlice = createSlice({
         (q: { title: any }) => q.title === action.payload.title,
       );
       const answer = action.payload.answer;
-      if(question.answer){
+      if (question.answer) {
         question.answer.push(answer);
-      }else{
+      } else {
         question.answer = [answer];
       }
-      
     },
     removeQuestionChoice: (state, action: PayloadAction<any>) => {
       const question = state.questions.find(
@@ -41,13 +40,18 @@ export const questionsSlice = createSlice({
       );
       const answer = action.payload.answer;
 
-      question.answer = question.answer.filter((a: { name: any; }) => a.name !== answer.name);
+      question.answer = question.answer.filter((a: { name: any }) => a.name !== answer.name);
     },
-    
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setQuestionsToApp, getAllQuestions, updateQuestion, addQuestionChoice, removeQuestionChoice } = questionsSlice.actions;
+export const {
+  setQuestionsToApp,
+  getAllQuestions,
+  updateQuestion,
+  addQuestionChoice,
+  removeQuestionChoice,
+} = questionsSlice.actions;
 
 export default questionsSlice.reducer;

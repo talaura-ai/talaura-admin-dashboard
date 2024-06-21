@@ -1,5 +1,4 @@
 import { ArrowUpCircleIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
 import toast from 'react-hot-toast';
 const AI_API_URL = import.meta.env.VITE_AI_API_URL;
 
@@ -63,7 +62,7 @@ const JDMessageInput: React.FC<IMessageInput> = ({
                   controller.close();
                   return;
                 }
-                var string = new TextDecoder().decode(value);
+                const string = new TextDecoder().decode(value);
 
                 setAiMessage(string);
                 // Get the data and send it to the browser via the controller

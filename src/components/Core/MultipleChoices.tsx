@@ -2,12 +2,15 @@ import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import { IInput } from './Input';
 import { useState } from 'react';
 import IMAGES from '../../assets/images/Images';
-import { addQuestionChoice, removeQuestionChoice, updateQuestion } from '../../app/features/questions';
+import {
+  addQuestionChoice,
+  removeQuestionChoice,
+} from '../../app/features/questions';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 export interface IMultipleChoices extends IInput {
   options: any[];
-  title: string
+  title: string;
 }
 
 const MultipleChoices: React.FC<IMultipleChoices> = ({
@@ -18,20 +21,20 @@ const MultipleChoices: React.FC<IMultipleChoices> = ({
 }) => {
   const [optionsState, setOptions] = useState(options);
   const dispatch = useAppDispatch();
-  const { questions } = useAppSelector(state => state.questions);
-  const question = questions.find(q => q.title === title);
+  const { questions } = useAppSelector((state) => state.questions);
+  const question = questions.find((q: { title: string; }) => q.title === title);
 
   const [customValue, setCustomValue] = useState('');
   const handleCheckboxChange = (event: { target: { value: any; checked: any } }, option: any) => {
     const { checked } = event.target;
-console.log('event!!!!!', event.target)
+    console.log('event!!!!!', event.target);
     if (checked) {
-      console.log('title', title, event.target)
-      dispatch(addQuestionChoice({title, answer: option}));
+      console.log('title', title, event.target);
+      dispatch(addQuestionChoice({ title, answer: option }));
     } else {
-      console.log('title', title, event.target)
+      console.log('title', title, event.target);
 
-      dispatch(removeQuestionChoice({title, answer: option}));
+      dispatch(removeQuestionChoice({ title, answer: option }));
     }
   };
 
@@ -56,7 +59,7 @@ console.log('event!!!!!', event.target)
                   name={option.name}
                   value={option.name}
                   checked={question.answer && question.answer.includes(option)}
-                  onChange={(e) => handleCheckboxChange(e,option)}
+                  onChange={(e) => handleCheckboxChange(e, option)}
                   type="checkbox"
                   className="h-4 w-4 rounded border-gray-300 text-brand-color focus:ring-brand-color"
                 />

@@ -346,7 +346,7 @@ const Comp: React.FC<IComp> = ({ question }) => {
               });
             }}
             onBlur={(e: any) => {
-              return dispatch(updateQuestion({title , answer: e.target.value}))
+              return dispatch(updateQuestion({ title, answer: e.target.value }));
             }}
             serialNum={position}
           />
@@ -400,7 +400,7 @@ const Comp: React.FC<IComp> = ({ question }) => {
             type={type}
             options={options}
             onBlur={(answer: any) => {
-              dispatch(updateQuestion({ title , answer}))
+              dispatch(updateQuestion({ title, answer }));
             }}
           />
         </div>
@@ -621,7 +621,6 @@ const CreateAssessment = () => {
 
   const saveQuestions = async () => {
     try {
-      
       const { data, error } = await saveQuestionsToAssessment({
         assessmentId: assessment.assessmentId,
         question: questionReduxData.questions,

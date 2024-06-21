@@ -100,5 +100,5 @@ export const {
   useSaveSkillsToAssessmentMutation,
   useGetAssessmentByIDQuery,
   useSaveModulesToAssessmentMutation,
-  useSaveQuestionsToAssessmentMutation
+  useSaveQuestionsToAssessmentMutation,
 } = assessmentApi;

@@ -20,7 +20,7 @@ export interface IInput {
   setValue: any;
   options?: any;
   required?: boolean;
-  onBlur?: any
+  onBlur?: any;
 }
 
 const Input: React.FC<IInput> = ({
@@ -34,7 +34,7 @@ const Input: React.FC<IInput> = ({
   setValue,
   options,
   required,
-  onBlur
+  onBlur,
 }) => {
   return (
     <div>
@@ -68,10 +68,13 @@ const Input: React.FC<IInput> = ({
           />
         </div>
       ) : type === questionTypes.DROPDOWN ? (
-        <Listbox value={value} onChange={(e) => {
-          setValue(e)
-          onBlur(e)
-        }} >
+        <Listbox
+          value={value}
+          onChange={(e) => {
+            setValue(e);
+            onBlur(e);
+          }}
+        >
           {({ open }) => (
             <>
               {/* <Label className="block text-sm font-medium leading-6 text-gray-900">{label}</Label> */}
@@ -91,8 +94,7 @@ const Input: React.FC<IInput> = ({
                   leaveFrom="opacity-100"
                   leaveTo="opacity-0"
                 >
-                  <ListboxOptions
-                   className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md  py-1  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none  text-xl">
+                  <ListboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md  py-1  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none  text-xl">
                     {options.map((option: { title: any; name: any }) => (
                       <ListboxOption
                         key={option.name}

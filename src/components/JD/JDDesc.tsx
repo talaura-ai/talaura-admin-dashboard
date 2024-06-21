@@ -24,7 +24,7 @@ const JDDesc: React.FC<IJDDesc> = ({
   assistantMessage,
   setAssisstantMessage,
 }) => {
-  const [aiMessage, setAiMessage] = useState('')
+  const [aiMessage, setAiMessage] = useState('');
   return (
     <>
       {!isJobDescriptionRequired ? (
@@ -54,35 +54,34 @@ const JDDesc: React.FC<IJDDesc> = ({
             </>
           ) : (
             <>
-             {
-              aiMessage && aiMessage.length ?
-              <div
-                className="overflow-auto
+              {aiMessage && aiMessage.length ? (
+                <div
+                  className="overflow-auto
                                   scrollbar
                                   p-5
                               "
-                dangerouslySetInnerHTML={{
-                  __html:  aiMessage,
-                }}
-              ></div>
-              : 
-            <>
-              <div className="flex  flex-col justify-center items-center h-[50vh] rounded-lg shadow-inner bg-white mt-1">
-              <div
-                className="overflow-auto
+                  dangerouslySetInnerHTML={{
+                    __html: aiMessage,
+                  }}
+                ></div>
+              ) : (
+                <>
+                  <div className="flex  flex-col justify-center items-center h-[50vh] rounded-lg shadow-inner bg-white mt-1">
+                    <div
+                      className="overflow-auto
                                   scrollbar
                                   p-5
                               "
-                dangerouslySetInnerHTML={{
-                  __html: aiMessage && aiMessage.length? aiMessage : jdData,
-                }}
-              ></div>
-            </div>
-            <div className="rounded-full bg-app-color w-50 h-50 absolute top-8 -left-5 border border-sm shadow-sm border-[#E5A971] drop-shadow-xl shadow-brand-color p-2">
-              <img src={IMAGES.JD_Logo} className="w-5 h-5" />
-            </div>
-            </>
-             }
+                      dangerouslySetInnerHTML={{
+                        __html: aiMessage && aiMessage.length ? aiMessage : jdData,
+                      }}
+                    ></div>
+                  </div>
+                  <div className="rounded-full bg-app-color w-50 h-50 absolute top-8 -left-5 border border-sm shadow-sm border-[#E5A971] drop-shadow-xl shadow-brand-color p-2">
+                    <img src={IMAGES.JD_Logo} className="w-5 h-5" />
+                  </div>
+                </>
+              )}
               <div>
                 <JDMessageInput
                   conversation_id={conversation_id}
