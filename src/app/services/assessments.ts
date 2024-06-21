@@ -71,6 +71,22 @@ export const assessmentApi = createApi({
       }),
       invalidatesTags: ['Assessments'],
     }),
+    saveModulesToAssessment: builder.mutation({
+      query: (data) => ({
+        url: `organization/assessment/addModule`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Assessments'],
+    }),
+    saveQuestionsToAssessment: builder.mutation({
+      query: (data) => ({
+        url: `organization/assessment/add`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Assessments'],
+    }),
   }),
 });
 
@@ -83,4 +99,6 @@ export const {
   useGetQuestionsQuery,
   useSaveSkillsToAssessmentMutation,
   useGetAssessmentByIDQuery,
+  useSaveModulesToAssessmentMutation,
+  useSaveQuestionsToAssessmentMutation,
 } = assessmentApi;

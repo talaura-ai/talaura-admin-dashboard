@@ -102,62 +102,47 @@ const Root = () => {
     createRoutesFromElements(
       <>
         <Route
-          path='login'
+          path="login"
           element={<Login />}
           loader={redirectIfUser}
           errorElement={<ErrorPage />}
           index
         />
+        <Route path="forgot-password" element={<ForgotPassword />} errorElement={<ErrorPage />} />
+        <Route path="logout" action={() => true} errorElement={<ErrorPage />} />
         <Route
-          path='forgot-password'
-          element={<ForgotPassword />}
-          errorElement={<ErrorPage />}
-        />
-        <Route path='logout' action={() => true} errorElement={<ErrorPage />} />
-        <Route
-          path='/'
+          path="/"
           element={<Sidebar />}
           errorElement={<ErrorPage />}
-          loader={redirectIfUserLogout}>
+          loader={redirectIfUserLogout}
+        >
           <Route element={<Home />} errorElement={<ErrorPage />} index />
+          <Route path="assessments" element={<AssessmentPage />} errorElement={<ErrorPage />} />
           <Route
-            path='assessments'
-            element={<AssessmentPage />}
-            errorElement={<ErrorPage />}
-          />
-          <Route
-            path='assessments/create'
+            path="assessments/create"
             element={<CreateAssessment />}
             errorElement={<ErrorPage />}
           />
           <Route
-            path='assessment/view/:assessmentId'
+            path="assessment/view/:assessmentId"
             element={<AssessmentView />}
             errorElement={<ErrorPage />}
           />
           <Route
-            path='assessment/view/:assessmentId/candidate/:candidateId'
+            path="assessment/view/:assessmentId/candidate/:candidateId"
             element={<CandidateView />}
             errorElement={<ErrorPage />}
           />
           <Route
-            path='assessments/view/:assessmentId/invite'
+            path="assessments/view/:assessmentId/invite"
             element={<InviteCandidate />}
             errorElement={<ErrorPage />}
           />
-          <Route
-            path='peoples'
-            element={<Peoples />}
-            errorElement={<ErrorPage />}
-          />
-          <Route
-            path='reports'
-            element={<Reports />}
-            errorElement={<ErrorPage />}
-          />
+          <Route path="peoples" element={<Peoples />} errorElement={<ErrorPage />} />
+          <Route path="reports" element={<Reports />} errorElement={<ErrorPage />} />
         </Route>
-      </>
-    )
+      </>,
+    ),
   );
   return <RouterProvider router={appRouter} />;
 };

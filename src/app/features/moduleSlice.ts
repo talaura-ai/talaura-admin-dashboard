@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 // const mockData = {
 //   modules: [
@@ -31,7 +31,7 @@ const initialState: any = {
 };
 
 export const modulesSlice = createSlice({
-  name: "modules",
+  name: 'modules',
   initialState,
   reducers: {
     setModules: (state, action: PayloadAction<any>) => {
@@ -42,8 +42,8 @@ export const modulesSlice = createSlice({
       state.modules = [...action.payload.modules];
     },
     addModule: (state, action: PayloadAction<any>) => {
-      console.log('action.payload', action.payload.name)
-      const moduleToAdd = state.modules.find((m: { name: any; }) => m.name === action.payload.name)
+      console.log('action.payload', action.payload.name);
+      const moduleToAdd = state.modules.find((m: { name: any }) => m.name === action.payload.name);
       state.selectedModules = [...state.selectedModules, moduleToAdd];
     },
     setSelectedModule: (state, action: PayloadAction<any>) => {
@@ -68,10 +68,10 @@ export const modulesSlice = createSlice({
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
       const selectedModule = state.selectedModules.find((module: any) => {
-        console.log("module", module);
+        console.log('module', module);
         return module.name === action.payload.name;
       });
-      console.log("selectedModule", selectedModule);
+      console.log('selectedModule', selectedModule);
       if (selectedModule) {
         selectedModule.skills.push(action.payload.skill);
       }
@@ -82,11 +82,11 @@ export const modulesSlice = createSlice({
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
       const selectedModule = state.selectedModules.find((module: any) => {
-        console.log("modulez~~~", module, module.name);
+        console.log('modulez~~~', module, module.name);
         return module.name === action.payload.name;
       });
       if (selectedModule) {
-        console.log("selectedModule", selectedModule);
+        console.log('selectedModule', selectedModule);
         selectedModule.skills = selectedModule.skills.filter(
           (s: any) => s !== action.payload.skill,
         );
@@ -98,11 +98,11 @@ export const modulesSlice = createSlice({
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
       const selectedModule = state.selectedModules.find((module: any) => {
-        console.log("modulez~~~", module, module.name);
+        console.log('modulez~~~', module, module.name);
         return module.name === action.payload.name;
       });
       if (selectedModule) {
-        console.log("selectedModule", selectedModule);
+        console.log('selectedModule', selectedModule);
         selectedModule.Weightage = action.payload.Weightage;
       }
     },

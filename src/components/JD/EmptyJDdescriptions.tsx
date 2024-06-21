@@ -1,4 +1,4 @@
-import IMAGES from "../../assets/images/Images";
+import IMAGES from '../../assets/images/Images';
 
 const EmptyJDdescriptions = () => {
   return (

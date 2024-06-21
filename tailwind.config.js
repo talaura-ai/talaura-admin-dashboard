@@ -104,8 +104,5 @@ export default {
     },
   },
 
-  plugins: [
-    require('tailwindcss-animation-delay'),
-    require('@tailwindcss/forms'),
-  ],
+  plugins: [require('tailwindcss-animation-delay'), require('@tailwindcss/forms')],
 };

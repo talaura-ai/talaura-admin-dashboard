@@ -1,32 +1,18 @@
-import {
-  useState,
-} from "react";
-import IMAGES from "../../assets/images/Images";
-import {
-  Dialog,
-  DialogPanel,
-  Transition,
-  TransitionChild,
-  Select,
-} from "@headlessui/react";
+import { useState } from 'react';
+import IMAGES from '../../assets/images/Images';
+import { Dialog, DialogPanel, Transition, TransitionChild, Select } from '@headlessui/react';
 
 const skills = [
-  "Objective-C/Swift Proficiency",
-  "UI/UX Standards",
-  "Problem Solving",
-  "iOS Frameworks",
-  "Low-level C Libraries",
-  "Collaboration",
-  "Offline Storage & Threading",
+  'Objective-C/Swift Proficiency',
+  'UI/UX Standards',
+  'Problem Solving',
+  'iOS Frameworks',
+  'Low-level C Libraries',
+  'Collaboration',
+  'Offline Storage & Threading',
 ];
 
-const moduleTypes = [
-  "Quiz",
-  "Sandbox",
-  "AI Video Interview",
-  "Voice To Voice",
-  "Voice to Text",
-];
+const moduleTypes = ['Quiz', 'Sandbox', 'AI Video Interview', 'Voice To Voice', 'Voice to Text'];
 
 {
   /* <option value="Sandbox">Sandbox</option>
@@ -34,17 +20,15 @@ const moduleTypes = [
 <option value="Voice To Voice">Voice To Voice</option>
 <option value="Voice to Text">Voice to Text</option> */
 }
-const AddNewModule: React.FC<any> = ({}) => {
+const AddNewModule: React.FC<any> = () => {
   const [moduleSkills] = useState(skills);
   const [open, setOpen] = useState(false);
-  const [moduleType, setModuleType] = useState("");
+  const [moduleType, setModuleType] = useState('');
 
   return (
     <>
       <div className="relative mt-10 w-90 mx-10">
-        <h1 className="text-[28px] font-Sansation_Regular">
-          Creating a custom module .{" "}
-        </h1>
+        <h1 className="text-[28px] font-Sansation_Regular">Creating a custom module . </h1>
         <div className="grid gap-6 mb-6 md:grid-cols-3 mt-6">
           <div>
             <label className="block mb-2 text-[18px] font-semibold text-[#7D7C7C]">
@@ -72,13 +56,9 @@ const AddNewModule: React.FC<any> = ({}) => {
               <option value="" disabled className="text-[#EEE]">
                 Select module type
               </option>
-              {moduleTypes.map(
-                (
-                  moduleType: any
-                ) => {
-                  return <option value={moduleType}>{moduleType}</option>;
-                },
-              )}
+              {moduleTypes.map((moduleType: any) => {
+                return <option value={moduleType}>{moduleType}</option>;
+              })}
             </Select>
           </div>
           <div>
@@ -134,9 +114,7 @@ const AddNewModule: React.FC<any> = ({}) => {
                 />
               </div>
               <div className="ml-2">
-                <h3 className="text-[18px] text-[#000000] font-Sansation">
-                  {item}
-                </h3>
+                <h3 className="text-[18px] text-[#000000] font-Sansation">{item}</h3>
               </div>
             </div>
           ))}
@@ -188,9 +166,7 @@ const AddNewModule: React.FC<any> = ({}) => {
               >
                 <DialogPanel className="w-full max-w-md relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm">
                   <div className="px-2 pt-2">
-                    <h3 className="text-[18px] font-Sansation_Regular">
-                      Add New Skill
-                    </h3>
+                    <h3 className="text-[18px] font-Sansation_Regular">Add New Skill</h3>
                     <div>
                       <div className="sm:mt-2">
                         <hr className="h-1" />
@@ -213,9 +189,7 @@ const AddNewModule: React.FC<any> = ({}) => {
                               className="flex flex-row mt-4 items-center gap-2"
                             >
                               <img src={IMAGES.plus} className="w-5 h-5" />
-                              <span className="text-[#E5A972] text-[16px]">
-                                Add New Skills
-                              </span>
+                              <span className="text-[#E5A972] text-[16px]">Add New Skills</span>
                             </button>
                           </div>
                           <hr className="mt-2 h-1" />

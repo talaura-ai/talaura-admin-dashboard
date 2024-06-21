@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 export interface AdminState {
   username: string;
@@ -9,12 +9,12 @@ export interface AdminState {
 }
 
 const initialState: AdminState = {
-  username: "Admin",
+  username: 'Admin',
   credits: 0,
 };
 
 export const adminSlice = createSlice({
-  name: "admin",
+  name: 'admin',
   initialState,
   reducers: {
     get: (state) => {

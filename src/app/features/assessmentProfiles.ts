@@ -22,7 +22,6 @@ export const assessmentProfilesSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { getAllProfiles, setAllProfiles } =
-  assessmentProfilesSlice.actions;
+export const { getAllProfiles, setAllProfiles } = assessmentProfilesSlice.actions;
 
 export default assessmentProfilesSlice.reducer;

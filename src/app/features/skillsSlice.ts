@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: any = { skills: [], selectedSkills: [] };
 
 export const skillsSlice = createSlice({
-  name: "skills",
+  name: 'skills',
   initialState,
   reducers: {
     setSkills: (state, action: PayloadAction<any>) => {
@@ -39,9 +39,7 @@ export const skillsSlice = createSlice({
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      state.selectedSkills = state.selectedSkills.filter(
-        (item: string) => item !== action.payload,
-      );
+      state.selectedSkills = state.selectedSkills.filter((item: string) => item !== action.payload);
     },
   },
 });

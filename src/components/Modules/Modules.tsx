@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { useAppSelector } from "../../app/hooks";
-import ModuleCard from "./ModuleCard";
-import OverView from "./OverView";
-import EditModule from "./EditModule";
-import AddNewModule from "./AddNewModule";
+import { useState } from 'react';
+import { useAppSelector } from '../../app/hooks';
+import ModuleCard from './ModuleCard';
+import OverView from './OverView';
+import EditModule from './EditModule';
+import AddNewModule from './AddNewModule';
 // const moduleDetails = {
 //   type: "Quiz",
 //   name: "Microsoft Word Proficiency Test",
@@ -20,19 +20,11 @@ const Modules = () => {
   const [createMode, setCreateMode] = useState(false);
 
   if (editMode) {
-    return (
-      <EditModule
-        module={selectedModule}
-        editMode={editMode}
-        setEditMode={setEditMode}
-      />
-    );
+    return <EditModule module={selectedModule} editMode={editMode} setEditMode={setEditMode} />;
   }
 
   if (createMode) {
-    return (
-      <AddNewModule setCreateMode={setCreateMode} createMode={createMode} />
-    );
+    return <AddNewModule setCreateMode={setCreateMode} createMode={createMode} />;
   }
 
   return (
@@ -67,8 +59,7 @@ const Modules = () => {
                   time: any;
                   Weightage: any;
                 }) => {
-                  const { name, type, noOfQuestions, skills, time, Weightage } =
-                    module;
+                  const { name, type, noOfQuestions, skills, time, Weightage } = module;
 
                   return (
                     <ModuleCard

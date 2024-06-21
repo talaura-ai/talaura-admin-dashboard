@@ -10,7 +10,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh'],
   rules: {
-    '@typescript-eslint/no-explicit-any': ['warn'],
+    '@typescript-eslint/no-explicit-any': ['off'],
     'no-empty-pattern': ['warn'],
     'react-hooks/rules-of-hooks': ['warn'],
     'no-constant-condition': ['warn'],

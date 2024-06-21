@@ -28,8 +28,7 @@ export const assessmentProfilesApi = createApi({
       query: () => `organization/getProfile`,
     }),
     getAssessmentProfilesByID: builder.query<any, string>({
-      query: (id) =>
-        `organization/getProfile/getAssessmentProfilesDetail/${id}`,
+      query: (id) => `organization/getProfile/getAssessmentProfilesDetail/${id}`,
     }),
     createAssessmentProfiles: builder.mutation({
       query: (data) => ({

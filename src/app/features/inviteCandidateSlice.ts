@@ -8,10 +8,7 @@ export const inviteCandidateSlice = createSlice({
   name: 'inviteCandidate',
   initialState,
   reducers: {
-    addCandidateToInviteList: (
-      state,
-      action: PayloadAction<IInviteCandidateItem>
-    ) => {
+    addCandidateToInviteList: (state, action: PayloadAction<IInviteCandidateItem>) => {
       return state.concat(action.payload);
     },
     removeCandidateFromInviteList: (state, action: PayloadAction<string>) => {
@@ -22,10 +19,7 @@ export const inviteCandidateSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const {
-  addCandidateToInviteList,
-  clearInviteList,
-  removeCandidateFromInviteList,
-} = inviteCandidateSlice.actions;
+export const { addCandidateToInviteList, clearInviteList, removeCandidateFromInviteList } =
+  inviteCandidateSlice.actions;
 
 export default inviteCandidateSlice.reducer;

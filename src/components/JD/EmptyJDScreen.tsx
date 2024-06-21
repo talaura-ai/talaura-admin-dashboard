@@ -1,5 +1,5 @@
-import EmptyJDInsights from "./EmptyJDInsights";
-import EmptyJDdescriptions from "./EmptyJDdescriptions";
+import EmptyJDInsights from './EmptyJDInsights';
+import EmptyJDdescriptions from './EmptyJDdescriptions';
 
 const EmptyJDScreen = () => {
   return (
