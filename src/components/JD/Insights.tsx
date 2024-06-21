@@ -38,7 +38,6 @@ export interface IInsights {
 const Insights: React.FC<IInsights> = ({
   isJobDescriptionRequired,
   jdData,
-
   setAssisstantMessage,
 }) => {
   const [insightsData, setInsightData] = useState(() => []);
@@ -70,20 +69,18 @@ const Insights: React.FC<IInsights> = ({
       }
     };
 
-    if (jdData) {
-      getInsightsMethod();
-    }
+    getInsightsMethod();
   }, [jdData]);
 
   return (
     <>
-      <div className='flex  flex-col  h-[50vh] rounded-lg shadow-inner bg-white mt-1'>
-        <header className='p-3'>
-          <h1 className='text-lg text-center '>Assistant suggested insights</h1>
+      <div className="flex  flex-col  h-[50vh] rounded-lg shadow-inner bg-white mt-1">
+        <header className="p-3">
+          <h1 className="text-lg text-center ">Assistant suggested insights</h1>
         </header>
-        <hr className='m-2' />
+        <hr className="m-2" />
 
-        <div className='flex flex-row justify-center items-center mt-2 gap-2 flex-wrap overflow-y-auto scrollbar'>
+        <div className="flex flex-row justify-center items-center mt-2 gap-2 flex-wrap overflow-y-auto scrollbar">
           {insightsData.map((insight) => (
             <div
               onClick={() => {
@@ -95,7 +92,8 @@ const Insights: React.FC<IInsights> = ({
                 console.log('input', input);
                 setAssisstantMessage(input);
               }}
-              className='rounded-md mx-1 inline  bg-app-color   px-3.5 py-2.5    text-sm font-semibold     text-black shadow-sm      cursor-pointer      focus-visible:outline focus-visible:outline-2       ocus-visible:outline-offset-2 focus-visible:outline-app-color text-pretty break-keep'>
+              className="rounded-md mx-1 inline  bg-app-color   px-3.5 py-2.5    text-sm font-semibold     text-black shadow-sm      cursor-pointer      focus-visible:outline focus-visible:outline-2       ocus-visible:outline-offset-2 focus-visible:outline-app-color text-pretty break-keep"
+            >
               {insight}
             </div>
           ))}

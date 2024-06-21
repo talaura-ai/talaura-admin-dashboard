@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: any = { questions: [], selectedQuestions: [] };
 
 export const questionsSlice = createSlice({
-  name: "questions",
+  name: 'questions',
   initialState,
   reducers: {
     setQuestionsToApp: (state, action: PayloadAction<any>) => {
@@ -19,15 +19,35 @@ export const questionsSlice = createSlice({
     },
     updateQuestion: (state, action: PayloadAction<any>) => {
       const question = state.questions.find(
-        (q: { position: any }) => q.position === action.payload.position,
+        (q: { title: any }) => q.title === action.payload.title,
       );
       question.answer = action.payload.answer;
     },
+    addQuestionChoice: (state, action: PayloadAction<any>) => {
+      const question = state.questions.find(
+        (q: { title: any }) => q.title === action.payload.title,
+      );
+      const answer = action.payload.answer;
+      if(question.answer){
+        question.answer.push(answer);
+      }else{
+        question.answer = [answer];
+      }
+      
+    },
+    removeQuestionChoice: (state, action: PayloadAction<any>) => {
+      const question = state.questions.find(
+        (q: { title: any }) => q.title === action.payload.title,
+      );
+      const answer = action.payload.answer;
+
+      question.answer = question.answer.filter((a: { name: any; }) => a.name !== answer.name);
+    },
+    
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setQuestionsToApp, getAllQuestions, updateQuestion } =
-  questionsSlice.actions;
+export const { setQuestionsToApp, getAllQuestions, updateQuestion, addQuestionChoice, removeQuestionChoice } = questionsSlice.actions;
 
 export default questionsSlice.reducer;

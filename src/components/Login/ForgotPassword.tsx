@@ -1,16 +1,10 @@
-import { useState } from "react";
-import IMAGES from "../../assets/images/Images";
-import { EnvelopeIcon } from "@heroicons/react/24/outline";
-import {
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-  Transition,
-  TransitionChild,
-} from "@headlessui/react";
+import { useState } from 'react';
+import IMAGES from '../../assets/images/Images';
+import { EnvelopeIcon } from '@heroicons/react/24/outline';
+import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 
 export default function ForgotPassword() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [open, setOpen] = useState(true);
 
   return (
@@ -71,10 +65,7 @@ export default function ForgotPassword() {
                         placeholder="Please Enter Your Email"
                       />
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                        <EnvelopeIcon
-                          className="h-5 w-5 text-gray-400"
-                          aria-hidden="true"
-                        />
+                        <EnvelopeIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                       </div>
                     </div>
                   </div>
@@ -143,8 +134,8 @@ export default function ForgotPassword() {
                           />
                         </div>
                         <p className="text-sm text-gray-400">
-                          Please check the email inbox you signed up with. You
-                          may need to check the spam folder
+                          Please check the email inbox you signed up with. You may need to check the
+                          spam folder
                         </p>
                       </div>
                     </div>

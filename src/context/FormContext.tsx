@@ -16,9 +16,7 @@ const FormProvider: React.FC<IFormProvider> = ({ children }) => {
   const [data, setData] = useState<{ [key: string]: unknown }>({});
   const [page, setPage] = useState(2);
 
-  const handleChange = (e: {
-    target: { type: any; name: any; checked: any; value: any };
-  }) => {
+  const handleChange = (e: { target: { type: any; name: any; checked: any; value: any } }) => {
     const type = e.target.type;
 
     const name = e.target.name;
@@ -34,8 +32,7 @@ const FormProvider: React.FC<IFormProvider> = ({ children }) => {
   const { ...requiredInputs } = data;
 
   const canSubmit =
-    [...Object.values(requiredInputs)].every(Boolean) &&
-    page === Object.keys(steps).length - 1;
+    [...Object.values(requiredInputs)].every(Boolean) && page === Object.keys(steps).length - 1;
 
   const canNextPage1 = Object.keys(data)
     .map((key) => data[key])
@@ -73,7 +70,8 @@ const FormProvider: React.FC<IFormProvider> = ({ children }) => {
         prevHide,
         nextHide,
         submitHide,
-      }}>
+      }}
+    >
       {children}
     </FormContext.Provider>
   );

@@ -2317,10 +2317,10 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 export interface IAssessmentQuestionOptions {
   name?: {
-    type: String;
+    type: string;
   };
   title?: {
-    type: String;
+    type: string;
   };
 }
 

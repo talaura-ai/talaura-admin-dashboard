@@ -1,22 +1,14 @@
-import IMAGES from "../../assets/images/Images";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { XCircleIcon } from "@heroicons/react/24/outline";
-import {
-  removeSelectedModule,
-  updateWeightage,
-} from "../../app/features/moduleSlice";
-import {
-  ChangeEvent,
-  useState,
-} from "react";
+import IMAGES from '../../assets/images/Images';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { XCircleIcon } from '@heroicons/react/24/outline';
+import { removeSelectedModule, updateWeightage } from '../../app/features/moduleSlice';
+import { ChangeEvent, useState } from 'react';
 
 const OverView: React.FC<any> = ({ editMode, module }) => {
   const { selectedModules } = useAppSelector((state) => state.modules);
   let selectedModule: any;
   if (editMode && module) {
-    selectedModule = selectedModules.find(
-      (m: { name: any }) => m.name === module.name,
-    );
+    selectedModule = selectedModules.find((m: { name: any }) => m.name === module.name);
   }
 
   const [weight, setWeight] = useState(() =>
@@ -54,13 +46,11 @@ const OverView: React.FC<any> = ({ editMode, module }) => {
     >
       <div className="flex flex-row justify-evenly leading-1">
         <div>
-          <h1 className="text-orange-text ">
-            {module ? module?.name : "Overview"}
-          </h1>
+          <h1 className="text-orange-text ">{module ? module?.name : 'Overview'}</h1>
         </div>
         <div>
           <h1>
-            Weightage:{" "}
+            Weightage:{' '}
             <span className="text-gray-300">
               {module && module.Weightage ? (
                 <input
@@ -73,8 +63,7 @@ const OverView: React.FC<any> = ({ editMode, module }) => {
                 />
               ) : (
                 selectedModules.reduce(
-                  (acc: any, val: { Weightage: any }) =>
-                    Number(val.Weightage) + Number(acc),
+                  (acc: any, val: { Weightage: any }) => Number(val.Weightage) + Number(acc),
                   0,
                 )
               )}
@@ -83,16 +72,12 @@ const OverView: React.FC<any> = ({ editMode, module }) => {
           </h1>
         </div>
         <div className="flex justify-end items-center">
-          <img
-            src={IMAGES.Time}
-            className="h-4 w-4 justify-center items-center"
-          />
+          <img src={IMAGES.Time} className="h-4 w-4 justify-center items-center" />
           <span className="justify-center items-center ml-1 text-ellipsis">
             {module && module?.time
               ? module?.time
               : selectedModules.reduce(
-                  (acc: any, val: { time: any }) =>
-                    Number(val.time) + Number(acc),
+                  (acc: any, val: { time: any }) => Number(val.time) + Number(acc),
                   0,
                 )}
             min
@@ -114,12 +99,7 @@ const OverView: React.FC<any> = ({ editMode, module }) => {
               );
             })
           : selectedModules.map(
-              (selectedModule: {
-                name: any;
-                noOfQuestions: any;
-                Weightage: any;
-                time: any;
-              }) => {
+              (selectedModule: { name: any; noOfQuestions: any; Weightage: any; time: any }) => {
                 const { name, noOfQuestions, Weightage, time } = selectedModule;
                 return (
                   <div className="mx-10 px-5 py-3">
@@ -128,33 +108,22 @@ const OverView: React.FC<any> = ({ editMode, module }) => {
                         <h1 className="text-orange-text">{name}</h1>
                       </div>
                       <div className=" ml-3 grow">
-                        <span className="text-gray-300 text-xs">
-                          {noOfQuestions} Question
-                        </span>
+                        <span className="text-gray-300 text-xs">{noOfQuestions} Question</span>
                       </div>
                       <div onClick={() => handleDeselctModule(selectedModule)}>
-                        {selectedModules.length > 1 ? (
-                          <XCircleIcon className="h-5 w-5" />
-                        ) : null}
+                        {selectedModules.length > 1 ? <XCircleIcon className="h-5 w-5" /> : null}
                       </div>
                     </div>
                     <div className="flex flex-row items-center justify-between">
                       <div>
                         <h1 className="">
-                          Weightage{" "}
-                          <span className="text-gray-300 text-sm mx-1">
-                            {Weightage} %
-                          </span>
+                          Weightage{' '}
+                          <span className="text-gray-300 text-sm mx-1">{Weightage} %</span>
                         </h1>
                       </div>
                       <div className="flex justify-end items-center">
-                        <img
-                          src={IMAGES.Time}
-                          className="h-4 w-4 justify-center items-center"
-                        />
-                        <span className="justify-center items-center ml-1">
-                          {time} min
-                        </span>
+                        <img src={IMAGES.Time} className="h-4 w-4 justify-center items-center" />
+                        <span className="justify-center items-center ml-1">{time} min</span>
                       </div>
                     </div>
                   </div>

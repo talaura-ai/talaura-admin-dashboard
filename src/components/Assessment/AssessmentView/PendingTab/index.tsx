@@ -59,9 +59,7 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
 
   const toggleAll = () => {
     setSelectedPeople(
-      checked || indeterminate
-        ? []
-        : candidatesData?.Candidate.map((pr) => pr._id) ?? []
+      checked || indeterminate ? [] : candidatesData?.Candidate.map((pr) => pr._id) ?? [],
     );
     setChecked(!checked && !indeterminate);
     setIndeterminate(false);
@@ -80,9 +78,7 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
       if (selectedPeople.length === 0) {
         data = candidatesData?.Candidate;
       } else {
-        data = candidatesData?.Candidate.filter((cnd) =>
-          selectedPeople.includes(cnd._id)
-        );
+        data = candidatesData?.Candidate.filter((cnd) => selectedPeople.includes(cnd._id));
       }
       const workbook = xlsx.utils.book_new();
 
@@ -140,17 +136,17 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
           setFilterStatus={setFilterStatus}
           statusFromParam={status}
         />
-        <div className=''>
-          <div className='overflow-x-auto sm:-mx-6 lg:-mx-8'>
-            <div className='inline-block min-w-full pb-2 align-middle sm:px-6 lg:px-8'>
-              <div className='table_container max-w-[calc(100vw-9rem)] shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)] overflow-scroll border border-customGray-150'>
-                <table className='min-w-full divide-y divide-customGray-300 rounded-md'>
-                  <thead className='bg-white border-collapse'>
-                    <tr className=' divide-x h-[50px]'>
-                      <th scope='col' className='relative px-7 sm:w-12 sm:px-6'>
+        <div className="">
+          <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="inline-block min-w-full pb-2 align-middle sm:px-6 lg:px-8">
+              <div className="table_container max-w-[calc(100vw-9rem)] shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)] overflow-scroll border border-customGray-150">
+                <table className="min-w-full divide-y divide-customGray-300 rounded-md">
+                  <thead className="bg-white border-collapse">
+                    <tr className=" divide-x h-[50px]">
+                      <th scope="col" className="relative px-7 sm:w-12 sm:px-6">
                         <input
-                          type='checkbox'
-                          className='absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-customGray-300 text-sandybrown focus:ring-sandybrown'
+                          type="checkbox"
+                          className="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-customGray-300 text-sandybrown focus:ring-sandybrown"
                           ref={checkbox}
                           checked={checked}
                           onChange={toggleAll}
@@ -159,84 +155,76 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
                       {columns.map((val, idx) => (
                         <th
                           key={idx}
-                          scope='col'
-                          className={`pl-4 pr-3 text-sm font-semibold text-gray-900 text-left whitespace-nowrap`}>
+                          scope="col"
+                          className={`pl-4 pr-3 text-sm font-semibold text-gray-900 text-left whitespace-nowrap`}
+                        >
                           <span>{val}</span>
                         </th>
                       ))}
                     </tr>
                   </thead>
-                  <tbody className='divide-y divide-customGray-200 bg-white shadow-[0_1px_4px_0_rgba(0,0,0,0.25)]'>
+                  <tbody className="divide-y divide-customGray-200 bg-white shadow-[0_1px_4px_0_rgba(0,0,0,0.25)]">
                     {candidatesData?.Candidate.map((candidate, idx) => (
-                      <tr
-                        key={idx}
-                        className='text-left even:bg-customGray-30 text-customGray-100'>
-                        <td className='relative px-7 sm:w-12 sm:px-6'>
+                      <tr key={idx} className="text-left even:bg-customGray-30 text-customGray-100">
+                        <td className="relative px-7 sm:w-12 sm:px-6">
                           {selectedPeople.includes(candidate._id) && (
-                            <div className='absolute inset-y-0 left-0 w-0.5 bg-sandybrown' />
+                            <div className="absolute inset-y-0 left-0 w-0.5 bg-sandybrown" />
                           )}
                           <input
-                            type='checkbox'
-                            className='absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-customGray-300 text-sandybrown focus:ring-sandybrown'
+                            type="checkbox"
+                            className="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-customGray-300 text-sandybrown focus:ring-sandybrown"
                             value={candidate._id}
                             checked={selectedPeople.includes(candidate._id)}
                             onChange={(e) =>
                               setSelectedPeople(
                                 e.target.checked
                                   ? [...selectedPeople, candidate._id]
-                                  : selectedPeople.filter(
-                                      (p) => p !== candidate._id
-                                    )
+                                  : selectedPeople.filter((p) => p !== candidate._id),
                               )
                             }
                           />
                         </td>
-                        <td className='whitespace-nowrap py-4 pl-4 text-sm font-medium text-gray-900 sm:pl-0 min-w-[15rem]'>
+                        <td className="whitespace-nowrap py-4 pl-4 text-sm font-medium text-gray-900 sm:pl-0 min-w-[15rem]">
                           <Link
                             to={`candidate/${candidate._id}`}
-                            className='pl-4 text-customGray-100'>
+                            className="pl-4 text-customGray-100"
+                          >
                             {candidate.name}
                           </Link>
                         </td>
-                        <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0'>
-                          <span className='text-customGray-100'>
-                            {dayjs(candidate.createdAt).format(
-                              'DD MMM, YYYY [at] hh:mm A'
-                            )}
+                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                          <span className="text-customGray-100">
+                            {dayjs(candidate.createdAt).format('DD MMM, YYYY [at] hh:mm A')}
                           </span>
                         </td>
-                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                          {dayjs(candidate.startsAt).format(
-                            'DD MMM, YYYY [at] hh:mm A'
-                          )}
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {dayjs(candidate.startsAt).format('DD MMM, YYYY [at] hh:mm A')}
                         </td>
-                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                          {dayjs(candidate.endsOn).format(
-                            'DD MMM, YYYY [at] hh:mm A'
-                          )}
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {dayjs(candidate.endsOn).format('DD MMM, YYYY [at] hh:mm A')}
                         </td>
-                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           {candidate.status}
                         </td>
-                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                          <div className='flex items-center text-sandybrown'>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          <div className="flex items-center text-sandybrown">
                             <button>
                               <span>Extend</span>
                             </button>
-                            <div className='h-[10px] w-[2px] bg-customGray-50 mx-2' />
-                            <button
-                              onClick={() => onNotifyCandidate(candidate._id)}>
+                            <div className="h-[10px] w-[2px] bg-customGray-50 mx-2" />
+                            <button onClick={() => onNotifyCandidate(candidate._id)}>
                               <span>Notify</span>
                             </button>
                           </div>
                         </td>
-                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           <button
-                            className='flex items-center gap-2 text-sandybrown'
+                            className="flex items-center gap-2 text-sandybrown"
                             onClick={() => {
                               Clipboard.copy(candidate?.assessmentId);
-                            }}>
-                            <DocumentDuplicateIcon className='h-[12px] w-[12px]' />
+                            }}
+                          >
+                            <DocumentDuplicateIcon className="h-[12px] w-[12px]" />
                             <span>Copy</span>
                           </button>
                         </td>

@@ -10,7 +10,7 @@ import { authApi } from './services/auth';
 import { candidatesApi } from './services/candidates';
 
 const persistConfig = {
-  key: 'root',
+  key: 'root1',
   storage,
   whitelist: ['admin', 'inviteCandidate'],
   // blacklist: ["admin"]

@@ -1,5 +1,5 @@
-import ModuleCard from "./ModuleCard";
-import OverView from "./OverView";
+import ModuleCard from './ModuleCard';
+import OverView from './OverView';
 
 const EditModule: React.FC<any> = ({ module, editMode, setEditMode }) => {
   const { name, type, noOfQuestions, skills, time, Weightage } = module;
@@ -22,11 +22,7 @@ const EditModule: React.FC<any> = ({ module, editMode, setEditMode }) => {
               />
             </div>
             <div className="col-span-3">
-              <OverView
-                editMode={editMode}
-                module={module}
-                setEditMode={setEditMode}
-              />
+              <OverView editMode={editMode} module={module} setEditMode={setEditMode} />
             </div>
           </div>
         </div>

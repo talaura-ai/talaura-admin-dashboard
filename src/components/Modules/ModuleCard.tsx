@@ -1,16 +1,16 @@
-import { PencilIcon } from "@heroicons/react/24/solid";
-import IMAGES from "../../assets/images/Images";
-import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { classNames } from "../Core/classNames";
+import { PencilIcon } from '@heroicons/react/24/solid';
+import IMAGES from '../../assets/images/Images';
+import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { classNames } from '../Core/classNames';
 import {
   addModule,
   removeModuleSkill,
   removeSelectedModule,
   setModuleSkill,
   updateWeightage,
-} from "../../app/features/moduleSlice";
-import { CheckCircleIcon, EyeIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
+} from '../../app/features/moduleSlice';
+import { CheckCircleIcon, EyeIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
 
 const ModuleCard: React.FC<any> = ({
   name,
@@ -26,13 +26,11 @@ const ModuleCard: React.FC<any> = ({
   const { selectedModules } = useAppSelector((state) => state.modules);
   const dispatch = useAppDispatch();
   const selectedModule = selectedModules.find((m: any) => m.name === name);
-  const { selectedSkills } = useAppSelector(state => state.skills);
+  const { selectedSkills } = useAppSelector((state) => state.skills);
 
-  const handleCheckboxChange = (event: {
-    target: { value: any; checked: any };
-  }) => {
+  const handleCheckboxChange = (event: { target: { value: any; checked: any } }) => {
     const { value, checked } = event.target;
-    console.log("value, checked", value, checked);
+    console.log('value, checked', value, checked);
 
     if (checked) {
       dispatch(setModuleSkill({ name, skill: value }));
@@ -46,7 +44,7 @@ const ModuleCard: React.FC<any> = ({
     selectedModule && selectedModule.Weightage ? selectedModule.Weightage : 0,
   );
 
-  console.log("selectedModule", selectedModule);
+  console.log('selectedModule', selectedModule);
   const onChangeWeightage = (e: any) => {
     setWeight(e.target.value);
   };
@@ -63,20 +61,24 @@ const ModuleCard: React.FC<any> = ({
   return (
     <div
       className="flex rounded-2xl shadow-inner bg-white p-5 mt-5 mx-2 flex-col"
-      // 
+      //
     >
       <div className="flex flex-row items-center justify-between">
         <div className="grow justify-start items-start">
           <h1 className="text-orange-text">{name}</h1>
         </div>
-        { selectedModules.includes(selectedModule) ? 
+        {selectedModules.includes(selectedModule) ? (
           <div className=" items-end ">
-            <CheckCircleIcon className="h-6 w-6 text-orange-text" onClick={() => dispatch(removeSelectedModule({name}))} />
-          </div>: 
-          <div className=" items-end " onClick={() => dispatch(addModule({name}))}>
-          <PlusCircleIcon className="h-6 w-6 text-orange-text" />
-        </div>
-        }
+            <CheckCircleIcon
+              className="h-6 w-6 text-orange-text"
+              onClick={() => dispatch(removeSelectedModule({ name }))}
+            />
+          </div>
+        ) : (
+          <div className=" items-end " onClick={() => dispatch(addModule({ name }))}>
+            <PlusCircleIcon className="h-6 w-6 text-orange-text" />
+          </div>
+        )}
         {reviewAble && (
           <div className=" items-end ">
             <EyeIcon className="h-3 w-3 text-orange-text" />
@@ -92,20 +94,13 @@ const ModuleCard: React.FC<any> = ({
         <div className="flex flex-row">
           <h1 className="">Skills</h1>
           {editable && (
-          <div className="p-1 mx-2"
-          onClick={handleClick}
-          >
-            <PencilIcon className="h-3 w-3 text-orange-text" />
-          </div>
-        )}
+            <div className="p-1 mx-2" onClick={handleClick}>
+              <PencilIcon className="h-3 w-3 text-orange-text" />
+            </div>
+          )}
         </div>
       </div>
-      <div
-        className={classNames(
-          "flex  ",
-          editMode ? "flex-col" : "flex-row items-center",
-        )}
-      >
+      <div className={classNames('flex  ', editMode ? 'flex-col' : 'flex-row items-center')}>
         {editMode ? (
           <>
             {selectedSkills.map((skill: any) => {
@@ -140,57 +135,52 @@ const ModuleCard: React.FC<any> = ({
             })}
           </>
         ) : (
-          <p className="text-gray-300 text-sm">{skills.join(",")}</p>
+          <p className="text-gray-300 text-sm">{skills.join(',')}</p>
         )}
       </div>
-      {
-        !editMode ? 
+      {!editMode ? (
         <div className="flex flex-row items-center">
-        <div>
-          <h1>
-            Weightage:{" "}
-            <span className="text-gray-300">
-              {selectedModule && selectedModule.Weightage ? (
-                <input
-                  className="w-6 p-0 inline ring-0 border-0 focus:ring-0 focus:border-b-1"
-                  type="text"
-                  value={weight}
-                  onChange={(e) => onChangeWeightage(e)}
-                  onBlur={() => handleChangeWeightage()}
-                />
-              ) : (
-                selectedModules.reduce(
-                  (acc: any, val: { Weightage: any }) =>
-                    Number(val.Weightage) + Number(acc),
-                  0,
-                )
-              )}
-              %
-            </span>
-          </h1>
-        </div>
-        {/* <div
+          <div>
+            <h1>
+              Weightage:{' '}
+              <span className="text-gray-300">
+                {selectedModule && selectedModule.Weightage ? (
+                  <input
+                    className="w-6 p-0 inline ring-0 border-0 focus:ring-0 focus:border-b-1"
+                    type="text"
+                    value={weight}
+                    onChange={(e) => onChangeWeightage(e)}
+                    onBlur={() => handleChangeWeightage()}
+                  />
+                ) : (
+                  selectedModules.reduce(
+                    (acc: any, val: { Weightage: any }) => Number(val.Weightage) + Number(acc),
+                    0,
+                  )
+                )}
+                %
+              </span>
+            </h1>
+          </div>
+          {/* <div
           className="p-2 w-20 focus:ring-0 active:ring-0 focus:border-0 active:border-0"
           //   contentEditable
         >
           <p className="text-gray-300">{selectedModule.Weightage}%</p>
         </div> */}
-        <div className="flex grow justify-end items-center">
-          <img
-            src={IMAGES.Time}
-            className="h-4 w-4 justify-center items-center"
-          />
-          <span
-            className="justify-center items-center ml-1"
-            onClick={() => {
-              // setOpenTimer(true);
-            }}
-          >
-            {time} min
-          </span>
+          <div className="flex grow justify-end items-center">
+            <img src={IMAGES.Time} className="h-4 w-4 justify-center items-center" />
+            <span
+              className="justify-center items-center ml-1"
+              onClick={() => {
+                // setOpenTimer(true);
+              }}
+            >
+              {time} min
+            </span>
+          </div>
         </div>
-      </div>: null
-      }
+      ) : null}
       {editMode && (
         <div className="flex items-center justify-center my-5">
           <button

@@ -1,5 +1,5 @@
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { classNames } from "./classNames";
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import { classNames } from './classNames';
 
 export interface IInput {
   serialNum?: number;
@@ -14,11 +14,11 @@ export interface IInput {
 
 const Input: React.FC<IInput> = ({
   serialNum = 1,
-  label = "title",
-  type = "text",
-  name = "name",
-  placeholder = "Type here ...",
-  className = "",
+  label = 'title',
+  type = 'text',
+  name = 'name',
+  placeholder = 'Type here ...',
+  className = '',
   value,
   setValue,
 }) => {
@@ -38,7 +38,7 @@ const Input: React.FC<IInput> = ({
           name={name}
           id={name}
           className={classNames(
-            "peer text-2xl  w-full border-0 bg-transparent py-1.5 text-gray-900 focus:ring-0 placeholder-gray-300",
+            'peer text-2xl  w-full border-0 bg-transparent py-1.5 text-gray-900 focus:ring-0 placeholder-gray-300',
             className,
           )}
           placeholder={placeholder}

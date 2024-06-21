@@ -17,6 +17,8 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   assessmentApi,
   useCreateAssessmentMutation,
+  useSaveModulesToAssessmentMutation,
+  useSaveQuestionsToAssessmentMutation,
   useSaveSkillsToAssessmentMutation,
 } from '../../app/services/assessments';
 import toast from 'react-hot-toast';
@@ -43,12 +45,8 @@ import { setSkills } from '../../app/features/skillsSlice';
 import ReviewQuestions from '../ReviewQuestions/Review';
 import Modules from '../Modules/Modules';
 import ReviewAssessments from '../ReviewAssessments/ReviewAssessments';
-import {
-  addQuestionToModule,
-  setModules,
-  setSelectedModule,
-} from '../../app/features/moduleSlice';
-import { setQuestionsToApp } from '../../app/features/questions';
+import { addQuestionToModule, setModules, setSelectedModule } from '../../app/features/moduleSlice';
+import { setQuestionsToApp, updateQuestion } from '../../app/features/questions';
 const AI_API_URL = import.meta.env.VITE_AI_API_URL;
 
 // const steps = [
@@ -74,8 +72,8 @@ const AI_API_URL = import.meta.env.VITE_AI_API_URL;
 
 export const Step: React.FC<any> = ({ steps }) => {
   return (
-    <nav aria-label='Progress' className='mt-10 mx-9 w-ful'>
-      <ol role='list' className='flex items-center '>
+    <nav aria-label="Progress" className="mt-10 mx-9 w-ful">
+      <ol role="list" className="flex items-center ">
         {steps.map(
           (
             step: {
@@ -83,67 +81,63 @@ export const Step: React.FC<any> = ({ steps }) => {
               status: string;
               icon: string | undefined;
             },
-            stepIdx: number
+            stepIdx: number,
           ) => (
             <li
               key={step.name}
               className={classNames(
                 stepIdx !== steps.length - 1 ? 'w-full pr-8 sm:pr-20' : '',
-                'relative '
-              )}>
+                'relative ',
+              )}
+            >
               {step.status === 'complete' ? (
                 <>
-                  <div
-                    className='absolute inset-0 flex items-center w-full'
-                    aria-hidden='true'>
+                  <div className="absolute inset-0 flex items-center w-full" aria-hidden="true">
                     <div
-                      className='h-2 w-full 
+                      className="h-2 w-full 
                     bg-gradient-to-r from-[#E5A971] from-8% via-[#F3BC84] via-37% to-white to-80% 
-                  '
+                  "
                     />
                   </div>
-                  <a className='relative flex h-10 w-10 items-center justify-center rounded-full bg-white hover:bg-white border border-spacing-2 border-brand-color outline outline-1 outline-brand-color shadow-md shadow-brand-color'>
+                  <a className="relative flex h-10 w-10 items-center justify-center rounded-full bg-white hover:bg-white border border-spacing-2 border-brand-color outline outline-1 outline-brand-color shadow-md shadow-brand-color">
                     {/* <CheckIcon className="h-5 w-5 text-white" aria-hidden="true" /> */}
-                    <img src={step.icon} className='h-5 w-5' />
-                    <span className='sr-only'>{step.name}</span>
+                    <img src={step.icon} className="h-5 w-5" />
+                    <span className="sr-only">{step.name}</span>
                   </a>
                 </>
               ) : step.status === 'current' ? (
                 <>
-                  <div
-                    className='absolute inset-0 flex items-center'
-                    aria-hidden='true'>
-                    <div className='h-2 w-full bg-gray-200' />
+                  <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                    <div className="h-2 w-full bg-gray-200" />
                   </div>
                   <a
-                    className='relative flex h-10 w-10 items-center justify-center rounded-full border-2 border-brand-color bg-white outline outline-1 outline-brand-color shadow-md shadow-brand-color'
-                    aria-current='step'>
+                    className="relative flex h-10 w-10 items-center justify-center rounded-full border-2 border-brand-color bg-white outline outline-1 outline-brand-color shadow-md shadow-brand-color"
+                    aria-current="step"
+                  >
                     {/* <span className="h-2.5 w-2.5 rounded-full bg-brand-color" aria-hidden="true" /> */}
-                    <img src={step.icon} className='h-5 w-5' />
+                    <img src={step.icon} className="h-5 w-5" />
 
-                    <span className='sr-only'>{step.name}</span>
+                    <span className="sr-only">{step.name}</span>
                   </a>
                 </>
               ) : (
                 <>
-                  <div
-                    className='absolute inset-0 flex items-center'
-                    aria-hidden='true'>
-                    <div className='h-2 w-full bg-gray-200' />
+                  <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                    <div className="h-2 w-full bg-gray-200" />
                   </div>
-                  <a className='group relative flex h-10 w-10 items-center justify-center rounded-full border-2 border-gray-300 bg-white hover:border-gray-400 outline-brand-color shadow-md shadow-brand-color'>
+                  <a className="group relative flex h-10 w-10 items-center justify-center rounded-full border-2 border-gray-300 bg-white hover:border-gray-400 outline-brand-color shadow-md shadow-brand-color">
                     {/* <span
                     className="h-2.5 w-2.5 rounded-full bg-transparent group-hover:bg-gray-300"
                     aria-hidden="true"
                   /> */}
-                    <img src={step.icon} className='h-5 w-5' />
+                    <img src={step.icon} className="h-5 w-5" />
 
-                    <span className='sr-only'>{step.name}</span>
+                    <span className="sr-only">{step.name}</span>
                   </a>
                 </>
               )}
             </li>
-          )
+          ),
         )}
       </ol>
     </nav>
@@ -209,9 +203,10 @@ const SwiperNavButton: React.FC<ISliderNav> = ({
         disabled ? 'opacity-50' : '',
         isPrimary
           ? 'bg-orange-text text-white'
-          : 'bg-transparent hover:bg-transparent border-black'
+          : 'bg-transparent hover:bg-transparent border-black',
       )}
-      style={style}>
+      style={style}
+    >
       {children}
     </button>
   );
@@ -224,6 +219,7 @@ export interface IComp {
 
 const Comp: React.FC<IComp> = ({ question }) => {
   const { data, setData } = useFormContext();
+  const dispatch = useAppDispatch();
 
   console.log('question~~~~', question);
   console.log('daTTa~~~~', data);
@@ -234,8 +230,7 @@ const Comp: React.FC<IComp> = ({ question }) => {
     setData((oldData: any) => ({
       ...oldData,
       [question.name]:
-        question.type === questionTypes.TEXT ||
-        question.type === questionTypes.DROPDOWN
+        question.type === questionTypes.TEXT || question.type === questionTypes.DROPDOWN
           ? question.answer
             ? question.answer
             : ''
@@ -335,8 +330,8 @@ const Comp: React.FC<IComp> = ({ question }) => {
 
   if (type === questionTypes.TEXT)
     return (
-      <div className='flex flex-col mt-10 px-5'>
-        <div className='flex mt-10'>
+      <div className="flex flex-col mt-10 px-5">
+        <div className="flex mt-10">
           <Input
             label={title}
             name={name}
@@ -350,6 +345,9 @@ const Comp: React.FC<IComp> = ({ question }) => {
                 };
               });
             }}
+            onBlur={(e: any) => {
+              return dispatch(updateQuestion({title , answer: e.target.value}))
+            }}
             serialNum={position}
           />
         </div>
@@ -358,10 +356,10 @@ const Comp: React.FC<IComp> = ({ question }) => {
 
   if (type === questionTypes.MULTIPLE_CHOICE)
     return (
-      <div className='flex flex-col mt-10 px-5'>
-        <div className='flex mt-10'>
+      <div className="flex flex-col mt-10 px-5">
+        <div className="flex mt-10">
           <MultipleChoices
-            label={title}
+            title={title}
             name={name}
             value={data[name] || ''}
             setValue={(e: { target: { value: any } }) => {
@@ -383,8 +381,8 @@ const Comp: React.FC<IComp> = ({ question }) => {
   if (type === questionTypes.DROPDOWN) {
     console.log('options~~~~+++++++~~~~)', options);
     return (
-      <div className='flex flex-col mt-10 px-5'>
-        <div className='flex mt-10 flex-col'>
+      <div className="flex flex-col mt-10 px-5">
+        <div className="flex mt-10 flex-col">
           <Input
             label={title}
             name={name}
@@ -401,6 +399,9 @@ const Comp: React.FC<IComp> = ({ question }) => {
             serialNum={position}
             type={type}
             options={options}
+            onBlur={(answer: any) => {
+              dispatch(updateQuestion({ title , answer}))
+            }}
           />
         </div>
       </div>
@@ -411,26 +412,22 @@ const Comp: React.FC<IComp> = ({ question }) => {
 const CreateAssessment = () => {
   // const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const assessmentsProfiles = useAppSelector(
-    (state) => state.assessmentProfles
-  );
+  const assessmentsProfiles = useAppSelector((state) => state.assessmentProfles);
 
   const questionReduxData = useAppSelector((state) => state.questions);
   console.log('questionReduxData', questionReduxData);
 
-  const [
-    createAssessment,
-    { error: createAssesmentError, isLoading: createAssesmentLoading },
-  ] = useCreateAssessmentMutation();
+  const [createAssessment, { error: createAssesmentError, isLoading: createAssesmentLoading }] =
+    useCreateAssessmentMutation();
   const [saveSkillsToAssessment] = useSaveSkillsToAssessmentMutation();
+  const [saveModulesToAssessment] = useSaveModulesToAssessmentMutation();
+  const [saveQuestionsToAssessment] = useSaveQuestionsToAssessmentMutation();
   const [getQuestions] = assessmentApi.endpoints.getQuestions.useLazyQuery();
   const [assessment, setAssessment] = useState<any>(null);
   const { selectedModules } = useAppSelector((state) => state.modules);
 
   const [initialQuestionValue, setInitialQuestionValue] = useState('');
-  const [initialQuestionProfile, setInitialQuestionProfile] = useState(
-    assessmentsProfiles[0]
-  );
+  const [initialQuestionProfile, setInitialQuestionProfile] = useState(assessmentsProfiles[0]);
   const [questions, setQuestions] = useState([]);
   const [page, setPage] = useState(0);
 
@@ -439,6 +436,7 @@ const CreateAssessment = () => {
   const [jdPage, setJdPage] = useState(0);
   const [skillsPage, setSkillsPage] = useState(0);
   const [modulesPage, setModulesPage] = useState(0);
+  const [reviewAssessmentPage, setReviewAssessmentPage] = useState(0);
 
   const { selectedSkills } = useAppSelector((state) => state.skills);
 
@@ -451,6 +449,10 @@ const CreateAssessment = () => {
   useEffect(() => {
     setModulesPage(() => skillsPage + 1);
   }, [skillsPage]);
+
+  useEffect(() => {
+    setReviewAssessmentPage(() => modulesPage + 1);
+  }, [modulesPage]);
 
   const [jdData, setJDData] = useState('');
   const [conversation_id, setConversationID] = useState<string>('');
@@ -512,9 +514,8 @@ const CreateAssessment = () => {
 
   const getQuestionAndAddToModule = async () => {
     const totalWeightage = selectedModules.reduce(
-      (acc: any, val: { Weightage: any }) =>
-        Number(val.Weightage) + Number(acc),
-      0
+      (acc: any, val: { Weightage: any }) => Number(val.Weightage) + Number(acc),
+      0,
     );
     if (totalWeightage !== 100) {
       toast.error('Weightage should be equal to 100%');
@@ -539,7 +540,7 @@ const CreateAssessment = () => {
             method: 'POST',
             body: JSON.stringify({ ...selectedModule }),
             headers,
-          }
+          },
         );
         console.log('fetchModuleQuestionRes', fetchModuleQuestionRes);
 
@@ -549,7 +550,7 @@ const CreateAssessment = () => {
             addQuestionToModule({
               name: selectedModule.name,
               question: resJSON.questions,
-            })
+            }),
           );
           return Promise.resolve(true);
         }
@@ -557,6 +558,25 @@ const CreateAssessment = () => {
 
       await Promise.all(promiseMap);
       return Promise.resolve(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const saveModules = async () => {
+    try {
+      const { data, error } = await saveModulesToAssessment({
+        assessmentId: assessment.assessmentId,
+        module: selectedModules,
+      });
+
+      if (error) {
+        return error;
+      }
+      if (data.status) {
+        toast.success(data.message);
+        return Promise.resolve(true);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -599,8 +619,24 @@ const CreateAssessment = () => {
     }
   };
 
-  const saveQuestionsToAssessment = async () => {
-    return Promise.resolve(true);
+  const saveQuestions = async () => {
+    try {
+      
+      const { data, error } = await saveQuestionsToAssessment({
+        assessmentId: assessment.assessmentId,
+        question: questionReduxData.questions,
+      });
+
+      if (error) {
+        return error;
+      }
+      if (data.status) {
+        toast.success(data.message);
+        return Promise.resolve(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const questionsList: any = [
@@ -863,7 +899,7 @@ const CreateAssessment = () => {
 
     if (page === saveQuestionPage) {
       const saveQuestionActions = async () => {
-        return saveQuestionsToAssessment();
+        return saveQuestions();
       };
       return saveQuestionActions;
     }
@@ -889,6 +925,13 @@ const CreateAssessment = () => {
       return moduleActions;
     }
 
+    if (page === reviewAssessmentPage) {
+      const reviewAssessmentActions = async () => {
+        return saveModules();
+      };
+      return reviewAssessmentActions;
+    }
+
     return undefined;
   };
   // if(actionLoading){
@@ -896,11 +939,11 @@ const CreateAssessment = () => {
   // }
   return (
     <>
-      <h1 className='text-2xl font-Sansation_Bold'>Create Assessment</h1>
-      <div className='flex flex-col'>
+      <h1 className="text-2xl font-Sansation_Bold">Create Assessment</h1>
+      <div className="flex flex-col">
         <Step steps={steps} setSteps={setSteps} />
 
-        <div className='mx-5'>
+        <div className="mx-5">
           <Swiper
             // install Swiper modules
             modules={[Navigation, Pagination, Scrollbar, A11y]}
@@ -911,10 +954,11 @@ const CreateAssessment = () => {
             //   scrollbar={{ draggable: true }}
             onSwiper={(swiper) => console.log(swiper)}
             onSlideChange={(swiper) => setPage(swiper.activeIndex)}
-            allowTouchMove={false}>
+            allowTouchMove={false}
+          >
             {slides.map((slideContent, slideIDX) => {
               return (
-                <SwiperSlide key={slideIDX} className='h-[65vh] max-h-[65vh]'>
+                <SwiperSlide key={slideIDX} className="h-[65vh] max-h-[65vh]">
                   {slideContent}
                 </SwiperSlide>
               );
@@ -923,7 +967,7 @@ const CreateAssessment = () => {
               isJobDescriptionRequired={initialQuestionProfile.jobDetails}
             /> */}
 
-            <div className='px-5 w-full   flex flex-row justify-end absolute bottom-0 z-50'>
+            <div className="px-5 w-full   flex flex-row justify-end absolute bottom-0 z-50">
               {actionButtons.map((actionButton, idx) => {
                 // <SwiperButtonPrev disabled={true}>Back</SwiperButtonPrev>
                 return (
@@ -934,7 +978,8 @@ const CreateAssessment = () => {
 
                     {...actionButton}
                     action={getActions({ idx })}
-                    setActionCalledLoading={setActionCalledLoading}>
+                    setActionCalledLoading={setActionCalledLoading}
+                  >
                     {actionLoading ? <Loading /> : actionButton.title}
                   </SwiperNavButton>
                 );
@@ -983,26 +1028,22 @@ export function SelctExample() {
     <Listbox value={selected} onChange={setSelected}>
       {({ open }) => (
         <>
-          <Label className='block text-sm font-medium leading-6 text-gray-900'>
-            Assigned to
-          </Label>
-          <div className='relative mt-2'>
-            <ListboxButton className='relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6'>
-              <span className='block truncate'>{selected.name}</span>
-              <span className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2'>
-                <ChevronUpDownIcon
-                  className='h-5 w-5 text-gray-400'
-                  aria-hidden='true'
-                />
+          <Label className="block text-sm font-medium leading-6 text-gray-900">Assigned to</Label>
+          <div className="relative mt-2">
+            <ListboxButton className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+              <span className="block truncate">{selected.name}</span>
+              <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
               </span>
             </ListboxButton>
 
             <Transition
               show={open}
-              leave='transition ease-in duration-100'
-              leaveFrom='opacity-100'
-              leaveTo='opacity-0'>
-              <ListboxOptions className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
+              leave="transition ease-in duration-100"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <ListboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                 {people.map((person) => (
                   <ListboxOption
                     key={person.id}
@@ -1010,17 +1051,19 @@ export function SelctExample() {
                       classNames(
                         focus ? 'bg-indigo-600 text-white' : '',
                         !focus ? 'text-gray-900' : '',
-                        'relative cursor-default select-none py-2 pl-3 pr-9'
+                        'relative cursor-default select-none py-2 pl-3 pr-9',
                       )
                     }
-                    value={person}>
+                    value={person}
+                  >
                     {({ selected, focus }) => (
                       <>
                         <span
                           className={classNames(
                             selected ? 'font-semibold' : 'font-normal',
-                            'block truncate'
-                          )}>
+                            'block truncate',
+                          )}
+                        >
                           {person.name}
                         </span>
 
@@ -1028,9 +1071,10 @@ export function SelctExample() {
                           <span
                             className={classNames(
                               focus ? 'text-white' : 'text-indigo-600',
-                              'absolute inset-y-0 right-0 flex items-center pr-4'
-                            )}>
-                            <CheckIcon className='h-5 w-5' aria-hidden='true' />
+                              'absolute inset-y-0 right-0 flex items-center pr-4',
+                            )}
+                          >
+                            <CheckIcon className="h-5 w-5" aria-hidden="true" />
                           </span>
                         ) : null}
                       </>
