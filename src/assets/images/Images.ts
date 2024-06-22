@@ -15,7 +15,7 @@ import Empty_Insight from './JD/empty_insight.png';
 import Empty_JD from './JD/empty_jd.png';
 import JD_Logo from './JD/jd_logo.png';
 import Time from './modules/Time.png';
-// import Assessments from './sidebar/Assessments.png'
+import Assessments from './sidebar/Assessments.png';
 
 const ICONS = {
   playButtonCircled,
@@ -29,6 +29,7 @@ const SIDEBAR = {
   Dashboard,
   People,
   Graph,
+  Assessments,
 };
 
 const HEADER = {
