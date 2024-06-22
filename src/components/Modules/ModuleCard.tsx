@@ -157,7 +157,9 @@ const ModuleCard: React.FC<any> = ({
             })}
           </>
         ) : (
-          <p className="text-gray-300 text-sm">{selectedModule.skills.join(',')}</p>
+          <p className="text-gray-300 text-sm">
+            {selectedModule?.skills?.join(',') ?? 'Some Skills'}
+          </p>
         )}
       </div>
       {!editMode ? (

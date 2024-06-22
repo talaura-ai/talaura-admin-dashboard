@@ -45,6 +45,10 @@ export const modulesSlice = createSlice({
       const moduleToAdd = state.modules.find((m: { name: any }) => m.name === action.payload.name);
       state.selectedModules = [...state.selectedModules, moduleToAdd];
     },
+    addModuleInModulesAndSelectedModules: (state, action: PayloadAction<any>) => {
+      state.selectedModules = [...state.selectedModules, action.payload];
+      state.modules = [...state.modules, action.payload];
+    },
     setSelectedModule: (state, action: PayloadAction<any>) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
@@ -139,6 +143,7 @@ export const {
   addQuestionToModule,
   resetModulesSlice,
   updateDuration,
+  addModuleInModulesAndSelectedModules,
 } = modulesSlice.actions;
 
 export default modulesSlice.reducer;

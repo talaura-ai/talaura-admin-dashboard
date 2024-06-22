@@ -129,7 +129,7 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
 
   if (isSuccess) {
     return (
-      <div>
+      <div className="w-full">
         <Header
           exportDataToCsv={exportDataToCsv}
           filterStatus={filterStatus}
@@ -139,7 +139,7 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
         <div className="">
           <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full pb-2 align-middle sm:px-6 lg:px-8">
-              <div className="table_container max-w-[calc(100vw-9rem)] shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)] overflow-scroll border border-customGray-150">
+              <div className="table_container max-w-[calc(100vw-13rem)] shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)] overflow-scroll border border-customGray-150">
                 <table className="min-w-full divide-y divide-customGray-300 rounded-md">
                   <thead className="bg-white border-collapse">
                     <tr className=" divide-x h-[50px]">
@@ -184,7 +184,7 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
                             }
                           />
                         </td>
-                        <td className="whitespace-nowrap py-4 pl-4 text-sm font-medium text-gray-900 sm:pl-0 min-w-[15rem]">
+                        <td className="whitespace-nowrap py-4 pl-4 text-sm font-medium text-gray-900 sm:pl-0 min-w-[8rem]">
                           <Link
                             to={`candidate/${candidate._id}`}
                             className="pl-4 text-customGray-100"

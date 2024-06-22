@@ -21,7 +21,7 @@ const Header = ({
   }, [setFilterStatus, statusFromParam]);
 
   return (
-    <div className="flex justify-between w-[calc(100vw-9rem)] items-center bg-white py-4 px-2.5 rounded-t-xl mb-2">
+    <div className="flex justify-between w-full items-center bg-white py-4 px-2.5 rounded-t-xl mb-2">
       <div className="col1 flex gap-2">
         <div className="relative mt-2 rounded-md shadow-sm">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -30,7 +30,7 @@ const Header = ({
           <input
             type="search"
             name="search"
-            className="block w-full min-w-[19rem] py-2 rounded-md pl-10 text-gray-900 ring-1 ring-inset ring-customGray-300 placeholder:text-customGray-100 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 border bg-customGray-70 border-customGray-80"
+            className="block w-full min-w-[15rem] py-2 rounded-md pl-10 text-gray-900 ring-1 ring-inset ring-customGray-300 placeholder:text-customGray-100 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 border bg-customGray-70 border-customGray-80"
             placeholder="Search"
           />
         </div>

@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { Dialog, DialogPanel, Select, Transition, TransitionChild } from '@headlessui/react';
+import { Dispatch, SetStateAction, useReducer, useState } from 'react';
 import IMAGES from '../../assets/images/Images';
-import { Dialog, DialogPanel, Transition, TransitionChild, Select } from '@headlessui/react';
+import { useAppDispatch } from '../../app/hooks';
+import { addModuleInModulesAndSelectedModules } from '../../app/features/moduleSlice';
 
 const skills = [
   'Objective-C/Swift Proficiency',
@@ -20,14 +22,50 @@ const moduleTypes = ['Quiz', 'Sandbox', 'AI Video Interview', 'Voice To Voice', 
 <option value="Voice To Voice">Voice To Voice</option>
 <option value="Voice to Text">Voice to Text</option> */
 }
-const AddNewModule: React.FC<any> = () => {
+const AddNewModule: React.FC<any> = ({
+  setCreateMode,
+}: {
+  setCreateMode: Dispatch<SetStateAction<boolean>>;
+}) => {
   const [moduleSkills] = useState(skills);
   const [open, setOpen] = useState(false);
   const [moduleType, setModuleType] = useState('');
+  const dispatch = useAppDispatch();
+  const formInitialState = {
+    Weightage: 0,
+    name: '',
+    noOfQuestions: 0,
+    skills: [],
+    time: 0,
+    type: '',
+  };
+  const reducer = (state = formInitialState, action: any) => {
+    switch (action.type) {
+      case 'name':
+        return { ...state, name: action.payload };
+      case 'Weightage':
+        return { ...state, Weightage: action.payload };
+      case 'noOfQuestions':
+        return { ...state, noOfQuestions: action.payload };
+      case 'time':
+        return { ...state, time: action.payload };
+      case 'type':
+        return { ...state, type: action.payload };
+      case 'skills':
+        if (action.operation === 'add') {
+          return { ...state, skills: state.skills.concat(action.payload) };
+        } else {
+          return { ...state, skills: state.skills.filter((skl) => skl !== action.payload) };
+        }
+      default:
+        return state;
+    }
+  };
+  const [formData, localDispatch] = useReducer(reducer, formInitialState);
 
   return (
     <>
-      <div className="relative mt-10 w-90 mx-10">
+      <div className="relative mt-10 w-90 mx-10 h-full overflow-scroll  pb-20">
         <h1 className="text-[28px] font-Sansation_Regular">Creating a custom module . </h1>
         <div className="grid gap-6 mb-6 md:grid-cols-3 mt-6">
           <div>
@@ -40,6 +78,8 @@ const AddNewModule: React.FC<any> = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="Enter Module name"
               required
+              name="name"
+              onChange={(e) => localDispatch({ type: e.target.name, payload: e.target.value })}
             />
           </div>
           <div className="z-50">
@@ -49,7 +89,10 @@ const AddNewModule: React.FC<any> = () => {
             <Select
               value={moduleType}
               name="module_type"
-              onChange={(e) => setModuleType(e.target.value)}
+              onChange={(e) => {
+                localDispatch({ type: 'type', payload: e.target.value });
+                setModuleType(e.target.value);
+              }}
               aria-label="Project status"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             >
@@ -71,6 +114,8 @@ const AddNewModule: React.FC<any> = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="00 mins"
               required
+              name="time"
+              onChange={(e) => localDispatch({ type: e.target.name, payload: e.target.value })}
             />
           </div>
           <div>
@@ -83,6 +128,9 @@ const AddNewModule: React.FC<any> = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="Enter number of question"
               required
+              max={10}
+              name="noOfQuestions"
+              onChange={(e) => localDispatch({ type: e.target.name, payload: e.target.value })}
             />
           </div>
           <div>
@@ -95,6 +143,8 @@ const AddNewModule: React.FC<any> = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="Enter Weightage"
               required
+              name="Weightage"
+              onChange={(e) => localDispatch({ type: e.target.name, payload: e.target.value })}
             />
           </div>
         </div>
@@ -108,9 +158,16 @@ const AddNewModule: React.FC<any> = () => {
                 <input
                   id="review"
                   aria-describedby="offers-description"
-                  name="offers"
+                  name={item}
                   type="checkbox"
                   className="h-6 w-6 rounded border-gray-300 bg-white shadow-xl text-orange-text checked:bg-orange-text ring-0"
+                  onChange={(e) => {
+                    localDispatch({
+                      type: 'skills',
+                      payload: e.target.name,
+                      operation: e.target.checked ? 'add' : 'remove',
+                    });
+                  }}
                 />
               </div>
               <div className="ml-2">
@@ -133,7 +190,8 @@ const AddNewModule: React.FC<any> = () => {
         <div className="flex flex-row mt-6 justify-center">
           <button
             onClick={() => {
-              setOpen(true);
+              dispatch(addModuleInModulesAndSelectedModules(formData));
+              setCreateMode(false);
             }}
             className="mt-2 mx-3 items-center justify-center rounded-md border px-6 py-2.5 text-base font-medium  shadow-sm hover:bg-orange-text focus:outline-none focus:ring-0 active:animate-pulse bg-orange-text text-white"
           >

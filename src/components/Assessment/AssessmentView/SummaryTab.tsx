@@ -57,7 +57,7 @@ const SummaryTab = ({ assessmentData }: { assessmentData?: IAssessmentDetails })
 
   return (
     <div className="self-stretch flex flex-row items-stretch justify-start py-[0rem] pr-[0rem] pl-[0.187rem] box-border max-w-full text-[2.813rem] text-burlywood-100 gap-3">
-      <div className="flex-1 flex flex-row items-end justify-start gap-[1.187rem] max-w-[60%] mq1050:flex-wrap">
+      <div className="flex-1 flex flex-row items-start justify-start gap-[1.187rem] max-w-[60%] mq1050:flex-wrap">
         <div className="flex-1 flex flex-col items-start justify-start gap-[1.5rem] max-w-full mq750:min-w-full">
           <div className="self-stretch flex flex-row items-center justify-start gap-[1.25rem] max-w-full mq750:flex-wrap">
             <div className="shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] h-[110px] py-2.5 w-[100px] rounded-xl bg-white flex flex-col items-start justify-start px-[1.5rem] box-border gap-[0.187rem] z-[1]">
@@ -156,24 +156,28 @@ const SummaryTab = ({ assessmentData }: { assessmentData?: IAssessmentDetails })
           </h2>
           <div className="modules_container p-6 flex flex-col text-left">
             {Array.from(modulesMap).map(([key, valuesArray]) => (
-              <div key={key} className="w-[250px]">
+              <div key={key} className="">
                 <span className="text-black text-lg font-bold">{key}</span>
-                {valuesArray.map((module, idx) => (
-                  <div
-                    key={idx}
-                    className="module flex flex-row text-center items-center p-4 border border-gainsboro rounded-md gap-2"
-                  >
-                    <img
-                      src={`/images/${iconsArr[Math.floor(Math.random() * (iconsArr.length - 0))]}`}
-                      alt=""
-                      className="h-[30px] w-[30px]"
-                    />
-                    <div className="text_wrapper flex flex-col">
-                      <span className="text-lg text-customGray-100">{module.type}</span>
-                      <span className="text-customGray-100 text-sm">{module.time} minutes</span>
+                <div className="w-full flex flex-row flex-wrap gap-2 justify-between">
+                  {valuesArray.map((module, idx) => (
+                    <div
+                      key={idx}
+                      className="module flex flex-row text-center items-center p-4 border mb-2 border-gainsboro rounded-md gap-2 w-[48%] overflow-scroll"
+                    >
+                      <img
+                        src={`/images/${iconsArr[Math.floor(Math.random() * (iconsArr.length - 0))]}`}
+                        alt=""
+                        className="h-[30px] w-[30px]"
+                      />
+                      <div className="text_wrapper flex flex-col">
+                        <span className="text-lg text-customGray-100 text-left">{module.type}</span>
+                        <span className="text-customGray-100 text-sm text-left">
+                          {module.time} minutes
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             ))}
           </div>

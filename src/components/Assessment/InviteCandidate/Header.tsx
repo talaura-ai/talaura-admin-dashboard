@@ -2,7 +2,7 @@ const Header = () => {
   return (
     <>
       <div
-        className={`self-stretch flex flex-row items-start justify-start py-[0rem] pr-[0.062rem] pl-[0.187rem] box-border max-w-full text-center text-[1.5rem] text-customGray-100 font-sansation`}
+        className={`self-stretch flex flex-row items-start justify-start py-[0rem] pr-[0.062rem] pl-[0.187rem] box-border text-center text-[1.5rem] text-customGray-100 font-sansation`}
       >
         <div className="flex-1 flex flex-col justify-between max-w-full gap-2 mq750:flex-wrap">
           <div className="flex flex-col items-start justify-start pt-[0rem] px-[0rem] pb-[0.062rem] box-border max-w-full">

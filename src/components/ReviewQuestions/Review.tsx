@@ -38,7 +38,7 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({
               </button> */}
             </div>
             <div className="flex flex-row justify-center items-center">
-              {!questions.length ? (
+              {!questions?.length ? (
                 <h1>
                   No Questions found in <span className="text-orange-text">{module?.name}</span>{' '}
                   module

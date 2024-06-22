@@ -10,15 +10,15 @@ const AddedCandidatesTable = () => {
     dispatch(removeCandidateFromInviteList(email));
   };
   return (
-    <div className="mt-[70px] w-full">
-      <div className="flex flex-col justify-center min-w-max">
-        <div className="row1 justify-start my-2 text-left ml-20">
+    <div className="mt-10 w-full">
+      <div className="flex flex-col justify-center w-full">
+        <div className="row1 justify-start my-2 text-left mx-16">
           <span className="text-left text-lg text-black w-full">0 Candidates invite</span>
         </div>
-        <div className="row2 self-center">
-          <div className="table_container overflow-scroll mx-20">
-            <table className="w-full divide-y divide-customGray-250 rounded-md">
-              <thead className="bg-white border-collapse">
+        <div className="row2 self-center w-full">
+          <div className="table_container overflow-scroll mx-16">
+            <table className="w-full divide-y divide-customGray-250 bg-white rounded-md">
+              <thead className="border-collapse">
                 <tr className="divide-customGray-250 divide-x">
                   {columns.map((val, idx) => (
                     <th
@@ -31,9 +31,9 @@ const AddedCandidatesTable = () => {
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-customGray-250 bg-white shadow-[0_1px_4px_0_rgba(0,0,0,0.25)] text-sandybrown">
+              <tbody className="divide-y divide-customGray-250 shadow-[0_1px_4px_0_rgba(0,0,0,0.25)] text-sandybrown">
                 {allCandidates?.map((candidate, idx) => (
-                  <tr key={idx} className="text-left even:bg-gray-30">
+                  <tr key={idx} className="text-left even:bg-gray-30 even:bg-gray-50">
                     <td className="whitespace-nowrap py-1.5 pl-4 text-sm font-medium text-customGray-100 sm:pl-0 min-w-[15rem] text-lg">
                       <span className="pl-4">{candidate.name}</span>
                     </td>

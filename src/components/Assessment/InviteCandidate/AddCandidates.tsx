@@ -4,12 +4,12 @@ import {
   PlusCircleIcon,
   UserIcon,
 } from '@heroicons/react/24/outline';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { addCandidateToInviteList } from '../../../app/features/inviteCandidateSlice';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-import FileUploadModal from './FileUploadModal';
 import { read, utils } from 'xlsx';
+import { addCandidateToInviteList } from '../../../app/features/inviteCandidateSlice';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import FileUploadModal from './FileUploadModal';
 
 const AddCandidates = () => {
   const [name, setName] = useState<string>('');
@@ -29,6 +29,7 @@ const AddCandidates = () => {
     if (res) {
       setEmail('');
       setName('');
+      isNoError.current = false;
       return;
     }
     return toast.error('Candidate With Email Already Exists');
@@ -74,6 +75,7 @@ const AddCandidates = () => {
       return true;
     }
   };
+
   useEffect(() => {
     if (
       name.length > 1 &&
@@ -93,10 +95,10 @@ const AddCandidates = () => {
         setOpenUploadModel={setOpenUploadModel}
         handleFileUpload={readExcelFile}
       />
-      <div className="main_container shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] flex w-full min-w-[calc(100vw-9rem)] justify-start items-center bg-white py-4 px-20">
-        <form className="col1 flex items-center gap-2.5" onSubmit={onAddCandidate}>
-          <div className="col1_col1">
-            <div className="input_container relative w-[350px] h-[50px]">
+      <div className="main_container shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] flex w-full justify-start items-center bg-white py-4 px-20">
+        <form className="col1 flex items-center gap-2.5 w-full" onSubmit={onAddCandidate}>
+          <div className="col1_col1 w-full">
+            <div className="input_container relative w-full h-[50px]">
               <UserIcon className="w-[27px] h-[20px] absolute left-2 top-3.5" />
               <input
                 type="text"
@@ -109,8 +111,8 @@ const AddCandidates = () => {
               />
             </div>
           </div>
-          <div className="col1_col2">
-            <div className="input_container relative w-[350px] h-[50px]">
+          <div className="col1_col2 w-full">
+            <div className="input_container relative w-full h-[50px]">
               <EnvelopeIcon className="w-[27px] h-[20px] absolute left-2 top-3.5" />
               <input
                 type="email"
@@ -124,8 +126,9 @@ const AddCandidates = () => {
           </div>
           <div className="col1_col3">
             <button
-              className={`relative w-[111px] h-[50px] rounded-lg ${isNoError.current ? 'bg-peru-100' : 'bg-golden-200'} flex justify-center items-center text-white-200`}
+              className={`relative w-[111px] h-[50px] rounded-lg ${isNoError.current ? 'bg-peru-100' : 'bg-golden-200 cursor-not-allowed'} flex justify-center items-center text-white-200`}
               type="submit"
+              disabled={!isNoError.current}
             >
               <PlusCircleIcon className="w-[27px] h-[20px]" />
               <span>Add</span>
@@ -136,7 +139,7 @@ const AddCandidates = () => {
         <div className="col2 flex gap-4">
           <div className="col2_col1">
             <button
-              className="border border-sandybrown text-sandybrown rounded-lg flex justify-start items-center h-[50px] px-2.5"
+              className={`border border-sandybrown text-sandybrown rounded-lg flex justify-start items-center py-[12px] px-2.5`}
               onClick={() => setOpenUploadModel(true)}
             >
               <DocumentArrowUpIcon className="w-[17px] h-[22px]" />

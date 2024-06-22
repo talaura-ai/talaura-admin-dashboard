@@ -4,6 +4,7 @@ import ModuleCard from './ModuleCard';
 import OverView from './OverView';
 import EditModule from './EditModule';
 import AddNewModule from './AddNewModule';
+import IMAGES from '../../assets/images/Images';
 // const moduleDetails = {
 //   type: "Quiz",
 //   name: "Microsoft Word Proficiency Test",
@@ -29,7 +30,7 @@ const Modules = () => {
 
   return (
     <>
-      {/* <button
+      <button
         className="inline-flex
     h-8 w-24
      items-center
@@ -45,10 +46,10 @@ const Modules = () => {
       >
         <img src={IMAGES.Create} className="h-5 w-5" />
         <h3 className="px-1 text-white">Create</h3>
-      </button> */}
+      </button>
       <div className="scrollbar overflow-y-auto h-full dir-rtl">
         <div className="dir-ltr">
-          <div className="grid grid-cols-7 gap-4">
+          <div className="grid grid-cols-7 gap-4   pb-20">
             <div className="col-span-4">
               {modules.map(
                 (module: {

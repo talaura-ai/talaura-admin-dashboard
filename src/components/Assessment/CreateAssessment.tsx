@@ -1,32 +1,10 @@
 import { CheckIcon } from '@heroicons/react/20/solid';
-import IMAGES from '../../assets/images/Images';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
+import IMAGES from '../../assets/images/Images';
 // import Swiper core and required modules
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+import { A11y, Navigation, Pagination, Scrollbar } from 'swiper/modules';
 
 // Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
-import 'swiper/css/virtual';
-import InitialQuestion from './InitialQuestion';
-import { classNames } from '../Core/classNames';
-import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-  assessmentApi,
-  useCreateAssessmentMutation,
-  useSaveModulesToAssessmentMutation,
-  useSaveQuestionsToAssessmentMutation,
-  useSaveSkillsToAssessmentMutation,
-} from '../../app/services/assessments';
-import toast, { LoaderIcon } from 'react-hot-toast';
-import { questionTypes } from '../../app/features/assessmentsSlice';
-import Input from '../Core/Input';
-import useFormContext from '../../hooks/useFormContext';
-import EmptyDataScreen from '../EmptyDataScreen/EmptyDataScreen';
-import MultipleChoices from '../Core/MultipleChoices';
 import {
   Label,
   Listbox,
@@ -36,14 +14,36 @@ import {
   Transition,
 } from '@headlessui/react';
 import { ChevronUpDownIcon } from '@heroicons/react/20/solid';
-import JD from '../JD/JD';
-import { logout } from '../../app/features/adminSlice';
-import Skills from '../Skills/Skills';
+import { useEffect, useState } from 'react';
+import toast, { LoaderIcon } from 'react-hot-toast';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+import 'swiper/css/virtual';
 import { v4 as uuid } from 'uuid';
+import { logout } from '../../app/features/adminSlice';
+import { questionTypes } from '../../app/features/assessmentsSlice';
 import { resetSkillsSlice, setSkills } from '../../app/features/skillsSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import {
+  assessmentApi,
+  useCreateAssessmentMutation,
+  useSaveModulesToAssessmentMutation,
+  useSaveQuestionsToAssessmentMutation,
+  useSaveSkillsToAssessmentMutation,
+} from '../../app/services/assessments';
+import useFormContext from '../../hooks/useFormContext';
+import { classNames } from '../Core/classNames';
+import Input from '../Core/Input';
+import MultipleChoices from '../Core/MultipleChoices';
+import EmptyDataScreen from '../EmptyDataScreen/EmptyDataScreen';
+import JD from '../JD/JD';
+import Skills from '../Skills/Skills';
+import InitialQuestion from './InitialQuestion';
 // import ReviewQuestions from '../ReviewQuestions/Review';
-import Modules from '../Modules/Modules';
-import ReviewAssessments from '../ReviewAssessments/ReviewAssessments';
+import { useNavigate } from 'react-router-dom';
+import { setAllProfiles } from '../../app/features/assessmentProfiles';
 import {
   addQuestionToModule,
   resetModulesSlice,
@@ -55,10 +55,10 @@ import {
   setQuestionsToApp,
   updateQuestion,
 } from '../../app/features/questions';
-import { useNavigate } from 'react-router-dom';
-import LoadingScreen from '../Loading/LoadingScreen';
 import { useGetAssessmentProfilesQuery } from '../../app/services/assessmentProfiles';
-import { setAllProfiles } from '../../app/features/assessmentProfiles';
+import LoadingScreen from '../Loading/LoadingScreen';
+import Modules from '../Modules/Modules';
+import ReviewAssessments from '../ReviewAssessments/ReviewAssessments';
 
 const AI_API_URL = import.meta.env.VITE_AI_API_URL;
 
