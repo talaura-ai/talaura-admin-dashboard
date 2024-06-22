@@ -1,22 +1,7 @@
 import Input from '../Core/Input';
 import { Radio, RadioGroup } from '@headlessui/react';
 import { classNames } from '../Core/classNames';
-import Loading from '../Loading/Loading';
-
-// const assessmentProfiles = [
-//     {
-//         "_id": "6666aa41e95d9fcf67700b0e",
-//         "name": "college",
-//         "title": "College",
-//         "jobDetails": false
-//     },
-//     {
-//         "_id": "6666aa41e95d9fcf67700b0e",
-//         "name": "organisation",
-//         "title": "Organisation",
-//         "jobDetails": true
-//     }
-// ]
+import LoadingScreen from '../Loading/LoadingScreen';
 
 const InitialQuestion: React.FC<any> = ({
   value,
@@ -27,7 +12,7 @@ const InitialQuestion: React.FC<any> = ({
   loading,
 }) => {
   if (loading) {
-    return <Loading />;
+    return <LoadingScreen />;
   }
   return (
     <div className="flex flex-col mt-10 px-5">
@@ -35,7 +20,13 @@ const InitialQuestion: React.FC<any> = ({
         <h1 className="text-black text-2xl font-Sansation_Bold">Are you a?</h1>
         <RadioGroup
           value={initialQuestionProfile.name}
-          onChange={setInitialQuestionProfile}
+          onChange={(e) => {
+            const profile = assessmentsProfiles.find((af: { name: any }) => af.name === e);
+            console.log('🚀 ~ profile:', profile);
+            if (profile) {
+              setInitialQuestionProfile(profile);
+            }
+          }}
           className="flex flex-row  gap-5 rounded-md mt-5 "
         >
           {assessmentsProfiles.map((profile: any, profileIdx: number) => (

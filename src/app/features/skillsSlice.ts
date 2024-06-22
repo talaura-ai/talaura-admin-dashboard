@@ -41,6 +41,7 @@ export const skillsSlice = createSlice({
       // immutable state based off those changes
       state.selectedSkills = state.selectedSkills.filter((item: string) => item !== action.payload);
     },
+    resetSkillsSlice: () => initialState,
   },
 });
 
@@ -52,6 +53,7 @@ export const {
   getSelectedSkills,
   setSelectedSkill,
   removeSelectedSkill,
+  resetSkillsSlice,
 } = skillsSlice.actions;
 
 export default skillsSlice.reducer;

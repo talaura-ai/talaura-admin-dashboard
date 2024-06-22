@@ -21,7 +21,7 @@ import {
   useSaveQuestionsToAssessmentMutation,
   useSaveSkillsToAssessmentMutation,
 } from '../../app/services/assessments';
-import toast from 'react-hot-toast';
+import toast, { LoaderIcon } from 'react-hot-toast';
 import { questionTypes } from '../../app/features/assessmentsSlice';
 import Input from '../Core/Input';
 import useFormContext from '../../hooks/useFormContext';
@@ -40,13 +40,26 @@ import JD from '../JD/JD';
 import { logout } from '../../app/features/adminSlice';
 import Skills from '../Skills/Skills';
 import { v4 as uuid } from 'uuid';
-import Loading from '../Loading/Loading';
-import { setSkills } from '../../app/features/skillsSlice';
-import ReviewQuestions from '../ReviewQuestions/Review';
+import { resetSkillsSlice, setSkills } from '../../app/features/skillsSlice';
+// import ReviewQuestions from '../ReviewQuestions/Review';
 import Modules from '../Modules/Modules';
 import ReviewAssessments from '../ReviewAssessments/ReviewAssessments';
-import { addQuestionToModule, setModules, setSelectedModule } from '../../app/features/moduleSlice';
-import { setQuestionsToApp, updateQuestion } from '../../app/features/questions';
+import {
+  addQuestionToModule,
+  resetModulesSlice,
+  setModules,
+  setSelectedModule,
+} from '../../app/features/moduleSlice';
+import {
+  resetQuestionsSlice,
+  setQuestionsToApp,
+  updateQuestion,
+} from '../../app/features/questions';
+import { useNavigate } from 'react-router-dom';
+import LoadingScreen from '../Loading/LoadingScreen';
+import { useGetAssessmentProfilesQuery } from '../../app/services/assessmentProfiles';
+import { setAllProfiles } from '../../app/features/assessmentProfiles';
+
 const AI_API_URL = import.meta.env.VITE_AI_API_URL;
 
 // const steps = [
@@ -180,7 +193,7 @@ const SwiperNavButton: React.FC<ISliderNav> = ({
     <button
       disabled={disabled}
       onClick={async () => {
-        if (action !== undefined) {
+        if (action !== undefined && isPrimary) {
           setActionCalledLoading(true);
           const res = await action();
           setActionCalledLoading(false);
@@ -198,7 +211,7 @@ const SwiperNavButton: React.FC<ISliderNav> = ({
         }
       }}
       className={classNames(
-        'mt-2 mx-3  items-center justify-center rounded-md border   px-6 py-3 text-base font-medium  shadow-sm hover:bg-orange-text focus:outline-none focus:ring-0 active:animate-pulse ',
+        'mt-2 mx-3  items-center justify-center rounded-md border   px-6 py-3 text-base font-medium  shadow-sm hover:bg-orange-text focus:outline-none focus:ring-0 active:animate-pulse z-40 min-w-14 min-h-14',
         className,
         disabled ? 'opacity-50' : '',
         isPrimary
@@ -221,12 +234,7 @@ const Comp: React.FC<IComp> = ({ question }) => {
   const { data, setData } = useFormContext();
   const dispatch = useAppDispatch();
 
-  console.log('question~~~~', question);
-  console.log('daTTa~~~~', data);
-
   useEffect(() => {
-    // questions.forEach((question) => {
-    //   console.log("question", question);
     setData((oldData: any) => ({
       ...oldData,
       [question.name]:
@@ -242,9 +250,7 @@ const Comp: React.FC<IComp> = ({ question }) => {
   }, [question]);
 
   if (!question) return <EmptyDataScreen />;
-  console.log('data~~~~', data);
   const { type, title, name, position, options = [] } = question;
-  console.log('name, title, type', question);
 
   // return questions
   //   .slice()
@@ -337,7 +343,6 @@ const Comp: React.FC<IComp> = ({ question }) => {
             name={name}
             value={data[name] || ''}
             setValue={async (e: { target: { value: any } }) => {
-              console.log('e', e);
               return setData((oldData: any) => {
                 return {
                   ...oldData,
@@ -363,7 +368,6 @@ const Comp: React.FC<IComp> = ({ question }) => {
             name={name}
             value={data[name] || ''}
             setValue={(e: { target: { value: any } }) => {
-              console.log('e', e);
               return setData((oldData: any) => {
                 return {
                   ...oldData,
@@ -379,7 +383,6 @@ const Comp: React.FC<IComp> = ({ question }) => {
     );
 
   if (type === questionTypes.DROPDOWN) {
-    console.log('options~~~~+++++++~~~~)', options);
     return (
       <div className="flex flex-col mt-10 px-5">
         <div className="flex mt-10 flex-col">
@@ -388,7 +391,6 @@ const Comp: React.FC<IComp> = ({ question }) => {
             name={name}
             value={data[name] || ''}
             setValue={(e: { target: { value: any } }) => {
-              console.log('e', e);
               return setData((oldData: any) => {
                 return {
                   ...oldData,
@@ -412,10 +414,17 @@ const Comp: React.FC<IComp> = ({ question }) => {
 const CreateAssessment = () => {
   // const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const assessmentsProfiles = useAppSelector((state) => state.assessmentProfles);
+  const { data: profileData, isLoading: profileLoading } = useGetAssessmentProfilesQuery('');
+
+  useEffect(() => {
+    if (profileData && profileData.status) {
+      dispatch(setAllProfiles(profileData.assessmentProfile));
+    }
+  }, [dispatch, profileData]);
+
+  const assessmentsProfiles = useAppSelector((state) => state.assessmentProfiles);
 
   const questionReduxData = useAppSelector((state) => state.questions);
-  console.log('questionReduxData', questionReduxData);
 
   const [createAssessment, { error: createAssesmentError, isLoading: createAssesmentLoading }] =
     useCreateAssessmentMutation();
@@ -423,11 +432,19 @@ const CreateAssessment = () => {
   const [saveModulesToAssessment] = useSaveModulesToAssessmentMutation();
   const [saveQuestionsToAssessment] = useSaveQuestionsToAssessmentMutation();
   const [getQuestions] = assessmentApi.endpoints.getQuestions.useLazyQuery();
+
   const [assessment, setAssessment] = useState<any>(null);
   const { selectedModules } = useAppSelector((state) => state.modules);
 
   const [initialQuestionValue, setInitialQuestionValue] = useState('');
-  const [initialQuestionProfile, setInitialQuestionProfile] = useState(assessmentsProfiles[0]);
+  const [initialQuestionProfile, setInitialQuestionProfile] = useState<any>({});
+
+  useEffect(() => {
+    if (assessmentsProfiles) {
+      setInitialQuestionProfile(assessmentsProfiles[0]);
+    }
+  }, [assessmentsProfiles]);
+
   const [questions, setQuestions] = useState([]);
   const [page, setPage] = useState(0);
 
@@ -462,23 +479,22 @@ const CreateAssessment = () => {
   useEffect(() => {
     setSaveQuestionPage(questions.length);
     setJdPage(questions.length + 1);
-    console.log('modulesPage', page, modulesPage);
-    if (page === modulesPage) {
-      setSteps((oldSteps) => {
-        const setState = oldSteps;
+    // if (page === modulesPage) {
+    //   setSteps((oldSteps) => {
+    //     const setState = oldSteps;
 
-        const createStep = setState.findIndex((step) => step.id === 1);
-        const testModuleStep = setState.findIndex((step) => step.id === 2);
-        const reviewStep = setState.findIndex((step) => step.id === 2);
+    //     const createStep = setState.findIndex((step) => step.id === 1);
+    //     const testModuleStep = setState.findIndex((step) => step.id === 2);
+    //     const reviewStep = setState.findIndex((step) => step.id === 2);
 
-        setState[createStep].status = 'complete';
-        setState[testModuleStep].status = 'complete';
-        setState[reviewStep].status = 'upcoming';
+    //     setState[createStep].status = 'complete';
+    //     setState[testModuleStep].status = 'complete';
+    //     setState[reviewStep].status = 'upcoming';
 
-        return setState;
-      });
-    }
-  }, [questions, initialQuestionProfile.name, page]);
+    //     return setState;
+    //   });
+    // }
+  }, [questions, initialQuestionProfile, page]);
 
   useEffect(() => {
     const convoID = uuid();
@@ -542,7 +558,6 @@ const CreateAssessment = () => {
             headers,
           },
         );
-        console.log('fetchModuleQuestionRes', fetchModuleQuestionRes);
 
         if (fetchModuleQuestionRes.statusText === 'OK') {
           const resJSON = await fetchModuleQuestionRes.json();
@@ -571,9 +586,10 @@ const CreateAssessment = () => {
       });
 
       if (error) {
-        return error;
+        toast.error(`${error}`);
+        return;
       }
-      if (data.status) {
+      if (data.status === true) {
         toast.success(data.message);
         return Promise.resolve(true);
       }
@@ -638,65 +654,33 @@ const CreateAssessment = () => {
     }
   };
 
-  const questionsList: any = [
-    {
-      title: 'UI/UX Critique:',
-      description:
-        "Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines.",
-    },
-    {
-      title: 'UI/UX Critique:',
-      description:
-        "Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines.",
-    },
-    {
-      title: 'UI/UX Critique:',
-      description:
-        "Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines.",
-    },
-    {
-      title: 'UI/UX Critique:',
-      description:
-        "Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines.",
-    },
-    {
-      title: 'UI/UX Critique:',
-      description:
-        "Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines.",
-    },
-  ];
-
-  const slides = [
-    <InitialQuestion
-      value={initialQuestionValue}
-      setInitialQuestionValue={setInitialQuestionValue}
-      initialQuestionProfile={initialQuestionProfile}
-      setInitialQuestionProfile={setInitialQuestionProfile}
-      assessmentsProfiles={assessmentsProfiles}
-      loading={createAssesmentLoading}
-    />,
-
-    ...questionReduxData.questions.map((q: any) => (
-      <Comp question={q} assessmentsProfiles={assessmentsProfiles} />
-    )),
-    <JD
-      isJobDescriptionRequired={initialQuestionProfile.jobDetails}
-      assessment={assessment}
-      jdData={jdData}
-      setJDData={setJDData}
-      conversation_id={conversation_id}
-    />,
-    <Skills
-      // @ts-ignore
-      skills={skillsData}
-      setSkillsData={setSkillsData}
-      generateSkills={generateSkills}
-    />,
-    <Modules />,
-    // <AddNewModule />,
-    <ReviewAssessments />,
-    <ReviewQuestions questions={questionsList} />,
-  ];
+  // const questionsList: any = [
+  //   {
+  //     title: 'UI/UX Critique:',
+  //     description:
+  //       "Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines.",
+  //   },
+  //   {
+  //     title: 'UI/UX Critique:',
+  //     description:
+  //       "Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines.",
+  //   },
+  //   {
+  //     title: 'UI/UX Critique:',
+  //     description:
+  //       "Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines.",
+  //   },
+  //   {
+  //     title: 'UI/UX Critique:',
+  //     description:
+  //       "Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines.",
+  //   },
+  //   {
+  //     title: 'UI/UX Critique:',
+  //     description:
+  //       "Please critique the UI/UX of the Instagram app. Focus on what improvements could be made according to Apple's design guidelines.",
+  //   },
+  // ];
 
   const createAssesmentMethod = async () => {
     const result = await createAssessment({
@@ -817,6 +801,9 @@ const CreateAssessment = () => {
   };
 
   const isBackHidden = () => {
+    if (page === reviewAssessmentPage) {
+      return false;
+    }
     if (page < 1) {
       return true;
     }
@@ -870,7 +857,6 @@ const CreateAssessment = () => {
   useEffect(() => {
     const getQuestionMethod = async () => {
       const questionResult = await getQuestions(initialQuestionProfile.name);
-      console.log('questionResult', questionResult);
       if (questionResult.isSuccess && questionResult.status === 'fulfilled') {
         const data = questionResult.data;
         if (data.status) {
@@ -879,8 +865,12 @@ const CreateAssessment = () => {
         }
       }
     };
-    getQuestionMethod();
-  }, [initialQuestionProfile.name]);
+    console.log('🚀 ~ useEffect ~ initialQuestionProfile:', initialQuestionProfile);
+
+    if (initialQuestionProfile) {
+      getQuestionMethod();
+    }
+  }, [initialQuestionProfile]);
 
   const getActions = ({ idx }: { idx: any }) => {
     //  ? actionButton.action :
@@ -926,7 +916,14 @@ const CreateAssessment = () => {
 
     if (page === reviewAssessmentPage) {
       const reviewAssessmentActions = async () => {
-        return saveModules();
+        const saveRes = await saveModules();
+        if (saveRes) {
+          dispatch(resetModulesSlice());
+          dispatch(resetQuestionsSlice());
+          dispatch(resetSkillsSlice());
+          navigation('/');
+        }
+        return saveRes;
       };
       return reviewAssessmentActions;
     }
@@ -936,6 +933,117 @@ const CreateAssessment = () => {
   // if(actionLoading){
   //   return <LoadingScreen />
   // }
+
+  const navigation = useNavigate();
+
+  useEffect(() => {
+    if (questionReduxData.questions.length) {
+      setSteps((oldSteps) => {
+        const old = oldSteps;
+        old.forEach((s) => {
+          if (s.id === 1) {
+            s.status = 'current';
+          }
+          if (s.id === 2) {
+            s.status = 'upcoming';
+          }
+
+          if (s.id === 3) {
+            s.status = 'upcoming';
+          }
+        });
+
+        return old;
+      });
+    }
+
+    if (selectedModules.length) {
+      setSteps((oldSteps) => {
+        const old = oldSteps;
+        old.forEach((s) => {
+          if (s.id === 1) {
+            s.status = 'complete';
+          }
+          if (s.id === 2) {
+            s.status = 'current';
+          }
+
+          if (s.id === 3) {
+            s.status = 'upcoming';
+          }
+        });
+
+        return old;
+      });
+    }
+
+    if (
+      selectedModules.length &&
+      selectedModules[0].question &&
+      selectedModules[0].question.length
+    ) {
+      setSteps((oldSteps) => {
+        const old = oldSteps;
+        old.forEach((s) => {
+          if (s.id === 1) {
+            s.status = 'complete';
+          }
+          if (s.id === 2) {
+            s.status = 'complete';
+          }
+
+          if (s.id === 3) {
+            s.status = 'current';
+          }
+        });
+
+        return old;
+      });
+    }
+  }, [questionReduxData, selectedModules]);
+
+  if (
+    profileLoading ||
+    !initialQuestionProfile ||
+    (initialQuestionProfile && !initialQuestionProfile.name && initialQuestionProfile.jobDetails)
+  ) {
+    return <LoadingScreen />;
+  }
+
+  const slides = [
+    <InitialQuestion
+      value={initialQuestionValue}
+      setInitialQuestionValue={setInitialQuestionValue}
+      initialQuestionProfile={initialQuestionProfile}
+      setInitialQuestionProfile={setInitialQuestionProfile}
+      assessmentsProfiles={assessmentsProfiles}
+      loading={createAssesmentLoading}
+    />,
+
+    ...questionReduxData.questions.map((q: any) => (
+      <Comp question={q} assessmentsProfiles={assessmentsProfiles} />
+    )),
+    <JD
+      isJobDescriptionRequired={initialQuestionProfile.jobDetails}
+      assessment={assessment}
+      jdData={jdData}
+      setJDData={setJDData}
+      conversation_id={conversation_id}
+    />,
+    <Skills
+      // @ts-ignore
+      skills={skillsData}
+      setSkillsData={setSkillsData}
+      generateSkills={generateSkills}
+    />,
+    <Modules />,
+    // <AddNewModule />,
+    <ReviewAssessments />,
+    // <ReviewQuestions questions={questionsList}
+
+    // />,
+  ];
+
   return (
     <>
       <h1 className="text-2xl font-Sansation_Bold">Create Assessment</h1>
@@ -954,23 +1062,27 @@ const CreateAssessment = () => {
             onSwiper={(swiper) => console.log(swiper)}
             onSlideChange={(swiper) => setPage(swiper.activeIndex)}
             allowTouchMove={false}
+            onEnded={() => navigation('/assessments')}
           >
             {slides.map((slideContent, slideIDX) => {
               return (
-                <SwiperSlide key={slideIDX} className="h-[65vh] max-h-[65vh]">
+                <SwiperSlide
+                  key={slideIDX}
+                  className="h-[65vh] max-h-[65vh]"
+                  data-swiper-parallax={window.screenX * 0.95}
+                  data-swiper-parallax-opacity={'0.5'}
+                >
                   {slideContent}
                 </SwiperSlide>
               );
             })}
-            {/* <JD 
-              isJobDescriptionRequired={initialQuestionProfile.jobDetails}
-            /> */}
 
-            <div className="px-5 w-full   flex flex-row justify-end absolute bottom-0 z-50">
+            <div className={'px-5 w-full   flex flex-row justify-end absolute bottom-0'}>
               {actionButtons.map((actionButton, idx) => {
                 // <SwiperButtonPrev disabled={true}>Back</SwiperButtonPrev>
                 return (
                   <SwiperNavButton
+                    key={idx}
                     // id={actionButton.id}
                     //   disabled={actionButton.disabled}
                     //   action={actionButton.action}
@@ -979,7 +1091,13 @@ const CreateAssessment = () => {
                     action={getActions({ idx })}
                     setActionCalledLoading={setActionCalledLoading}
                   >
-                    {actionLoading ? <Loading /> : actionButton.title}
+                    {actionLoading ? (
+                      <div className="flex flex-row items-center">
+                        {actionButton.title} <LoaderIcon className="mx-1" />
+                      </div>
+                    ) : (
+                      actionButton.title
+                    )}
                   </SwiperNavButton>
                 );
                 // <SwiperButtonDone

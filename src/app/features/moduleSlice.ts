@@ -42,7 +42,6 @@ export const modulesSlice = createSlice({
       state.modules = [...action.payload.modules];
     },
     addModule: (state, action: PayloadAction<any>) => {
-      console.log('action.payload', action.payload.name);
       const moduleToAdd = state.modules.find((m: { name: any }) => m.name === action.payload.name);
       state.selectedModules = [...state.selectedModules, moduleToAdd];
     },
@@ -68,10 +67,8 @@ export const modulesSlice = createSlice({
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
       const selectedModule = state.selectedModules.find((module: any) => {
-        console.log('module', module);
         return module.name === action.payload.name;
       });
-      console.log('selectedModule', selectedModule);
       if (selectedModule) {
         selectedModule.skills.push(action.payload.skill);
       }
@@ -82,11 +79,9 @@ export const modulesSlice = createSlice({
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
       const selectedModule = state.selectedModules.find((module: any) => {
-        console.log('modulez~~~', module, module.name);
         return module.name === action.payload.name;
       });
       if (selectedModule) {
-        console.log('selectedModule', selectedModule);
         selectedModule.skills = selectedModule.skills.filter(
           (s: any) => s !== action.payload.skill,
         );
@@ -98,11 +93,9 @@ export const modulesSlice = createSlice({
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
       const selectedModule = state.selectedModules.find((module: any) => {
-        console.log('modulez~~~', module, module.name);
         return module.name === action.payload.name;
       });
       if (selectedModule) {
-        console.log('selectedModule', selectedModule);
         selectedModule.Weightage = action.payload.Weightage;
       }
     },
@@ -118,6 +111,19 @@ export const modulesSlice = createSlice({
         selectedModule.question = action.payload.question;
       }
     },
+    updateDuration: (state, action: PayloadAction<any>) => {
+      // Redux Toolkit allows us to write "mutating" logic in reducers. It
+      // doesn't actually mutate the state because it uses the Immer library,
+      // which detects changes to a "draft state" and produces a brand new
+      // immutable state based off those changes
+      const selectedModule = state.selectedModules.find((module: any) => {
+        return module.name === action.payload.name;
+      });
+      if (selectedModule) {
+        selectedModule.time = action.payload.time;
+      }
+    },
+    resetModulesSlice: () => initialState,
   },
 });
 
@@ -131,6 +137,8 @@ export const {
   removeModuleSkill,
   updateWeightage,
   addQuestionToModule,
+  resetModulesSlice,
+  updateDuration,
 } = modulesSlice.actions;
 
 export default modulesSlice.reducer;

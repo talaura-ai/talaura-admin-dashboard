@@ -14,7 +14,7 @@ import { candidatesApi } from './services/candidates';
 export const rootReducers = combineReducers({
   admin: adminReducer,
   assessments: assessmentsReducer,
-  assessmentProfles: assessmentProfilesReducer,
+  assessmentProfiles: assessmentProfilesReducer,
   skills: skillsReducer,
   modules: moduleReducer,
   questions: questionsReducer,
@@ -22,8 +22,5 @@ export const rootReducers = combineReducers({
   [assessmentApi.reducerPath]: assessmentApi.reducer,
   [assessmentProfilesApi.reducerPath]: assessmentProfilesApi.reducer,
   inviteCandidate: inviteCandidateReducer,
-  // [authApi.reducerPath]: authApi.reducer,
-  // [assessmentApi.reducerPath]: assessmentApi.reducer,
-  // [assessmentProfilesApi.reducerPath]: assessmentProfilesApi.reducer,
   [candidatesApi.reducerPath]: candidatesApi.reducer,
 });

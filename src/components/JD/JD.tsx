@@ -8,7 +8,7 @@ import {
 } from '@headlessui/react';
 import { classNames } from '../Core/classNames';
 import IMAGES from '../../assets/images/Images';
-import { SetStateAction, useRef, useState } from 'react';
+import { SetStateAction, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import Insights from './Insights';
 import JDDesc from './JDDesc';
@@ -133,17 +133,25 @@ const JD: React.FC<IJD> = ({
     // throw new Error("Function not implemented.");
   }
   // return <Insights />;
+  useEffect(() => {
+    setJdVisible(true);
+  }, [isJobDescriptionRequired]);
 
   return (
     <>
       <div className="relative mt-10 w-90 mx-10">
-        {!jdVisible || !jdData ? (
+        {isJobDescriptionRequired && (actionButtonsVisible === false || jdData) ? (
+          <></>
+        ) : (
           <label className="text-black text-2xl font-Sansation">{label}</label>
-        ) : null}
+        )}
         {isJobDescriptionRequired && actionButtonsVisible ? (
           <>
             <RadioGroup
-              onChange={(value) => setInitialQuestionAction(value)}
+              onChange={(value) => {
+                setInitialQuestionAction(value);
+                setActionButtonsVisible(false);
+              }}
               className="flex flex-row  gap-5 rounded-md mt-5 "
               value={jdType}
             >
@@ -197,6 +205,7 @@ const JD: React.FC<IJD> = ({
           <div className="grid grid-cols-4 h-screen gap-2">
             <div className="col-span-3">
               <JDDesc
+                actionButtonsVisible={actionButtonsVisible}
                 isJobDescriptionRequired={isJobDescriptionRequired}
                 assessment={assessment}
                 JDactionButtons={JDactionButtons}
@@ -206,11 +215,13 @@ const JD: React.FC<IJD> = ({
                 conversation_id={conversation_id}
                 setAssisstantMessage={setAssisstantMessage}
                 assistantMessage={assistantMessage}
+                jdVisible={jdVisible}
               />
             </div>
 
             <div>
               <Insights
+                actionButtonsVisible={actionButtonsVisible}
                 isJobDescriptionRequired={isJobDescriptionRequired}
                 jdData={jdData}
                 setJdData={setJDData}

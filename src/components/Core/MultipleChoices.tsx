@@ -2,10 +2,7 @@ import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import { IInput } from './Input';
 import { useState } from 'react';
 import IMAGES from '../../assets/images/Images';
-import {
-  addQuestionChoice,
-  removeQuestionChoice,
-} from '../../app/features/questions';
+import { addQuestionChoice, removeQuestionChoice } from '../../app/features/questions';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 export interface IMultipleChoices extends IInput {
@@ -22,18 +19,14 @@ const MultipleChoices: React.FC<IMultipleChoices> = ({
   const [optionsState, setOptions] = useState(options);
   const dispatch = useAppDispatch();
   const { questions } = useAppSelector((state) => state.questions);
-  const question = questions.find((q: { title: string; }) => q.title === title);
+  const question = questions.find((q: { title: string }) => q.title === title);
 
   const [customValue, setCustomValue] = useState('');
   const handleCheckboxChange = (event: { target: { value: any; checked: any } }, option: any) => {
     const { checked } = event.target;
-    console.log('event!!!!!', event.target);
     if (checked) {
-      console.log('title', title, event.target);
       dispatch(addQuestionChoice({ title, answer: option }));
     } else {
-      console.log('title', title, event.target);
-
       dispatch(removeQuestionChoice({ title, answer: option }));
     }
   };

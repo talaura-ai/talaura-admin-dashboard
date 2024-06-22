@@ -1,5 +1,6 @@
 import { ArrowUpCircleIcon } from '@heroicons/react/24/outline';
-import toast from 'react-hot-toast';
+import { useState } from 'react';
+import toast, { LoaderIcon } from 'react-hot-toast';
 const AI_API_URL = import.meta.env.VITE_AI_API_URL;
 
 export interface IMessageInput {
@@ -19,12 +20,12 @@ const JDMessageInput: React.FC<IMessageInput> = ({
   jdData,
   conversation_id,
   assessmentId,
-  aiMessage,
   setAiMessage,
 }) => {
-  console.log('aiMessage', aiMessage);
+  const [loading, setLoading] = useState(false);
   const sendAIRequestForJD = async () => {
     // event.preventDefault();
+    setLoading(true);
 
     if (!assistantMessage || !assistantMessage.length) {
       toast.error('Please type message to ask to TalAura Assistant!');
@@ -58,7 +59,6 @@ const JDMessageInput: React.FC<IMessageInput> = ({
               reader?.read().then(({ done, value }) => {
                 // If there is no more data to read
                 if (done) {
-                  console.log('done', done);
                   controller.close();
                   return;
                 }
@@ -79,7 +79,6 @@ const JDMessageInput: React.FC<IMessageInput> = ({
       };
 
       const streaming = await stream();
-      console.log(streaming);
       const returnStreamResponse = async () => {
         return new Response(streaming, {
           headers: { 'Content-Type': 'text/html' },
@@ -87,7 +86,7 @@ const JDMessageInput: React.FC<IMessageInput> = ({
       };
       const streamResult = await returnStreamResponse();
       console.log('streamResult', streamResult);
-
+      setLoading(false);
       return;
 
       // let decodedValue = '';
@@ -104,11 +103,12 @@ const JDMessageInput: React.FC<IMessageInput> = ({
       // }
     } catch (error) {
       console.log('error', error);
+      setLoading(false);
     }
   };
 
   return (
-    <div className="absolute z-[100] w-[50vw]">
+    <div className="absolute z-50 w-[50vw]">
       <div>
         <div className="relative mt-2 rounded-md shadow-sm">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 z-[100]"></div>
@@ -120,6 +120,11 @@ const JDMessageInput: React.FC<IMessageInput> = ({
             placeholder="Message TalAura Assistent..."
             value={assistantMessage}
             onChange={(e) => setAssisstantMessage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                sendAIRequestForJD();
+              }
+            }}
           />
           <div className="absolute inset-y-0 right-0 flex items-center">
             <label htmlFor="currency" className="sr-only">
@@ -128,10 +133,11 @@ const JDMessageInput: React.FC<IMessageInput> = ({
             <button
               id="currency"
               name="currency"
+              disabled={loading}
               onClick={() => sendAIRequestForJD()}
               className="h-full rounded-md border-0  py-0 px-5  text-gray-500 focus:ring-0 focus:ring-inset focus:ring-brand-color sm:text-sm"
             >
-              <ArrowUpCircleIcon className="h-5 w-5" />
+              {loading ? <LoaderIcon /> : <ArrowUpCircleIcon className="h-5 w-5" />}
             </button>
           </div>
         </div>

@@ -33,18 +33,20 @@ export interface IInsights {
   setJdData: any;
   jdType: any;
   setAssisstantMessage: any;
+  actionButtonsVisible?: any;
 }
 
 const Insights: React.FC<IInsights> = ({
   isJobDescriptionRequired,
   jdData,
   setAssisstantMessage,
+  actionButtonsVisible,
 }) => {
   const [insightsData, setInsightData] = useState(() => []);
 
-  if (!isJobDescriptionRequired) {
-    return null;
-  }
+  // if (!isJobDescriptionRequired) {
+  //   return null;
+  // }
 
   useEffect(() => {
     const getInsightsMethod = async () => {
@@ -72,6 +74,9 @@ const Insights: React.FC<IInsights> = ({
     getInsightsMethod();
   }, [jdData]);
 
+  if (!isJobDescriptionRequired || actionButtonsVisible) {
+    return null;
+  }
   return (
     <>
       <div className="flex  flex-col  h-[50vh] rounded-lg shadow-inner bg-white mt-1">
@@ -89,7 +94,6 @@ const Insights: React.FC<IInsights> = ({
                 });
                 let input = '';
                 input += insight + ' , ';
-                console.log('input', input);
                 setAssisstantMessage(input);
               }}
               className="rounded-md mx-1 inline  bg-app-color   px-3.5 py-2.5    text-sm font-semibold     text-black shadow-sm      cursor-pointer      focus-visible:outline focus-visible:outline-2       ocus-visible:outline-offset-2 focus-visible:outline-app-color text-pretty break-keep"

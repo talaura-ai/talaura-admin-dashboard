@@ -20,7 +20,6 @@ const SummaryTab = ({ assessmentData }: { assessmentData?: IAssessmentDetails })
       id: ques._id,
       icon: allIcons[Math.floor(Math.random() * (allIcons.length - 0 - 1))],
     }));
-  console.log(DynamicQuestions);
   const GridData = [
     {
       id: 1,
