@@ -27,7 +27,7 @@ const navigation = [
   {
     name: 'Assesment',
     href: '/assessments',
-    icon: IMAGES.Dashboard,
+    icon: IMAGES.Assessments,
     current: false,
   },
   { name: 'People', href: '/peoples', icon: IMAGES.People, current: false },
