@@ -12,7 +12,15 @@ const ReviewAssessments: React.FC<ReviewAssessmentsProps> = () => {
   return (
     <>
       <div className="relative mt-10 w-90 mx-10 scrollbar overflow-y-auto">
-        {!showQuestions ? (
+        {showQuestions ? (
+          <div className="grid w-full">
+            <ReviewQuestions
+              module={currentModule}
+              questions={currentModule?.question}
+              setShowQuestions={setShowQuestions}
+            />
+          </div>
+        ) : (
           <div className="grid grid-cols-2 h-[50vh] gap-x-8 gap-y-3">
             {selectedModules?.map((v: any, index: number) => (
               <ModuleCard
@@ -26,14 +34,6 @@ const ReviewAssessments: React.FC<ReviewAssessmentsProps> = () => {
                 }}
               />
             ))}
-          </div>
-        ) : (
-          <div className="grid w-full">
-            <ReviewQuestions
-              module={currentModule}
-              questions={currentModule?.question}
-              setShowQuestions={setShowQuestions}
-            />
           </div>
         )}
       </div>

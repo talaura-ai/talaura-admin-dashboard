@@ -50,24 +50,26 @@ const Insights: React.FC<IInsights> = ({
 
   useEffect(() => {
     const getInsightsMethod = async () => {
-      const payloads = {
-        jd_text: jdData,
-      };
-      const headers = new Headers();
-      headers.append('Content-Type', 'application/json');
+      if (jdData) {
+        const payloads = {
+          jd_text: jdData,
+        };
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
 
-      try {
-        const res = await fetch(`${AI_API_URL}insights_jd`, {
-          method: 'POST',
-          body: JSON.stringify(payloads),
-          headers,
-        });
-        const resJSON = await res.json();
-        if (res.statusText === 'OK') {
-          setInsightData(resJSON.insights);
+        try {
+          const res = await fetch(`${AI_API_URL}insights_jd`, {
+            method: 'POST',
+            body: JSON.stringify(payloads),
+            headers,
+          });
+          const resJSON = await res.json();
+          if (res.statusText === 'OK') {
+            setInsightData(resJSON.insights);
+          }
+        } catch (error) {
+          console.log('error', error);
         }
-      } catch (error) {
-        console.log('error', error);
       }
     };
 

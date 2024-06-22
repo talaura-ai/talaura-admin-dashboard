@@ -1037,7 +1037,6 @@ const CreateAssessment = () => {
       generateSkills={generateSkills}
     />,
     <Modules />,
-    // <AddNewModule />,
     <ReviewAssessments />,
     // <ReviewQuestions questions={questionsList}
 
