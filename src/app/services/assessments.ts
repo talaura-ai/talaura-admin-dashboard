@@ -38,7 +38,7 @@ export const assessmentApi = createApi({
   // tagTypes: ['Assessments'],
 
   endpoints: (builder) => ({
-    getAll: builder.query<AssessmentsState[], string>({
+    getAll: builder.query<any, string>({
       query: () => `organization/assessment/getAssessments`,
       providesTags: ['Assessments'],
     }),

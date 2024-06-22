@@ -7,10 +7,11 @@ import { useEffect, useState } from 'react';
 import EmptyDataScreen from '../EmptyDataScreen/EmptyDataScreen';
 import moment from 'moment';
 import { classNames } from '../Core/classNames';
-import { useGetAssessmentProfilesQuery } from '../../app/services/assessmentProfiles';
-import { setAllProfiles } from '../../app/features/assessmentProfiles';
 import { useGetAllQuery } from '../../app/services/assessments';
 import { getAll } from '../../app/features/assessmentsSlice';
+import { resetSkillsSlice } from '../../app/features/skillsSlice';
+import { resetModulesSlice } from '../../app/features/moduleSlice';
+import { resetQuestionsSlice } from '../../app/features/questions';
 
 // const assessmentsData = [
 //   {
@@ -77,21 +78,17 @@ const menuItems = ['Duplicate', 'Rename', 'Invite', 'Invite via link'];
 
 const AssessmentPage = () => {
   const assessments = useAppSelector((state) => state.assessments);
-  const assessmentProfiles = useAppSelector((state) => state.assessmentProfles);
+  const assessmentProfiles = useAppSelector((state) => state.assessmentProfiles);
   const [filterBy, setFilterBy] = useState('');
   const [sortBy, setSortBy] = useState('name');
-  const { data: profileData } = useGetAssessmentProfilesQuery('');
   const { data: assessmentData } = useGetAllQuery('');
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (profileData && profileData.status) {
-      dispatch(setAllProfiles(profileData.assessmentProfile));
+    if (assessmentData) {
+      dispatch(getAll(assessmentData.assessments));
     }
-    if (assessmentData && profileData.status) {
-      dispatch(getAll(''));
-    }
-  }, [dispatch, assessmentData, profileData]);
+  }, [dispatch, assessmentData]);
 
   return (
     <div>
@@ -190,6 +187,11 @@ const AssessmentPage = () => {
                                       
                                    "
             state={{ assessmentProfiles }}
+            onClick={() => {
+              dispatch(resetSkillsSlice());
+              dispatch(resetModulesSlice());
+              dispatch(resetQuestionsSlice());
+            }}
           >
             <img src={IMAGES.Create} className="h-5 w-5" />
             <h3 className="px-1 text-white">Create</h3>
@@ -241,7 +243,10 @@ const AssessmentPage = () => {
                         .filter((k) => !omitFieldsToRenderInMap.includes(k))
                         .map((key) => {
                           return (
-                            <div className="flex-1 truncate px-1 py-2 text-sm text-center">
+                            <div
+                              className="flex-1 truncate px-1 py-2 text-sm text-center"
+                              key={key}
+                            >
                               <h2 className="font-bold  font-Sansation_Regular text-md text-center">
                                 {moment(assessment[key]).isValid()
                                   ? moment(assessment[key]).format('DD MMM YYYY')

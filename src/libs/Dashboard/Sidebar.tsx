@@ -174,7 +174,7 @@ export default function Sidebar() {
         <div className="lg:pl-20">
           <Header user={admin} setSidebarOpen={setSidebarOpen} />
 
-          <main className="  rounded-tl-2xl bg-app-color h-screen">
+          <main className="  rounded-tl-2xl bg-app-color h-screen shadow-[0px_4px_10px_rgba(172,_172,_172,_0.3)_inset]">
             <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-6 ">
               {/* <Home /> 
               <CreateAssessment />

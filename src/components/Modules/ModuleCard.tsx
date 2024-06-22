@@ -8,15 +8,17 @@ import {
   removeModuleSkill,
   removeSelectedModule,
   setModuleSkill,
+  updateDuration,
   updateWeightage,
 } from '../../app/features/moduleSlice';
-import { CheckCircleIcon, EyeIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
+import toast from 'react-hot-toast';
 
 const ModuleCard: React.FC<any> = ({
   name,
   noOfQuestions,
-  skills,
-  time,
+  // skills,
+  // time,
   handleClick,
   editable = true,
   editMode,
@@ -30,7 +32,6 @@ const ModuleCard: React.FC<any> = ({
 
   const handleCheckboxChange = (event: { target: { value: any; checked: any } }) => {
     const { value, checked } = event.target;
-    console.log('value, checked', value, checked);
 
     if (checked) {
       dispatch(setModuleSkill({ name, skill: value }));
@@ -44,7 +45,10 @@ const ModuleCard: React.FC<any> = ({
     selectedModule && selectedModule.Weightage ? selectedModule.Weightage : 0,
   );
 
-  console.log('selectedModule', selectedModule);
+  const [stateTime, setStateTime] = useState(() =>
+    selectedModule && selectedModule.time ? selectedModule.time : 0,
+  );
+
   const onChangeWeightage = (e: any) => {
     setWeight(e.target.value);
   };
@@ -57,31 +61,49 @@ const ModuleCard: React.FC<any> = ({
     );
   };
 
+  const handleChangeDuration = async () => {
+    dispatch(
+      updateDuration({
+        name: name,
+        time: !isNaN(Number(stateTime)) ? Number(stateTime) : 0,
+      }),
+    );
+  };
+
   // const [duration, setDuration] = useState({});
   return (
     <div
       className="flex rounded-2xl shadow-inner bg-white p-5 mt-5 mx-2 flex-col"
       //
+      onClick={() => {
+        if (reviewAble && handleClick) {
+          handleClick();
+        }
+      }}
     >
       <div className="flex flex-row items-center justify-between">
         <div className="grow justify-start items-start">
           <h1 className="text-orange-text">{name}</h1>
         </div>
-        {selectedModules.includes(selectedModule) ? (
-          <div className=" items-end ">
-            <CheckCircleIcon
-              className="h-6 w-6 text-orange-text"
-              onClick={() => dispatch(removeSelectedModule({ name }))}
-            />
-          </div>
-        ) : (
-          <div className=" items-end " onClick={() => dispatch(addModule({ name }))}>
-            <PlusCircleIcon className="h-6 w-6 text-orange-text" />
-          </div>
+        {!reviewAble && (
+          <>
+            {selectedModules.includes(selectedModule) ? (
+              <div className=" items-end ">
+                <CheckCircleIcon
+                  className="h-6 w-6 text-orange-text"
+                  onClick={() => dispatch(removeSelectedModule({ name }))}
+                />
+              </div>
+            ) : (
+              <div className=" items-end " onClick={() => dispatch(addModule({ name }))}>
+                <PlusCircleIcon className="h-6 w-6 text-orange-text" />
+              </div>
+            )}
+          </>
         )}
         {reviewAble && (
           <div className=" items-end ">
-            <EyeIcon className="h-3 w-3 text-orange-text" />
+            <PencilIcon className="h-6 w-6 text-orange-text" />
           </div>
         )}
       </div>
@@ -120,7 +142,7 @@ const ModuleCard: React.FC<any> = ({
                   </div>
                   <div className="ml-3  leading-6">
                     <label
-                      htmlFor={skill}
+                      // htmlFor={skill}
                       className="font-medium text-gray-900 font-Sansation_Bold text-lg"
                     >
                       {skill}
@@ -135,7 +157,7 @@ const ModuleCard: React.FC<any> = ({
             })}
           </>
         ) : (
-          <p className="text-gray-300 text-sm">{skills.join(',')}</p>
+          <p className="text-gray-300 text-sm">{selectedModule.skills.join(',')}</p>
         )}
       </div>
       {!editMode ? (
@@ -146,7 +168,7 @@ const ModuleCard: React.FC<any> = ({
               <span className="text-gray-300">
                 {selectedModule && selectedModule.Weightage ? (
                   <input
-                    className="w-6 p-0 inline ring-0 border-0 focus:ring-0 focus:border-b-1"
+                    className="w-8 p-0 inline ring-0 border-0 focus:ring-0 focus:border-b-1"
                     type="text"
                     value={weight}
                     onChange={(e) => onChangeWeightage(e)}
@@ -176,7 +198,14 @@ const ModuleCard: React.FC<any> = ({
                 // setOpenTimer(true);
               }}
             >
-              {time} min
+              <input
+                className="w-8 p-0 inline ring-0 border-0 focus:ring-0 focus:border-b-1"
+                type="text"
+                value={stateTime}
+                onChange={(e) => setStateTime(e.target.value)}
+                onBlur={() => handleChangeDuration()}
+              />
+              min
             </span>
           </div>
         </div>
@@ -185,7 +214,11 @@ const ModuleCard: React.FC<any> = ({
         <div className="flex items-center justify-center my-5">
           <button
             onClick={() => {
-              setEditMode(false);
+              if (!selectedModule.skills.length) {
+                toast.error('Please select atleast one skill in this module');
+              } else {
+                setEditMode(false);
+              }
             }}
             type="button"
             className="justify-center rounded-[6px] bg-orange-text px-7 py-1 text-sm font-semibold text-white shadow-sm ml-2"

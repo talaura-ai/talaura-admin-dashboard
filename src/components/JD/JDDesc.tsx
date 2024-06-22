@@ -1,18 +1,20 @@
 import { Textarea } from '@headlessui/react';
 import IMAGES from '../../assets/images/Images';
 import JDMessageInput from './JDMessageInput';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export interface IJDDesc {
   isJobDescriptionRequired: boolean;
   JDactionButtons: any[];
   assessment?: any;
-  jdData?: any;
+  jdData: string;
   jdType?: any;
   conversation_id: string;
   setJdData: any;
   assistantMessage: any;
   setAssisstantMessage: any;
+  actionButtonsVisible?: any;
+  jdVisible?: any;
 }
 
 const JDDesc: React.FC<IJDDesc> = ({
@@ -23,22 +25,20 @@ const JDDesc: React.FC<IJDDesc> = ({
   setJdData,
   assistantMessage,
   setAssisstantMessage,
+  actionButtonsVisible,
 }) => {
   const [aiMessage, setAiMessage] = useState('');
+
+  useEffect(() => {
+    setJdData(aiMessage);
+  }, [aiMessage]);
+
+  if (isJobDescriptionRequired && actionButtonsVisible) {
+    return null;
+  }
   return (
     <>
-      {!isJobDescriptionRequired ? (
-        <div className="my-10">
-          <Textarea
-            rows={6}
-            name="jd_descriptions"
-            id="jd_descriptions"
-            className="block w-full rounded-lg border-0 py-1.5 text-black shadow-lg ring-1 ring-inset  ring-gray-300 placeholder:text-gray-400  focus:ring-0 text-lg"
-            defaultValue={''}
-            placeholder="Describe your requirments here"
-          />
-        </div>
-      ) : (
+      {isJobDescriptionRequired ? (
         <>
           {!jdData ? (
             <>
@@ -56,10 +56,9 @@ const JDDesc: React.FC<IJDDesc> = ({
             <>
               {aiMessage && aiMessage.length ? (
                 <div
-                  className="overflow-auto
-                                  scrollbar
-                                  p-5
-                              "
+                  contentEditable
+                  className="flex  flex-col justify-center items-center h-[50vh] rounded-lg shadow-inner bg-white mt-1
+                              p-5 pt-10 scrollbar overflow-y-auto"
                   dangerouslySetInnerHTML={{
                     __html: aiMessage,
                   }}
@@ -68,9 +67,11 @@ const JDDesc: React.FC<IJDDesc> = ({
                 <>
                   <div className="flex  flex-col justify-center items-center h-[50vh] rounded-lg shadow-inner bg-white mt-1">
                     <div
+                      contentEditable
                       className="overflow-auto
                                   scrollbar
                                   p-5
+                                  bg-white
                               "
                       dangerouslySetInnerHTML={{
                         __html: aiMessage && aiMessage.length ? aiMessage : jdData,
@@ -82,21 +83,34 @@ const JDDesc: React.FC<IJDDesc> = ({
                   </div>
                 </>
               )}
-              <div>
-                <JDMessageInput
-                  conversation_id={conversation_id}
-                  assessmentId={assessment.assessmentId}
-                  jdData={jdData}
-                  setJdData={setJdData}
-                  assistantMessage={assistantMessage}
-                  setAssisstantMessage={setAssisstantMessage}
-                  setAiMessage={setAiMessage}
-                  aiMessage={aiMessage}
-                />
-              </div>
             </>
           )}
+          <div>
+            <JDMessageInput
+              conversation_id={conversation_id}
+              assessmentId={assessment.assessmentId}
+              jdData={jdData}
+              setJdData={setJdData}
+              assistantMessage={assistantMessage}
+              setAssisstantMessage={setAssisstantMessage}
+              setAiMessage={setAiMessage}
+              aiMessage={aiMessage}
+            />
+          </div>
         </>
+      ) : (
+        <div className="my-10 bg-white">
+          <Textarea
+            rows={6}
+            name="jd_descriptions"
+            id="jd_descriptions"
+            className="block w-full bg-white rounded-lg border-0 py-1.5 text-black shadow-lg ring-1 ring-inset  ring-gray-300 placeholder:text-gray-400  focus:ring-0 text-lg"
+            defaultValue={''}
+            value={jdData}
+            onChange={(e) => setJdData(e.target.value)}
+            placeholder="Describe your requirments here"
+          />
+        </div>
       )}
     </>
   );

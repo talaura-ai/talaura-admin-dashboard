@@ -6,7 +6,7 @@ export default {
     extend: {
       screens: {
         lg: {
-          max: '1200px',
+          // max: '1200px',
         },
         mq1050: {
           raw: 'screen and (max-width: 1050px)',

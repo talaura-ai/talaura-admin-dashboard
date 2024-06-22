@@ -59,7 +59,11 @@ const Input: React.FC<IInput> = ({
             placeholder={placeholder}
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            onBlur={(e) => onBlur(e)}
+            onBlur={(e) => {
+              if (onBlur) {
+                onBlur(e);
+              }
+            }}
             required={required}
           />
           <div

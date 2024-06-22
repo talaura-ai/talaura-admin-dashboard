@@ -48,7 +48,6 @@ const AddCandidates = () => {
         const jsonData = utils.sheet_to_json(worksheet);
 
         if (!Array.isArray(jsonData)) return toast.error('File Data is not in List');
-        console.log(jsonData);
         jsonData.forEach((dt) => addCandidate(dt));
         toast.success('Read Success');
       }
@@ -62,7 +61,6 @@ const AddCandidates = () => {
   };
 
   const addCandidate = (data?: unknown) => {
-    console.log('data', data);
     if (data && typeof data === 'object' && 'name' in data && 'email' in data) {
       if (allCandidates.find((cnd) => cnd.email === data.email)) {
         return false;

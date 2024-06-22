@@ -42,6 +42,7 @@ export const questionsSlice = createSlice({
 
       question.answer = question.answer.filter((a: { name: any }) => a.name !== answer.name);
     },
+    resetQuestionsSlice: () => initialState,
   },
 });
 
@@ -52,6 +53,7 @@ export const {
   updateQuestion,
   addQuestionChoice,
   removeQuestionChoice,
+  resetQuestionsSlice,
 } = questionsSlice.actions;
 
 export default questionsSlice.reducer;

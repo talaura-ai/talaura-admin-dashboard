@@ -1,9 +1,4 @@
-import { useRouteError } from 'react-router-dom';
-
 export default function EmptyDataScreen() {
-  const error = useRouteError();
-  console.error(error);
-
   return (
     <div id="loading-screen">
       <main>
