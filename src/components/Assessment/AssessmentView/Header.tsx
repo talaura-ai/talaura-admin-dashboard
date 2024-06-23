@@ -57,13 +57,13 @@ const Header = ({
               {isCandidateView ? 'Candidate Name' : assessmentName}
             </h1>
           </div>
-          <div className="w-[20.813rem] flex flex-row items-start justify-start gap-[1.062rem] max-w-full mq450:flex-wrap">
-            <button className="cursor-pointer [border:none] py-[0.5rem] pr-[0.5rem] pl-[1.5rem] bg-peru-100 flex-1 rounded-3xs flex flex-row items-start justify-start box-border min-w-[6.438rem] z-[1] hover:bg-peru-200">
+          <div className="w-[8.813rem] flex flex-row items-start justify-start gap-[1.062rem] max-w-full mq450:flex-wrap">
+            {/* <button className="cursor-pointer [border:none] py-[0.5rem] pr-[0.5rem] pl-[1.5rem] bg-peru-100 flex-1 rounded-3xs flex flex-row items-start justify-start box-border min-w-[6.438rem] z-[1] hover:bg-peru-200">
               <img src="/images/Chart.png" className="h=[25px] object-cover" alt="" />
               <div className="flex-1 relative text-base font-sansation text-white text-center z-[1] mq450:text-[1.188rem]">
                 Analytics
               </div>
-            </button>
+            </button> */}
             <Link
               className="cursor-pointer [border:none] py-[0.5rem] pr-[0.5rem] pl-[1.5rem] bg-peru-100 flex-1 rounded-3xs flex flex-row items-start justify-start box-border min-w-[6.438rem] z-[1] hover:bg-peru-200"
               to={`/assessments/view/${assessmentId}/invite`}

@@ -46,7 +46,7 @@ const CandidateDashBoard = () => {
               <h5>{candidateData.email ?? 'user email'}</h5>
             </div>
           </div>
-          <div className="card2 bg-green-200 shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] rounded-md overflow-hidden mt-4 pt-4 text-center h-[210px] w-[300px] flex flex-col justify-between">
+          {/* <div className="card2 bg-green-200 shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] rounded-md overflow-hidden mt-4 pt-4 text-center h-[210px] w-[300px] flex flex-col justify-between">
             <div className="row1">
               <span className="font-bold text-customGray-100 text-xl">AI Proctoring</span>
             </div>
@@ -57,7 +57,7 @@ const CandidateDashBoard = () => {
             <div className="col1_row3 bg-green-400 p-2">
               <h5 className="text-white font-bold text-xl">View Summary</h5>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="col2 w-[calc(100%-300px)]">
           <div className="col2_card1 shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] rounded-md overflow-hidden p-4 bg-white">
@@ -165,7 +165,7 @@ const CandidateDashBoard = () => {
                       textAnchor="middle"
                       alignmentBaseline="middle"
                     >
-                      {candidateData.paiScore}%
+                      {candidateData.paiScore ?? 0}%
                     </text>
                   </svg>
                 </div>
@@ -202,7 +202,7 @@ const CandidateDashBoard = () => {
                       textAnchor="middle"
                       alignmentBaseline="middle"
                     >
-                      {candidateData.cognitiveScore}%
+                      {candidateData.cognitiveScore ?? 0}%
                     </text>
                   </svg>
                 </div>

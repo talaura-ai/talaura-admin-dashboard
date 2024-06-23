@@ -25,7 +25,7 @@ const SummaryTab = ({ assessmentData }: { assessmentData?: IAssessmentDetails })
       id: 1,
       icon: '/images/hash.png',
       text: 'Assessment ID',
-      value: assessmentData?.assessments[0]._id.slice(0, 3),
+      value: assessmentData?.assessments[0]._id.slice(-3),
     },
     ...(DynamicQuestions ?? []),
     {
@@ -114,12 +114,12 @@ const SummaryTab = ({ assessmentData }: { assessmentData?: IAssessmentDetails })
               </div>
             </div>
           </div>
-          <div className="self-stretch shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] rounded-xl bg-white flex flex-row items-end justify-between pt-[1.562rem] pb-[1.875rem] pr-[0rem] pl-[1.687rem] box-border max-w-full gap-[1.25rem] z-[1] text-[0.875rem] text-customGray-100 mq750:flex-wrap mq750:pl-[1.25rem] mq750:pr-[1.25rem] mq750:box-border">
-            <div className="flex flex-row flex-wrap justify-evenly w-full gap-2">
+          <div className="self-stretch shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] rounded-xl bg-white flex flex-row items-end justify-between py-4 pr-[0rem] pl-[1.687rem] box-border max-w-full gap-[1.25rem] z-[1] text-[0.875rem] text-customGray-100 mq750:flex-wrap mq750:pl-[1.25rem] mq750:pr-[1.25rem] mq750:box-border">
+            <div className="flex flex-row flex-wrap justify-start w-full gap-2 pl-8">
               {GridData.map((itm) => (
                 <div
                   key={itm.id}
-                  className="flex flex-col items-center flex-wrap min-w-[100px] w-[23%]"
+                  className="flex flex-col justify-start items-start flex-wrap min-w-[100px] w-[23%] text-left mb-4"
                 >
                   <div className="img-container w-[30px] h-[30px]">
                     <img src={itm.icon} className="w-full h-full" />
@@ -162,15 +162,15 @@ const SummaryTab = ({ assessmentData }: { assessmentData?: IAssessmentDetails })
                   {valuesArray.map((module, idx) => (
                     <div
                       key={idx}
-                      className="module flex flex-row text-center items-center p-4 border mb-2 border-gainsboro rounded-md gap-2 w-[200px] overflow-scroll"
+                      className="module flex flex-row text-center items-center p-4 border mb-2 border-gainsboro rounded-md gap-2 w-[200px]"
                     >
                       <img
                         src={`/images/${iconsArr[Math.floor(Math.random() * (iconsArr.length - 0))]}`}
                         alt=""
                         className="h-[30px] w-[30px]"
                       />
-                      <div className="text_wrapper flex flex-col">
-                        <span className="text-lg text-customGray-100 text-left whitespace-nowrap truncate">
+                      <div className="text_wrapper flex flex-col w-full">
+                        <span className="text-lg text-customGray-100 text-left whitespace-nowrap truncate w-full">
                           {module.type}
                         </span>
                         <span className="text-customGray-100 text-sm text-left">

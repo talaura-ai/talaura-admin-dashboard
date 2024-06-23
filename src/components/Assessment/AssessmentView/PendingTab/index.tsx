@@ -190,7 +190,7 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
                         </td>
                         <td className="whitespace-nowrap py-4 pl-4 text-sm font-medium text-gray-900 sm:pl-0 min-w-[8rem]">
                           <Link
-                            to={`candidate/${candidate._id}`}
+                            to={status === 'Completed' ? `candidate/${candidate._id}` : ''}
                             className="pl-4 text-customGray-100"
                           >
                             {candidate.name}
