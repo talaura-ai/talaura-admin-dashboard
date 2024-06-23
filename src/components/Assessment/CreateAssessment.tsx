@@ -57,6 +57,7 @@ import {
   updateQuestion,
 } from '../../app/features/questions';
 import { useGetAssessmentProfilesQuery } from '../../app/services/assessmentProfiles';
+import { omit } from '../../helpers/utils';
 import LoadingScreen from '../Loading/LoadingScreen';
 import Modules from '../Modules/Modules';
 import ReviewAssessments from '../ReviewAssessments/ReviewAssessments';
@@ -568,7 +569,7 @@ const CreateAssessment = () => {
           dispatch(
             addQuestionToModule({
               name: selectedModule.name,
-              question: resJSON.questions,
+              question: resJSON?.questions?.map((ques: any) => ({ ...ques, selected: true })),
             }),
           );
           return Promise.resolve(true);
@@ -586,7 +587,12 @@ const CreateAssessment = () => {
     try {
       const { data, error } = await saveModulesToAssessment({
         assessmentId: assessment.assessmentId,
-        module: selectedModules,
+        module: selectedModules.map((mdl: any) => ({
+          ...mdl,
+          question: mdl.question
+            .filter((que: any) => que.selected)
+            .map((que: any) => omit(que, ['selected'])),
+        })),
       });
 
       if (error) {

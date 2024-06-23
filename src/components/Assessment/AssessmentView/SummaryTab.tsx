@@ -16,7 +16,7 @@ const SummaryTab = ({ assessmentData }: { assessmentData?: IAssessmentDetails })
     })
     .map((ques) => ({
       text: ques.name,
-      value: ques.answer[0].name,
+      value: typeof ques.answer === 'string' ? ques.answer : ques.answer[0]?.name,
       id: ques._id,
       icon: allIcons[Math.floor(Math.random() * (allIcons.length - 0 - 1))],
     }));
@@ -162,7 +162,7 @@ const SummaryTab = ({ assessmentData }: { assessmentData?: IAssessmentDetails })
                   {valuesArray.map((module, idx) => (
                     <div
                       key={idx}
-                      className="module flex flex-row text-center items-center p-4 border mb-2 border-gainsboro rounded-md gap-2 w-[48%] overflow-scroll"
+                      className="module flex flex-row text-center items-center p-4 border mb-2 border-gainsboro rounded-md gap-2 w-[200px] overflow-scroll"
                     >
                       <img
                         src={`/images/${iconsArr[Math.floor(Math.random() * (iconsArr.length - 0))]}`}
@@ -170,7 +170,9 @@ const SummaryTab = ({ assessmentData }: { assessmentData?: IAssessmentDetails })
                         className="h-[30px] w-[30px]"
                       />
                       <div className="text_wrapper flex flex-col">
-                        <span className="text-lg text-customGray-100 text-left">{module.type}</span>
+                        <span className="text-lg text-customGray-100 text-left whitespace-nowrap truncate">
+                          {module.type}
+                        </span>
                         <span className="text-customGray-100 text-sm text-left">
                           {module.time} minutes
                         </span>

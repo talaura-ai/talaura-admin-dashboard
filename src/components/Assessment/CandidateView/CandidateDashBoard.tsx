@@ -1,9 +1,10 @@
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { useGetCandidateReportsMutation } from '../../../app/services/candidates';
 import ErrorPage from '../../Error/ErrorPage';
 import LoadingScreen from '../../Loading/LoadingScreen';
 import CandidateReportAccordion from './CandidateReportAccordion';
-import { useParams } from 'react-router-dom';
 
 const CandidateDashBoard = () => {
   const { candidateId = '' } = useParams();
@@ -37,12 +38,12 @@ const CandidateDashBoard = () => {
               </div>
             </div>
             <div className="col1_row2 p-4">
-              <div className="img_container h-[200px] w-[200px] mx-auto">
+              {/* <div className="img_container h-[200px] w-[200px] mx-auto">
                 <img src="/images/SampleImg.jpeg" alt="" className="h-full w-full" />
-              </div>
+              </div> */}
             </div>
             <div className="col1_row3 text-center pb-4 text-customGray-100 font-bold">
-              <h5>alexverma007@gmail.com</h5>
+              <h5>{candidateData.email ?? 'user email'}</h5>
             </div>
           </div>
           <div className="card2 bg-green-200 shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] rounded-md overflow-hidden mt-4 pt-4 text-center h-[210px] w-[300px] flex flex-col justify-between">
@@ -91,7 +92,9 @@ const CandidateDashBoard = () => {
                   </div>
                   <div className="col1_row2 h-[18px] w-[18px] bg-sandybrown rounded-full border-4 border-light-gold" />
                   <div className="col1_row3 flex flex-col">
-                    <span className="text-black text-sm whitespace-nowrap">15 jun, 2015</span>
+                    <span className="text-black text-sm whitespace-nowrap">
+                      {dayjs(candidateData.startsAt).format('DD MM YYYY')}
+                    </span>
                     <span className="text-[10px]">08:30PM</span>
                   </div>
                 </div>

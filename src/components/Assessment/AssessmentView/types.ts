@@ -14,10 +14,12 @@ export interface IAssessmentDetails {
       position: number;
       isUser: boolean;
       title: string;
-      answer: {
-        name: string;
-        title: string;
-      }[];
+      answer:
+        | {
+            name: string;
+            title: string;
+          }[]
+        | string;
       options: {
         name: string;
         title: string;
@@ -102,4 +104,8 @@ export interface ICandidateReportData {
   report: ICandidateReportDataReportItem[];
   paiScore: number;
   cognitiveScore: number;
+  startsAt: string;
+  endsOn: string;
+  name: string;
+  email: string;
 }

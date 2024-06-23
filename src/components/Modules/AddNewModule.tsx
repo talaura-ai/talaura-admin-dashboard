@@ -152,8 +152,8 @@ const AddNewModule: React.FC<any> = ({
           Select Skills
         </h1>
         <div className="grid gap-6 mb-6 md:grid-cols-3 mt-2">
-          {moduleSkills?.map((item) => (
-            <div className="flex my-1 items-center">
+          {moduleSkills?.map((item, idx: number) => (
+            <div className="flex my-1 items-center" key={idx}>
               <div className="flex h-6 items-center">
                 <input
                   id="review"

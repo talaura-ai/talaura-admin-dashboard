@@ -19,6 +19,7 @@ const AddNewQuestion = (props: { questions: any; module?: any; setIsAddNewQuesti
     type: module?.type ?? '',
     options: ['', '', '', ''],
     expectedAnswer: '',
+    selected: true,
   };
   const reducer = (state = formInitialState, action: any) => {
     const options = state.options;
@@ -59,7 +60,7 @@ const AddNewQuestion = (props: { questions: any; module?: any; setIsAddNewQuesti
             <div className=" w-full">
               <div className="row1  mb-4">
                 <span className="font-bold text-lg">
-                  Module : <span className="text-gray-400">Aptitude Quiz</span>
+                  Module : <span className="text-gray-400">{module?.name}</span>
                 </span>
               </div>
               <Textarea

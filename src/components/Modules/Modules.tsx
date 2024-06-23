@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useAppSelector } from '../../app/hooks';
+import IMAGES from '../../assets/images/Images';
+import AddNewModule from './AddNewModule';
+import EditModule from './EditModule';
 import ModuleCard from './ModuleCard';
 import OverView from './OverView';
-import EditModule from './EditModule';
-import AddNewModule from './AddNewModule';
-import IMAGES from '../../assets/images/Images';
 // const moduleDetails = {
 //   type: "Quiz",
 //   name: "Microsoft Word Proficiency Test",
@@ -51,19 +51,23 @@ const Modules = () => {
         <div className="dir-ltr">
           <div className="grid grid-cols-7 gap-4   pb-20">
             <div className="col-span-4">
-              {modules.map(
-                (module: {
-                  name: any;
-                  type: any;
-                  noOfQuestions: any;
-                  skills: any;
-                  time: any;
-                  Weightage: any;
-                }) => {
+              {modules?.map(
+                (
+                  module: {
+                    name: any;
+                    type: any;
+                    noOfQuestions: any;
+                    skills: any;
+                    time: any;
+                    Weightage: any;
+                  },
+                  idx: number,
+                ) => {
                   const { name, type, noOfQuestions, skills, time, Weightage } = module;
 
                   return (
                     <ModuleCard
+                      key={idx}
                       name={name}
                       type={type}
                       noOfQuestions={noOfQuestions}

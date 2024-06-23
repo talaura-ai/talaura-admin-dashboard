@@ -16,7 +16,7 @@ import toast from 'react-hot-toast';
 
 const ModuleCard: React.FC<any> = ({
   name,
-  noOfQuestions,
+  // noOfQuestions,
   // skills,
   // time,
   handleClick,
@@ -109,7 +109,9 @@ const ModuleCard: React.FC<any> = ({
       </div>
       <div className="flex flex-row items-center justify-between">
         <div>
-          <h3 className="text-xs  text-gray-300">{noOfQuestions} Question</h3>
+          <h3 className="text-xs  text-gray-300">
+            {selectedModule?.question?.filter((que: any) => que?.selected)?.length ?? 0} Question
+          </h3>
         </div>
       </div>
       <div className="flex flex-row items-center justify-between mt-2">
@@ -125,9 +127,9 @@ const ModuleCard: React.FC<any> = ({
       <div className={classNames('flex  ', editMode ? 'flex-col' : 'flex-row items-center')}>
         {editMode ? (
           <>
-            {selectedSkills.map((skill: any) => {
+            {selectedSkills?.map((skill: any, idx: number) => {
               return (
-                <div className="relative flex items-start my-1" key={skill}>
+                <div className="relative flex items-start my-1" key={idx}>
                   <div className="flex h-6 items-center">
                     <input
                       id={skill}

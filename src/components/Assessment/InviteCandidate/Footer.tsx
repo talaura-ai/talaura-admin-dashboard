@@ -14,7 +14,7 @@ const Footer = () => {
   const [inviteAllCandidate] = useInviteCandidateMutation();
   const [startDateTime, setStartDateTime] = useState<string>(dayjs().format('YYYY-MM-DD[T]hh:mm'));
   const [endDateTime, setEndDateTime] = useState<string>(
-    dayjs().add(2, 'D').format('YYYY-MM-DD[T]hh:mm'),
+    dayjs().add(1, 'hour').format('YYYY-MM-DD[T]hh:mm'),
   );
 
   const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
@@ -57,6 +57,7 @@ const Footer = () => {
               type="datetime-local"
               value={startDateTime}
               required
+              min={dayjs().format('YYYY-MM-DD[T]hh:mm')}
               onChange={(e) => setStartDateTime(e.target.value)}
               className="h-full pl-10 border border-customGray-80"
             />
@@ -75,6 +76,7 @@ const Footer = () => {
             <input
               type="datetime-local"
               value={endDateTime}
+              min={dayjs().add(1, 'minute').format('YYYY-MM-DD[T]hh:mm')}
               required
               onChange={(e) => setEndDateTime(e.target.value)}
               className="h-full pl-10 border border-customGray-80"

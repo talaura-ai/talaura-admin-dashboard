@@ -42,9 +42,9 @@ const MultipleChoices: React.FC<IMultipleChoices> = ({
         {title}
       </label>
       <div className="relative mt-10 ml-10 w-[75vw]">
-        {optionsState.map((option) => {
+        {optionsState?.map((option, idx: number) => {
           return (
-            <div className="relative flex items-start" key={option.name}>
+            <div className="relative flex items-start" key={idx}>
               <div className="flex h-6 items-center">
                 <input
                   id={option.name}

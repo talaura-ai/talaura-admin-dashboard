@@ -4,6 +4,7 @@ import {
   ICandidateData,
   ICandidateReportData,
 } from '../../components/Assessment/AssessmentView/types';
+import { IExtendCandidateAssessmentPayload } from '../../helpers/types';
 import { RootState } from '../store';
 
 const BASE_URL = 'https://fantasytradingleague.com/api/talaura/';
@@ -58,6 +59,17 @@ export const candidatesApi = createApi({
       }),
     }),
 
+    extendCandidateAssessmentDuration: builder.mutation<
+      ICandidateReportData,
+      IExtendCandidateAssessmentPayload
+    >({
+      query: ({ candidateId, endsOn, startsAt }: IExtendCandidateAssessmentPayload) => ({
+        url: `organization/candidate/extendTiming`,
+        method: 'POST',
+        body: { candidateId, endsOn, startsAt },
+      }),
+    }),
+
     notifyCandidate: builder.mutation<ICandidateReportData, string>({
       query: (candidateId: string) => ({
         url: `organization/candidate/notifyCandidate`,
@@ -89,4 +101,5 @@ export const {
   useInviteCandidateMutation,
   useGetCandidateReportsMutation,
   useNotifyCandidateMutation,
+  useExtendCandidateAssessmentDurationMutation,
 } = candidatesApi;

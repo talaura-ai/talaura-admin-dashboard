@@ -15,6 +15,7 @@ import {
 import ErrorPage from '../../../Error/ErrorPage';
 import LoadingScreen from '../../../Loading/LoadingScreen';
 import { ICandidate } from '../types';
+import ExtendModal from './ExtendModal';
 import Header from './Header';
 import Pagination from './Pagination';
 dayjs.locale('en-in');
@@ -40,6 +41,7 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
   const [checked, setChecked] = useState(false);
   const [indeterminate, setIndeterminate] = useState(false);
   const [selectedPeople, setSelectedPeople] = useState<string[]>([]);
+  const [extendUserId, setExtendUserId] = useState<string>('');
 
   const {
     data: candidatesData,
@@ -59,7 +61,7 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
 
   const toggleAll = () => {
     setSelectedPeople(
-      checked || indeterminate ? [] : candidatesData?.Candidate.map((pr) => pr._id) ?? [],
+      checked || indeterminate ? [] : candidatesData?.Candidate?.map((pr) => pr._id) ?? [],
     );
     setChecked(!checked && !indeterminate);
     setIndeterminate(false);
@@ -72,13 +74,14 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
     }
     return buf;
   };
+
   const exportDataToCsv = async () => {
     if (candidatesData?.Candidate) {
       let data: ICandidate[] = [];
       if (selectedPeople.length === 0) {
         data = candidatesData?.Candidate;
       } else {
-        data = candidatesData?.Candidate.filter((cnd) => selectedPeople.includes(cnd._id));
+        data = candidatesData?.Candidate?.filter((cnd) => selectedPeople.includes(cnd._id));
       }
       const workbook = xlsx.utils.book_new();
 
@@ -136,6 +139,7 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
           setFilterStatus={setFilterStatus}
           statusFromParam={status}
         />
+        <ExtendModal extendUserId={extendUserId} setExtendUserId={setExtendUserId} />
         <div className="">
           <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full pb-2 align-middle sm:px-6 lg:px-8">
@@ -164,7 +168,7 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-customGray-200 bg-white shadow-[0_1px_4px_0_rgba(0,0,0,0.25)]">
-                    {candidatesData?.Candidate.map((candidate, idx) => (
+                    {candidatesData?.Candidate?.map((candidate, idx) => (
                       <tr key={idx} className="text-left even:bg-customGray-30 text-customGray-100">
                         <td className="relative px-7 sm:w-12 sm:px-6">
                           {selectedPeople.includes(candidate._id) && (
@@ -208,7 +212,7 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           <div className="flex items-center text-sandybrown">
-                            <button>
+                            <button onClick={() => setExtendUserId(candidate._id)}>
                               <span>Extend</span>
                             </button>
                             <div className="h-[10px] w-[2px] bg-customGray-50 mx-2" />
