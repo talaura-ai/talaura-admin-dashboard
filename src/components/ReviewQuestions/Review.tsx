@@ -12,7 +12,7 @@ export interface ReviewQuestionsProps {
 const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module, setShowQuestions }) => {
   const [isAddNewQuestion, setIsAddNewQuestion] = useState<boolean>(false);
   const currentModule = useAppSelector((state) =>
-    state?.modules?.selectedModules?.find((mdl) => mdl?.name === module?.name),
+    state?.modules?.selectedModules?.find((mdl: any) => mdl?.name === module?.name),
   );
   const questions = currentModule?.question;
   console.log('currentModule', currentModule);
