@@ -77,11 +77,8 @@ const AddCandidates = () => {
   };
 
   useEffect(() => {
-    if (
-      name.length > 1 &&
-      email.length > 4 &&
-      email.match('[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,}')
-    ) {
+    // &&      email.match('[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,}'
+    if (name.length > 3 && email.length > 5) {
       isNoError.current = true;
     } else {
       isNoError.current = false;
