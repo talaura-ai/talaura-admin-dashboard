@@ -14,7 +14,7 @@ import {
   Transition,
 } from '@headlessui/react';
 import { ChevronUpDownIcon } from '@heroicons/react/20/solid';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import toast, { LoaderIcon } from 'react-hot-toast';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -42,6 +42,7 @@ import JD from '../JD/JD';
 import Skills from '../Skills/Skills';
 import InitialQuestion from './InitialQuestion';
 // import ReviewQuestions from '../ReviewQuestions/Review';
+import { createContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { setAllProfiles } from '../../app/features/assessmentProfiles';
 import {
@@ -411,8 +412,11 @@ const Comp: React.FC<IComp> = ({ question }) => {
   }
 };
 
+export const ActionButtonContext = createContext<any>('');
+
 const CreateAssessment = () => {
   // const navigate = useNavigate();
+  const [btnState, setBtnState] = useState('');
   const dispatch = useAppDispatch();
   const { data: profileData, isLoading: profileLoading } = useGetAssessmentProfilesQuery('');
 
@@ -436,7 +440,7 @@ const CreateAssessment = () => {
   const [assessment, setAssessment] = useState<any>(null);
   const { selectedModules } = useAppSelector((state) => state.modules);
 
-  const [initialQuestionValue, setInitialQuestionValue] = useState('');
+  const [initialQuestionValue, setInitialQuestionValue] = useState('Javascript Developer');
   const [initialQuestionProfile, setInitialQuestionProfile] = useState<any>({});
 
   useEffect(() => {
@@ -757,8 +761,8 @@ const CreateAssessment = () => {
     }
   }, [createAssesmentError]);
 
-  const isNextDisabled = () => {
-    if (actionLoading) {
+  const isNextDisabled = useCallback(() => {
+    if (actionLoading || btnState === 'hideAll') {
       return true;
     }
 
@@ -786,26 +790,29 @@ const CreateAssessment = () => {
     }
 
     return false;
-  };
+  }, [actionLoading, btnState, initialQuestionValue, jdData, jdPage, modulesPage, page]);
 
-  const isBackDisabled = () => {
+  const isBackDisabled = useCallback(() => {
     if (page > 1) {
       return false;
     }
 
     return true;
-  };
+  }, [page]);
 
-  const isNextHidden = () => {
+  const isNextHidden = useCallback(() => {
+    if (btnState === 'hideAll') {
+      return true;
+    }
     return false;
-  };
+  }, [btnState]);
 
-  const isBackHidden = () => {
+  const isBackHidden = useCallback(() => {
+    if (page < 1 || btnState === 'hideAll') {
+      return true;
+    }
     if (page === reviewAssessmentPage) {
       return false;
-    }
-    if (page < 1) {
-      return true;
     }
 
     if (page >= jdPage) {
@@ -813,46 +820,49 @@ const CreateAssessment = () => {
     }
 
     return false;
-  };
+  }, [btnState, jdPage, page, reviewAssessmentPage]);
 
   const isCompleteDisabled = () => {
     return false;
   };
 
-  const isCompleteHidden = () => {
+  const isCompleteHidden = useCallback(() => {
     return true;
-  };
+  }, []);
 
-  const actionButtons = [
-    {
-      id: '1',
-      title: 'Back',
-      // action: "",
-      type: 'button',
-      hidden: isBackHidden(),
-      disabled: isBackDisabled(),
-      slideTo: 'slidePrev',
-    },
-    {
-      id: '2',
-      title: 'Next',
-      type: 'button',
-      hidden: isNextHidden(),
-      disabled: isNextDisabled(),
-      isPrimary: true,
-      // action: ,
-      slideTo: 'slideNext',
-    },
-    {
-      id: '3',
-      title: 'Done',
-      // action: "",
-      type: 'submit',
-      hidden: isCompleteHidden(),
-      disabled: isCompleteDisabled(),
-      isPrimary: true,
-    },
-  ];
+  const actionButtons = useMemo<any[]>(
+    () => [
+      {
+        id: '1',
+        title: 'Back',
+        // action: "",
+        type: 'button',
+        hidden: isBackHidden(),
+        disabled: isBackDisabled(),
+        slideTo: 'slidePrev',
+      },
+      {
+        id: '2',
+        title: 'Next',
+        type: 'button',
+        hidden: isNextHidden(),
+        disabled: isNextDisabled(),
+        isPrimary: true,
+        // action: ,
+        slideTo: 'slideNext',
+      },
+      {
+        id: '3',
+        title: 'Done',
+        // action: "",
+        type: 'submit',
+        hidden: isCompleteHidden(),
+        disabled: isCompleteDisabled(),
+        isPrimary: true,
+      },
+    ],
+    [isBackDisabled, isBackHidden, isCompleteHidden, isNextDisabled, isNextHidden],
+  );
 
   useEffect(() => {
     const getQuestionMethod = async () => {
@@ -1047,76 +1057,78 @@ const CreateAssessment = () => {
     <>
       <h1 className="text-2xl font-Sansation_Bold">Create Assessment</h1>
       <div className="flex flex-col">
-        <Step steps={steps} setSteps={setSteps} />
+        <ActionButtonContext.Provider value={{ btnState, setBtnState }}>
+          <Step steps={steps} setSteps={setSteps} />
 
-        <div className="mx-5">
-          <Swiper
-            // install Swiper modules
-            modules={[Navigation, Pagination, Scrollbar, A11y]}
-            // spaceBetween={50}
-            slidesPerView={1}
-            //   navigation
-            //   pagination={{ clickable: true }}
-            //   scrollbar={{ draggable: true }}
-            onSwiper={(swiper) => console.log(swiper)}
-            onSlideChange={(swiper) => setPage(swiper.activeIndex)}
-            allowTouchMove={false}
-            onEnded={() => navigation('/assessments')}
-          >
-            {slides.map((slideContent, slideIDX) => {
-              return (
-                <SwiperSlide
-                  key={slideIDX}
-                  className="h-[65vh] max-h-[65vh]"
-                  data-swiper-parallax={window.screenX * 0.95}
-                  data-swiper-parallax-opacity={'0.5'}
-                >
-                  {slideContent}
-                </SwiperSlide>
-              );
-            })}
-
-            <div className={'px-5 w-full   flex flex-row justify-end absolute bottom-0'}>
-              {actionButtons.map((actionButton, idx) => {
-                // <SwiperButtonPrev disabled={true}>Back</SwiperButtonPrev>
+          <div className="mx-5">
+            <Swiper
+              // install Swiper modules
+              modules={[Navigation, Pagination, Scrollbar, A11y]}
+              // spaceBetween={50}
+              slidesPerView={1}
+              //   navigation
+              //   pagination={{ clickable: true }}
+              //   scrollbar={{ draggable: true }}
+              onSwiper={(swiper) => console.log(swiper)}
+              onSlideChange={(swiper) => setPage(swiper.activeIndex)}
+              allowTouchMove={false}
+              onEnded={() => navigation('/assessments')}
+            >
+              {slides.map((slideContent, slideIDX) => {
                 return (
-                  <SwiperNavButton
-                    key={idx}
-                    // id={actionButton.id}
-                    //   disabled={actionButton.disabled}
-                    //   action={actionButton.action}
-
-                    {...actionButton}
-                    action={getActions({ idx })}
-                    setActionCalledLoading={setActionCalledLoading}
+                  <SwiperSlide
+                    key={slideIDX}
+                    className="h-[65vh] max-h-[65vh]"
+                    data-swiper-parallax={window.screenX * 0.95}
+                    data-swiper-parallax-opacity={'0.5'}
                   >
-                    {actionLoading ? (
-                      <div className="flex flex-row items-center">
-                        {actionButton.title} <LoaderIcon className="mx-1" />
-                      </div>
-                    ) : (
-                      actionButton.title
-                    )}
-                  </SwiperNavButton>
+                    {slideContent}
+                  </SwiperSlide>
                 );
-                // <SwiperButtonDone
-                //   disabled={false}
-                //   hidden={true}
-                //   action={async () => {
-                //     const createResult = await createAssesmentMethod();
-
-                //     if (createResult.data.status === true) {
-                //       toast.success(createResult.data.message);
-                //       return new Promise((resolve) => resolve(true));
-                //     }
-                //   }}
-                // >
-                //   Done
-                // </SwiperButtonDone>
               })}
-            </div>
-          </Swiper>
-        </div>
+
+              <div className={'px-5 w-full   flex flex-row justify-end absolute bottom-0'}>
+                {actionButtons.map((actionButton, idx) => {
+                  // <SwiperButtonPrev disabled={true}>Back</SwiperButtonPrev>
+                  return (
+                    <SwiperNavButton
+                      key={idx}
+                      // id={actionButton.id}
+                      //   disabled={actionButton.disabled}
+                      //   action={actionButton.action}
+
+                      {...actionButton}
+                      action={getActions({ idx })}
+                      setActionCalledLoading={setActionCalledLoading}
+                    >
+                      {actionLoading ? (
+                        <div className="flex flex-row items-center">
+                          {actionButton.title} <LoaderIcon className="mx-1" />
+                        </div>
+                      ) : (
+                        actionButton.title
+                      )}
+                    </SwiperNavButton>
+                  );
+                  // <SwiperButtonDone
+                  //   disabled={false}
+                  //   hidden={true}
+                  //   action={async () => {
+                  //     const createResult = await createAssesmentMethod();
+
+                  //     if (createResult.data.status === true) {
+                  //       toast.success(createResult.data.message);
+                  //       return new Promise((resolve) => resolve(true));
+                  //     }
+                  //   }}
+                  // >
+                  //   Done
+                  // </SwiperButtonDone>
+                })}
+              </div>
+            </Swiper>
+          </div>
+        </ActionButtonContext.Provider>
       </div>
     </>
   );

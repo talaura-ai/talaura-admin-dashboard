@@ -1,10 +1,17 @@
 import { Textarea } from '@headlessui/react';
-import { useReducer } from 'react';
+import { useContext, useEffect, useReducer } from 'react';
 import { addQuestionToModule } from '../../app/features/moduleSlice';
 import { useAppDispatch } from '../../app/hooks';
+import { ActionButtonContext } from '../Assessment/CreateAssessment';
 
 const AddNewQuestion = (props: { questions: any; module?: any; setIsAddNewQuestion: any }) => {
   const { questions, setIsAddNewQuestion, module } = props ?? {};
+  const { setBtnState } = useContext(ActionButtonContext);
+
+  useEffect(() => {
+    setBtnState('hideAll');
+    return () => setBtnState('');
+  }, [setBtnState]);
 
   const dispatch = useAppDispatch();
   const formInitialState = {
