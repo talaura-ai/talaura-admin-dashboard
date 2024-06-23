@@ -57,9 +57,9 @@ const Skills: React.FC<ISkils> = () => {
         <span className="text-gray-400">(Select or Add skills)</span>
       </label>
       <div className="relative mt-10 ml-10 w-[75vw] flex-wrap grid grid-cols-3">
-        {skills.map((skill: any) => {
+        {skills.map((skill: any, idx: number) => {
           return (
-            <div className="relative flex items-start" key={skill}>
+            <div className="relative flex items-start" key={idx}>
               <div className="flex h-6 items-center">
                 <input
                   id={skill}
