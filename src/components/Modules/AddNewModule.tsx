@@ -1,8 +1,9 @@
 import { Dialog, DialogPanel, Select, Transition, TransitionChild } from '@headlessui/react';
-import { Dispatch, SetStateAction, useReducer, useState } from 'react';
-import IMAGES from '../../assets/images/Images';
-import { useAppDispatch } from '../../app/hooks';
+import { Dispatch, SetStateAction, useContext, useEffect, useReducer, useState } from 'react';
 import { addModuleInModulesAndSelectedModules } from '../../app/features/moduleSlice';
+import { useAppDispatch } from '../../app/hooks';
+import IMAGES from '../../assets/images/Images';
+import { ActionButtonContext } from '../Assessment/CreateAssessment';
 
 const skills = [
   'Objective-C/Swift Proficiency',
@@ -17,7 +18,7 @@ const skills = [
 const moduleTypes = ['Quiz', 'Sandbox', 'AI Video Interview', 'Voice To Voice', 'Voice to Text'];
 
 {
-  /* <option value="Sandbox">Sandbox</option>
+  /* <option value="Sandbox">Sandbox</option>   
 <option value="AI Video Interview">AI Video Interview</option>
 <option value="Voice To Voice">Voice To Voice</option>
 <option value="Voice to Text">Voice to Text</option> */
@@ -27,6 +28,13 @@ const AddNewModule: React.FC<any> = ({
 }: {
   setCreateMode: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const { setBtnState } = useContext(ActionButtonContext);
+
+  useEffect(() => {
+    setBtnState('hideAll');
+    return () => setBtnState('');
+  }, [setBtnState]);
+
   const [moduleSkills] = useState(skills);
   const [open, setOpen] = useState(false);
   const [moduleType, setModuleType] = useState('');
