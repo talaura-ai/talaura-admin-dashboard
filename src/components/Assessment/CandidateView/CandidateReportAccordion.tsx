@@ -11,7 +11,7 @@ const CandidateReportAccordion = ({ report }: { report: ICandidateReportDataRepo
         <h4 className="text-xl font-bold text-customGray-300 truncate">{report.moduleName}</h4>
         <div className="flex items-center">
           <span className="text-green-300 text-lg font-bold whitespace-nowrap">
-            {report.report[0].score ?? 0} %
+            {report?.report[0]?.score ?? 0} %
           </span>
           <button className="flex" onClick={() => setIExpanded((prev) => !prev)}>
             <span className="text-xs text-customGray-250 ml-1">Correct</span>
@@ -27,11 +27,11 @@ const CandidateReportAccordion = ({ report }: { report: ICandidateReportDataRepo
         <div className="inner_content">
           {report.report.map((dt, idx) => (
             <div className="content relative my-2 text-left" key={idx}>
-              <span className="text-left text-xs font-bold text-black">{dt.name}</span>
+              <span className="text-left text-xs font-bold text-black">{dt?.name}</span>
               <div className="overflow-hidden bg-sandybrown h-2.5 rounded-full w-[275px]">
                 <span
                   className={`h-full gradient-y-r block rounded-full`}
-                  style={{ width: dt.score + '%' }}
+                  style={{ width: dt?.score + '%' }}
                 ></span>
               </div>
             </div>

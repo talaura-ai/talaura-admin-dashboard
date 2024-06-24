@@ -441,7 +441,7 @@ const CreateAssessment = () => {
   const [assessment, setAssessment] = useState<any>(null);
   const { selectedModules } = useAppSelector((state) => state.modules);
 
-  const [initialQuestionValue, setInitialQuestionValue] = useState('Javascript Developer');
+  const [initialQuestionValue, setInitialQuestionValue] = useState('');
   const [initialQuestionProfile, setInitialQuestionProfile] = useState<any>({});
 
   useEffect(() => {

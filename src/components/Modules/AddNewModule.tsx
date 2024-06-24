@@ -15,7 +15,7 @@ const skills = [
   'Offline Storage & Threading',
 ];
 
-const moduleTypes = ['Quiz', 'Sandbox', 'AI Video Interview', 'Voice To Voice', 'Voice to Text'];
+const moduleTypes = ['Quiz', 'AI Video Interview', 'Voice To Voice', 'Voice to Text'];
 
 {
   /* <option value="Sandbox">Sandbox</option>   

@@ -2,6 +2,7 @@ import { Textarea } from '@headlessui/react';
 import { useContext, useEffect, useReducer } from 'react';
 import { addQuestionToModule } from '../../app/features/moduleSlice';
 import { useAppDispatch } from '../../app/hooks';
+import { omit } from '../../helpers/utils';
 import { ActionButtonContext } from '../Assessment/CreateAssessment';
 
 const AddNewQuestion = (props: { questions: any; module?: any; setIsAddNewQuestion: any }) => {
@@ -40,10 +41,15 @@ const AddNewQuestion = (props: { questions: any; module?: any; setIsAddNewQuesti
   const [formData, localDispatch] = useReducer(reducer, formInitialState);
 
   const onSubmitForm = () => {
+    const finalFormData = omit(
+      formData,
+      module?.type !== 'Quiz' ? ['options', 'expectedAnswer'] : [''],
+    );
+
     dispatch(
       addQuestionToModule({
         name: module.name,
-        question: [...questions, formData],
+        question: [...questions, finalFormData],
       }),
     );
     setIsAddNewQuestion(false);
@@ -74,68 +80,70 @@ const AddNewQuestion = (props: { questions: any; module?: any; setIsAddNewQuesti
                 onChange={(e) => localDispatch({ type: 'title', payload: e.target.value })}
                 placeholder="Enter the question with sample input and output"
               />
-              <div className="options_container mt-4 mx-4 w-full flex flex-col gap-4">
-                <div className="flex items-center gap-4 w-full">
-                  <span className="font-bold text-base text-[#7D7C7C]">Option 1</span>
-                  <input
-                    className="py-3 px-3 rounded-lg border border-[#E4A76F] min-w-[25%]"
-                    placeholder="Enter Option 1"
-                    required
-                    minLength={1}
-                    onChange={(e) =>
-                      localDispatch({ type: 'options', payload: e.target.value, index: 0 })
-                    }
-                  />
+              {module?.type === 'Quiz' && (
+                <div className="options_container mt-4 mx-4 w-full flex flex-col gap-4">
+                  <div className="flex items-center gap-4 w-full">
+                    <span className="font-bold text-base text-[#7D7C7C]">Option 1</span>
+                    <input
+                      className="py-3 px-3 rounded-lg border border-[#E4A76F] min-w-[25%]"
+                      placeholder="Enter Option 1"
+                      required
+                      minLength={1}
+                      onChange={(e) =>
+                        localDispatch({ type: 'options', payload: e.target.value, index: 0 })
+                      }
+                    />
+                  </div>
+                  <div className="flex items-center gap-4 w-full">
+                    <span className="font-bold text-base text-[#7D7C7C]">Option 1</span>
+                    <input
+                      className="py-3 px-3 rounded-lg border border-[#E4A76F] min-w-[25%]"
+                      placeholder="Enter Option 2"
+                      required
+                      minLength={1}
+                      onChange={(e) =>
+                        localDispatch({ type: 'options', payload: e.target.value, index: 1 })
+                      }
+                    />
+                  </div>
+                  <div className="flex items-center gap-4 w-full">
+                    <span className="font-bold text-base text-[#7D7C7C]">Option 1</span>
+                    <input
+                      className="py-3 px-3 rounded-lg border border-[#E4A76F] min-w-[25%]"
+                      placeholder="Enter Option 3"
+                      required
+                      minLength={1}
+                      onChange={(e) =>
+                        localDispatch({ type: 'options', payload: e.target.value, index: 2 })
+                      }
+                    />
+                  </div>
+                  <div className="flex items-center gap-4 w-full">
+                    <span className="font-bold text-base text-[#7D7C7C]">Option 1</span>
+                    <input
+                      className="py-3 px-3 rounded-lg border border-[#E4A76F] min-w-[25%]"
+                      placeholder="Enter Option 4"
+                      required
+                      minLength={1}
+                      onChange={(e) =>
+                        localDispatch({ type: 'options', payload: e.target.value, index: 3 })
+                      }
+                    />
+                  </div>
+                  <div className="flex items-center gap-4 w-full">
+                    <span className="font-bold text-base text-[#7D7C7C]">Correct Answer</span>
+                    <input
+                      className="py-3 px-3 rounded-lg border border-[#E4A76F] min-w-[25%]"
+                      placeholder="Enter correct answer"
+                      required
+                      minLength={1}
+                      onChange={(e) =>
+                        localDispatch({ type: 'expectedAnswer', payload: e.target.value })
+                      }
+                    />
+                  </div>
                 </div>
-                <div className="flex items-center gap-4 w-full">
-                  <span className="font-bold text-base text-[#7D7C7C]">Option 1</span>
-                  <input
-                    className="py-3 px-3 rounded-lg border border-[#E4A76F] min-w-[25%]"
-                    placeholder="Enter Option 2"
-                    required
-                    minLength={1}
-                    onChange={(e) =>
-                      localDispatch({ type: 'options', payload: e.target.value, index: 1 })
-                    }
-                  />
-                </div>
-                <div className="flex items-center gap-4 w-full">
-                  <span className="font-bold text-base text-[#7D7C7C]">Option 1</span>
-                  <input
-                    className="py-3 px-3 rounded-lg border border-[#E4A76F] min-w-[25%]"
-                    placeholder="Enter Option 3"
-                    required
-                    minLength={1}
-                    onChange={(e) =>
-                      localDispatch({ type: 'options', payload: e.target.value, index: 2 })
-                    }
-                  />
-                </div>
-                <div className="flex items-center gap-4 w-full">
-                  <span className="font-bold text-base text-[#7D7C7C]">Option 1</span>
-                  <input
-                    className="py-3 px-3 rounded-lg border border-[#E4A76F] min-w-[25%]"
-                    placeholder="Enter Option 4"
-                    required
-                    minLength={1}
-                    onChange={(e) =>
-                      localDispatch({ type: 'options', payload: e.target.value, index: 3 })
-                    }
-                  />
-                </div>
-                <div className="flex items-center gap-4 w-full">
-                  <span className="font-bold text-base text-[#7D7C7C]">Correct Answer</span>
-                  <input
-                    className="py-3 px-3 rounded-lg border border-[#E4A76F] min-w-[25%]"
-                    placeholder="Enter correct answer"
-                    required
-                    minLength={1}
-                    onChange={(e) =>
-                      localDispatch({ type: 'expectedAnswer', payload: e.target.value })
-                    }
-                  />
-                </div>
-              </div>
+              )}
             </div>
             <div className="flex justify-center">
               <div className="flex flex-row mt-6 justify-center">
