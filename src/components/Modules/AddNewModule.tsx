@@ -184,7 +184,7 @@ const AddNewModule: React.FC<any> = ({
             </div>
           ))}
         </div>
-        <div>
+        {/* <div>
           <button
             onClick={() => {
               setOpen(true);
@@ -194,8 +194,16 @@ const AddNewModule: React.FC<any> = ({
             <img src={IMAGES.plus} className="w-5 h-5" />
             <span className="text-light-orange">Add New Skills</span>
           </button>
-        </div>
+        </div> */}
         <div className="flex flex-row mt-6 justify-center">
+          <button
+            onClick={() => {
+              setCreateMode(false);
+            }}
+            className="mt-2 mx-3 items-center justify-center rounded-md border px-6 py-2.5 text-base font-medium  shadow-sm hover:bg-orange-text focus:outline-none focus:ring-0 active:animate-pulse bg-orange-text text-white"
+          >
+            Cancel
+          </button>{' '}
           <button
             onClick={() => {
               dispatch(addModuleInModulesAndSelectedModules(formData));

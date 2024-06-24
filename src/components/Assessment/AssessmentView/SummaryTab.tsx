@@ -162,20 +162,18 @@ const SummaryTab = ({ assessmentData }: { assessmentData?: IAssessmentDetails })
                   {valuesArray.map((module, idx) => (
                     <div
                       key={idx}
-                      className="module flex flex-row text-center items-center p-4 border mb-2 border-gainsboro rounded-md gap-2 w-[200px]"
+                      className="flex text-center items-center p-4 border mb-2 border-gainsboro rounded-md gap-2 w-[200px]"
                     >
                       <img
                         src={`/images/${iconsArr[Math.floor(Math.random() * (iconsArr.length - 0))]}`}
                         alt=""
                         className="h-[30px] w-[30px]"
                       />
-                      <div className="text_wrapper flex flex-col w-full">
-                        <span className="text-lg text-customGray-100 text-left whitespace-nowrap truncate w-full">
+                      <div className="text_wrapper flex flex-col w-full text-left overflow-hidden">
+                        <span className="text-lg text-customGray-100 whitespace-nowrap truncate">
                           {module.type}
                         </span>
-                        <span className="text-customGray-100 text-sm text-left">
-                          {module.time} minutes
-                        </span>
+                        <span className="text-customGray-100 text-sm">{module.time} minutes</span>
                       </div>
                     </div>
                   ))}

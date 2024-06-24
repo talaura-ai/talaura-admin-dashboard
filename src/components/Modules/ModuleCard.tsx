@@ -117,7 +117,7 @@ const ModuleCard: React.FC<any> = ({
       <div className="flex flex-row items-center justify-between mt-2">
         <div className="flex flex-row">
           <h1 className="">Skills</h1>
-          {editable && (
+          {editable && selectedModule?.type !== 'Sandbox' && (
             <div className="p-1 mx-2" onClick={handleClick}>
               <PencilIcon className="h-3 w-3 text-orange-text" />
             </div>
