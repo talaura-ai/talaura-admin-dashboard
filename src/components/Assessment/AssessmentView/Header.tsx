@@ -1,11 +1,14 @@
 import { Link, useParams } from 'react-router-dom';
+import { ICandidateReportData } from './types';
 
 const Header = ({
   isCandidateView = false,
   assessmentName,
+  candidateData,
 }: {
   isCandidateView?: boolean;
   assessmentName?: string;
+  candidateData?: ICandidateReportData;
 }) => {
   const params = useParams();
   const { assessmentId = '' } = params;
@@ -20,14 +23,18 @@ const Header = ({
               <a className="[text-decoration:none] flex-1 relative text-base font-bold text-[inherit] z-[1] mq450:text-[1.188rem]">
                 Assessments
               </a>
-              <div className="flex flex-col items-start justify-start px-[0rem] pb-[0rem] text-base mx-2">
-                &gt;
-              </div>
-              <a
-                className={`[text-decoration:none] relative text-base font-bold ${isCandidateView ? '' : 'text-burlywood-100 '} inline-block min-w-[1.875rem] z-[1] mq450:text-[1.188rem]`}
-              >
-                A1
-              </a>
+              {!isCandidateView && (
+                <>
+                  <div className="flex flex-col items-start justify-start px-[0rem] pb-[0rem] text-base mx-2">
+                    &gt;
+                  </div>
+                  <a
+                    className={`[text-decoration:none] relative text-base font-bold ${isCandidateView ? '' : 'text-burlywood-100 '} inline-block min-w-[1.875rem] z-[1] mq450:text-[1.188rem]`}
+                  >
+                    {assessmentName}
+                  </a>
+                </>
+              )}
               {isCandidateView && (
                 <>
                   <div className="flex flex-col items-start justify-start px-[0rem] pb-[0rem] text-base mx-2">
@@ -54,7 +61,8 @@ const Header = ({
         <div className="flex flex-row justify-between align-middle items-center">
           <div>
             <h1 className="text-xl text-black font-bold">
-              {isCandidateView ? 'Candidate Name' : assessmentName}
+              {!isCandidateView && assessmentName}
+              {candidateData?.name}
             </h1>
           </div>
           <div className="w-[8.813rem] flex flex-row items-start justify-start gap-[1.062rem] max-w-full mq450:flex-wrap">

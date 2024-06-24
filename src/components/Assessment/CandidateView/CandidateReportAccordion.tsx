@@ -26,13 +26,21 @@ const CandidateReportAccordion = ({ report }: { report: ICandidateReportDataRepo
       {isExpanded && (
         <div className="inner_content">
           {report.report.map((dt, idx) => (
-            <div className="content relative my-2 text-left" key={idx}>
-              <span className="text-left text-xs font-bold text-black">{dt?.name}</span>
-              <div className="overflow-hidden bg-sandybrown h-2.5 rounded-full w-[275px]">
-                <span
-                  className={`h-full gradient-y-r block rounded-full`}
-                  style={{ width: dt?.score + '%' }}
-                ></span>
+            <div className="flex justify-between flex-row items-end gap-4">
+              <div className="content relative my-2 text-left w-full" key={idx}>
+                <span className="text-left text-xs font-bold text-black">{dt?.name}</span>
+                <div className="overflow-hidden bg-sandybrown h-2.5 rounded-full w-full">
+                  <span
+                    className={`h-full gradient-y-r block rounded-full`}
+                    style={{ width: dt?.score + '%' }}
+                  ></span>
+                </div>
+              </div>
+              <div className="mb-1">
+                <span className="text-xs whitespace-nowrap">
+                  <span className="font-bold text-gray-900">{dt?.score}%</span>
+                  {'  '} Correct
+                </span>
               </div>
             </div>
           ))}

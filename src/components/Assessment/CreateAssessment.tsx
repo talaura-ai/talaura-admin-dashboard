@@ -62,7 +62,7 @@ import LoadingScreen from '../Loading/LoadingScreen';
 import Modules from '../Modules/Modules';
 import ReviewAssessments from '../ReviewAssessments/ReviewAssessments';
 
-const AI_API_URL = import.meta.env.VITE_AI_API_URL;
+export const AI_API_URL = import.meta.env.VITE_AI_API_URL;
 
 // const steps = [
 //   {

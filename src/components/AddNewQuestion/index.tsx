@@ -1,5 +1,5 @@
 import { Textarea } from '@headlessui/react';
-import { useContext, useEffect, useReducer } from 'react';
+import { FormEvent, useContext, useEffect, useReducer } from 'react';
 import { addQuestionToModule } from '../../app/features/moduleSlice';
 import { useAppDispatch } from '../../app/hooks';
 import { omit } from '../../helpers/utils';
@@ -40,7 +40,8 @@ const AddNewQuestion = (props: { questions: any; module?: any; setIsAddNewQuesti
   };
   const [formData, localDispatch] = useReducer(reducer, formInitialState);
 
-  const onSubmitForm = () => {
+  const onSubmitForm = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const finalFormData = omit(
       formData,
       module?.type !== 'Quiz' ? ['options', 'expectedAnswer'] : [''],
