@@ -122,6 +122,7 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
       toast.success('Problem Notifying Candidate');
     }
   };
+
   if (isLoading || isFetching || isUninitialized) {
     return <LoadingScreen />;
   }
@@ -156,15 +157,22 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
                           onChange={toggleAll}
                         />
                       </th>
-                      {columns.map((val, idx) => (
-                        <th
-                          key={idx}
-                          scope="col"
-                          className={`pl-4 pr-3 text-sm font-semibold text-gray-900 text-left whitespace-nowrap`}
-                        >
-                          <span>{val}</span>
-                        </th>
-                      ))}
+                      {columns
+                        .filter((val) => {
+                          if (status === 'Completed') {
+                            return val !== 'Action';
+                          }
+                          return true;
+                        })
+                        .map((val, idx) => (
+                          <th
+                            key={idx}
+                            scope="col"
+                            className={`pl-4 pr-3 text-sm font-semibold text-gray-900 text-left whitespace-nowrap`}
+                          >
+                            <span>{val}</span>
+                          </th>
+                        ))}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-customGray-200 bg-white shadow-[0_1px_4px_0_rgba(0,0,0,0.25)]">
@@ -210,17 +218,19 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           {candidate.status}
                         </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          <div className="flex items-center text-sandybrown">
-                            <button onClick={() => setExtendUserId(candidate._id)}>
-                              <span>Extend</span>
-                            </button>
-                            <div className="h-[10px] w-[2px] bg-customGray-50 mx-2" />
-                            <button onClick={() => onNotifyCandidate(candidate._id)}>
-                              <span>Notify</span>
-                            </button>
-                          </div>
-                        </td>
+                        {status !== 'Completed' && (
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            <div className="flex items-center text-sandybrown">
+                              <button onClick={() => setExtendUserId(candidate._id)}>
+                                <span>Extend</span>
+                              </button>
+                              <div className="h-[10px] w-[2px] bg-customGray-50 mx-2" />
+                              <button onClick={() => onNotifyCandidate(candidate._id)}>
+                                <span>Notify</span>
+                              </button>
+                            </div>
+                          </td>
+                        )}
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           <button
                             className="flex items-center gap-2 text-sandybrown"
