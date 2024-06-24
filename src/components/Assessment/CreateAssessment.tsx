@@ -589,8 +589,8 @@ const CreateAssessment = () => {
         assessmentId: assessment.assessmentId,
         module: selectedModules.map((mdl: any) => ({
           ...mdl,
-          question: mdl.question
-            .filter((que: any) => que.selected)
+          question: mdl?.question
+            ?.filter((que: any) => que?.selected)
             .map((que: any) => omit(que, ['selected'])),
         })),
       });

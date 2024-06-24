@@ -20,6 +20,9 @@ export const skillsSlice = createSlice({
     addSkill: (state, action: PayloadAction<any>) => {
       state.skills = [...state.skills, action.payload];
     },
+    addSkillInSelectedSkills: (state, action: PayloadAction<any>) => {
+      state.selectedSkills = [...state.selectedSkills, action.payload];
+    },
     getSelectedSkills: (state) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
@@ -54,6 +57,7 @@ export const {
   setSelectedSkill,
   removeSelectedSkill,
   resetSkillsSlice,
+  addSkillInSelectedSkills,
 } = skillsSlice.actions;
 
 export default skillsSlice.reducer;

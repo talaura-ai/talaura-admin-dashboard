@@ -1,8 +1,8 @@
+import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react';
+import { CheckCircleIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
 import { PencilIcon } from '@heroicons/react/24/solid';
-import IMAGES from '../../assets/images/Images';
 import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { classNames } from '../Core/classNames';
+import toast from 'react-hot-toast';
 import {
   addModule,
   removeModuleSkill,
@@ -11,8 +11,10 @@ import {
   updateDuration,
   updateWeightage,
 } from '../../app/features/moduleSlice';
-import { CheckCircleIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
-import toast from 'react-hot-toast';
+import { addSkillInSelectedSkills } from '../../app/features/skillsSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import IMAGES from '../../assets/images/Images';
+import { classNames } from '../Core/classNames';
 
 const ModuleCard: React.FC<any> = ({
   name,
@@ -25,11 +27,12 @@ const ModuleCard: React.FC<any> = ({
   setEditMode,
   reviewAble,
 }) => {
+  const [open, setOpen] = useState(false);
+  const [customSkill, setCustomSkill] = useState('');
   const { selectedModules } = useAppSelector((state) => state.modules);
   const dispatch = useAppDispatch();
   const selectedModule = selectedModules.find((m: any) => m.name === name);
   const { selectedSkills } = useAppSelector((state) => state.skills);
-
   const handleCheckboxChange = (event: { target: { value: any; checked: any } }) => {
     const { value, checked } = event.target;
 
@@ -59,6 +62,11 @@ const ModuleCard: React.FC<any> = ({
         Weightage: !isNaN(Number(weight)) ? Number(weight) : 0,
       }),
     );
+  };
+
+  const handleSubmitNewSkill = () => {
+    dispatch(addSkillInSelectedSkills(customSkill));
+    setOpen(false);
   };
 
   const handleChangeDuration = async () => {
@@ -157,6 +165,11 @@ const ModuleCard: React.FC<any> = ({
                 </div>
               );
             })}
+
+            <button className="flex flex-row py-5 gap-1" onClick={() => setOpen(true)}>
+              <img src={IMAGES.plus} className="w-5 h-5" />
+              <span className="text-orange-text text-sm">Add new skill</span>
+            </button>
           </>
         ) : (
           <p className="text-gray-300 text-sm">
@@ -231,6 +244,71 @@ const ModuleCard: React.FC<any> = ({
           </button>
         </div>
       )}
+
+      <Transition show={open}>
+        <Dialog className="relative z-10" onClose={setOpen}>
+          <TransitionChild
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          </TransitionChild>
+
+          <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+              <TransitionChild
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                enterTo="opacity-100 translate-y-0 sm:scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              >
+                <DialogPanel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+                  <img
+                    src={IMAGES.Cancel}
+                    className="h-8 w-8 text-gray-400 absolute right-0 top-0"
+                    onClick={() => setOpen(false)}
+                  />
+
+                  <div>
+                    <div className="mt-3 text-center sm:mt-5">
+                      <hr className="mt-2 h-1" />
+                      <div className="mt-2">
+                        <div className="flex justify-center">
+                          <input
+                            type={'text'}
+                            name={'customSkill'}
+                            id={'customSkill'}
+                            className={classNames(
+                              'peer text-2xl  w-full border-0 bg-transparent py-1.5 text-gray-900 focus:ring-0 placeholder-gray-300',
+                            )}
+                            placeholder={'Enter skill'}
+                            value={customSkill}
+                            onChange={(e) => setCustomSkill(e.target.value)}
+                          />
+                          <button
+                            type="submit"
+                            className="  justify-center rounded-xl bg-orange-text px-7 py-1 text-sm font-semibold text-white shadow-sm hover:bg-brand-color focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-text"
+                            onClick={handleSubmitNewSkill}
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-5 sm:mt-6 justify-center flex"></div>
+                </DialogPanel>
+              </TransitionChild>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
       {/* <div className="flex absolute w-[220px]  mx-auto p-1 left-[35vw] top-[27vh]">
             {openTimer &&   <>
               <DurationPicker 
