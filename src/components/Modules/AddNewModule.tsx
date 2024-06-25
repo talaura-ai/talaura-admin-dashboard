@@ -1,19 +1,9 @@
 import { Dialog, DialogPanel, Select, Transition, TransitionChild } from '@headlessui/react';
 import { Dispatch, SetStateAction, useContext, useEffect, useReducer, useState } from 'react';
 import { addModuleInModulesAndSelectedModules } from '../../app/features/moduleSlice';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import IMAGES from '../../assets/images/Images';
 import { ActionButtonContext } from '../Assessment/CreateAssessment';
-
-const skills = [
-  'Objective-C/Swift Proficiency',
-  'UI/UX Standards',
-  'Problem Solving',
-  'iOS Frameworks',
-  'Low-level C Libraries',
-  'Collaboration',
-  'Offline Storage & Threading',
-];
 
 const moduleTypes = ['Quiz', 'AI Video Interview', 'Voice To Voice', 'Voice to Text'];
 
@@ -29,6 +19,7 @@ const AddNewModule: React.FC<any> = ({
   setCreateMode: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { setBtnState } = useContext(ActionButtonContext);
+  const { skills } = useAppSelector((state) => state.skills);
 
   useEffect(() => {
     setBtnState('hideAll');
@@ -160,7 +151,7 @@ const AddNewModule: React.FC<any> = ({
           Select Skills
         </h1>
         <div className="grid gap-6 mb-6 md:grid-cols-3 mt-2">
-          {moduleSkills?.map((item, idx: number) => (
+          {moduleSkills?.map((item: any, idx: number) => (
             <div className="flex my-1 items-center" key={idx}>
               <div className="flex h-6 items-center">
                 <input

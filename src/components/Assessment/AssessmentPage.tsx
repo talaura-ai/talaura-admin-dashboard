@@ -217,7 +217,6 @@ const AssessmentPage = () => {
 
                 // const  a[sortBy] - b[sortBy]
               })
-
               .map((assessment, index) => {
                 return (
                   <li key={index} className="col-span-1 flex rounded-md shadow-sm">
@@ -227,7 +226,7 @@ const AssessmentPage = () => {
                           'bg-brand-color h-10 w-2 flex flex-shrink-0 items-center justify-center rounded-r-md text-sm font-medium text-white  '
                         }
                       ></div>
-                      <div className="flex-1 truncate px-4 py-2 text-sm text-center">
+                      <div className="flex-1 truncate px-4 py-2 text-sm text-left">
                         <Link
                           to={`/assessment/view/${assessment._id}`}
                           className="font-bold text-orange-text font-Sansation_Regular text-2xl text-center"

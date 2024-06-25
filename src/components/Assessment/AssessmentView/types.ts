@@ -97,6 +97,10 @@ export interface ICandidateReportDataReportItem {
   ];
   moduleName: string;
   moduleType: string;
+  average: number;
+  description?: string;
+  accuracy?: string;
+  areaToImprove?: string;
 }
 export interface ICandidateReportData {
   status: boolean;
@@ -108,4 +112,6 @@ export interface ICandidateReportData {
   endsOn: string;
   name: string;
   email: string;
+  createdAt: string;
+  completedOn: string;
 }

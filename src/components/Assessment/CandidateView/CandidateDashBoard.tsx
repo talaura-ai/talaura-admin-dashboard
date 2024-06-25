@@ -49,8 +49,12 @@ const CandidateDashBoard = ({ candidateData }: { candidateData?: ICandidateRepor
                 </div>
                 <div className="col1_row2 h-[18px] w-[18px] bg-sandybrown rounded-full border-4 border-light-gold" />
                 <div className="col1_row3 flex flex-col">
-                  <span className="text-black text-sm whitespace-nowrap">15 jun, 2015</span>
-                  <span className="text-[10px]">08:30PM</span>
+                  <span className="text-black text-sm whitespace-nowrap">
+                    {dayjs(candidateData?.createdAt).format('DD-MM-YYYY')}
+                  </span>
+                  <span className="text-[10px]">
+                    {dayjs(candidateData?.createdAt).format('hh:mm A')}
+                  </span>
                 </div>
               </div>
               <div className="col1 flex flex-col justify-between items-center h-[106px] w-[80px]">
@@ -60,10 +64,10 @@ const CandidateDashBoard = ({ candidateData }: { candidateData?: ICandidateRepor
                 <div className="col1_row2 h-[18px] w-[18px] bg-sandybrown rounded-full border-4 border-light-gold" />
                 <div className="col1_row3 flex flex-col">
                   <span className="text-black text-sm whitespace-nowrap">
-                    {dayjs(candidateData?.startsAt).format('DD MM YYYY')}
+                    {dayjs(candidateData?.startsAt).format('DD-MM-YYYY')}
                   </span>
                   <span className="text-[10px]">
-                    {dayjs(candidateData?.startsAt).format('hh:mmA')}
+                    {dayjs(candidateData?.startsAt).format('hh:mm A')}
                   </span>
                 </div>
               </div>
@@ -73,8 +77,12 @@ const CandidateDashBoard = ({ candidateData }: { candidateData?: ICandidateRepor
                 </div>
                 <div className="col1_row2 h-[18px] w-[18px] bg-green-400 rounded-full border-4 border-green-100" />
                 <div className="col1_row3 flex flex-col">
-                  <span className="text-black text-sm whitespace-nowrap">15 jun, 2015</span>
-                  <span className="text-[10px]">08:30PM</span>
+                  <span className="text-black text-sm whitespace-nowrap">
+                    {dayjs(candidateData?.completedOn).format('DD-MM-YYYY')}
+                  </span>
+                  <span className="text-[10px]">
+                    {dayjs(candidateData?.completedOn).format('hh:mm A')}
+                  </span>
                 </div>
               </div>
               <div className="progress_bar absolute w-full top-11 left-0 flex justify-center -z-10">

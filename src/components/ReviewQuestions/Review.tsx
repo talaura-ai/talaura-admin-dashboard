@@ -15,7 +15,7 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module, setShowQuesti
   const currentModule = useAppSelector((state) =>
     state?.modules?.selectedModules?.find((mdl: any) => mdl?.name === module?.name),
   );
-  const questions = currentModule?.question;
+  const questions = currentModule?.question ?? [];
   const [questionsSelectedStatus, setQuestionsSelectedStatusArr] = useState<boolean[]>(
     questions?.map((que: any) => que?.selected),
   );
