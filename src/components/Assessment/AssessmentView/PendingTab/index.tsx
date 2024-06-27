@@ -22,7 +22,7 @@ dayjs.locale('en-in');
 dayjs.extend(utc);
 dayjs.extend(timeZone);
 
-const columns = [
+const columnsForPendingTable = [
   'Candidate Name',
   'Invite Date',
   'Start Date',
@@ -30,6 +30,15 @@ const columns = [
   'Test Action',
   'Action',
   'Invite Link',
+];
+
+const columnsForCompletedTable = [
+  'Candidate Name',
+  'Start Date',
+  'Completed On',
+  'TAL Score',
+  'Cognitive Score',
+  'Status',
 ];
 const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
   const [filterStatus, setFilterStatus] = useState<string>(status);
@@ -157,22 +166,18 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
                           onChange={toggleAll}
                         />
                       </th>
-                      {columns
-                        .filter((val) => {
-                          if (status === 'Completed') {
-                            return val !== 'Action';
-                          }
-                          return true;
-                        })
-                        .map((val, idx) => (
-                          <th
-                            key={idx}
-                            scope="col"
-                            className={`pl-4 pr-3 text-sm font-semibold text-gray-900 text-left whitespace-nowrap`}
-                          >
-                            <span>{val}</span>
-                          </th>
-                        ))}
+                      {(status === 'Pending'
+                        ? columnsForPendingTable
+                        : columnsForCompletedTable
+                      ).map((val, idx) => (
+                        <th
+                          key={idx}
+                          scope="col"
+                          className={`pl-4 pr-3 text-sm font-semibold text-gray-900 text-left whitespace-nowrap`}
+                        >
+                          <span>{val}</span>
+                        </th>
+                      ))}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-customGray-200 bg-white shadow-[0_1px_4px_0_rgba(0,0,0,0.25)]">
@@ -210,13 +215,19 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
                           </span>
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {dayjs(candidate.startsAt).format('DD MMM, YYYY [at] hh:mm A')}
+                          {dayjs(
+                            status === 'Completed' ? candidate?.completedOn : candidate.startsAt,
+                          ).format('DD MMM, YYYY [at] hh:mm A')}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {dayjs(candidate.endsOn).format('DD MMM, YYYY [at] hh:mm A')}
+                          {status === 'Completed'
+                            ? candidate.paiScore
+                            : dayjs(candidate?.endsOn).format('DD MMM, YYYY [at] hh:mm A')}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {candidate.status}
+                          {status === 'Completed'
+                            ? Math.floor(Math.random() * (100 - 10))
+                            : candidate.status}
                         </td>
                         {status !== 'Completed' && (
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
@@ -232,15 +243,19 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
                           </td>
                         )}
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          <button
-                            className="flex items-center gap-2 text-sandybrown"
-                            onClick={() => {
-                              Clipboard.copy(candidate?.assessmentId);
-                            }}
-                          >
-                            <DocumentDuplicateIcon className="h-[12px] w-[12px]" />
-                            <span>Copy</span>
-                          </button>
+                          {status === 'Completed' ? (
+                            'Completed'
+                          ) : (
+                            <button
+                              className="flex items-center gap-2 text-sandybrown"
+                              onClick={() => {
+                                Clipboard.copy(candidate?.assessmentId);
+                              }}
+                            >
+                              <DocumentDuplicateIcon className="h-[12px] w-[12px]" />
+                              <span>Copy</span>
+                            </button>
+                          )}
                         </td>
                       </tr>
                     ))}

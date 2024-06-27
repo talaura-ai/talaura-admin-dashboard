@@ -55,9 +55,7 @@ const JD: React.FC<IJD> = ({
   const [actionButtonsVisible, setActionButtonsVisible] = useState(true);
   const [assistantMessage, setAssisstantMessage] = useState('');
 
-  const label = isJobDescriptionRequired
-    ? 'Enter the Job Description here'
-    : 'Describe your requirments here';
+  const label = isJobDescriptionRequired ? 'Enter the Job Description here' : 'Program description';
 
   const inputFile = useRef<any>(null);
   const [attachedFile, setAttachedFile] = useState<any>(null);

@@ -1,17 +1,17 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react';
 import { EllipsisHorizontalIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import IMAGES from '../../assets/images/Images';
-import { Menu, MenuButton, Transition, MenuItems, MenuItem } from '@headlessui/react';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { useEffect, useState } from 'react';
-import EmptyDataScreen from '../EmptyDataScreen/EmptyDataScreen';
 import moment from 'moment';
-import { classNames } from '../Core/classNames';
-import { useGetAllQuery } from '../../app/services/assessments';
+import { useEffect, useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import { getAll } from '../../app/features/assessmentsSlice';
-import { resetSkillsSlice } from '../../app/features/skillsSlice';
 import { resetModulesSlice } from '../../app/features/moduleSlice';
 import { resetQuestionsSlice } from '../../app/features/questions';
+import { resetSkillsSlice } from '../../app/features/skillsSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useGetAllQuery } from '../../app/services/assessments';
+import IMAGES from '../../assets/images/Images';
+import { classNames } from '../Core/classNames';
+import EmptyDataScreen from '../EmptyDataScreen/EmptyDataScreen';
 
 // const assessmentsData = [
 //   {

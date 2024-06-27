@@ -66,6 +66,9 @@ export interface ICandidate {
   endsOn: string;
   createdAt: string;
   updatedAt: string;
+  completedOn?: string;
+  paiScore?: number;
+  cognitiveScore?: number;
   __v: 0;
 }
 

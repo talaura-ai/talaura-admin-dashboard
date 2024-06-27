@@ -28,7 +28,7 @@ const Input: React.FC<IInput> = ({
   label = 'title',
   type = 'text',
   name = 'name',
-  placeholder = 'Type here ...',
+  placeholder = 'Enter Program Name',
   className = '',
   value,
   setValue,

@@ -53,7 +53,7 @@ const Skills: React.FC<ISkils> = () => {
   return (
     <div className="mt-10 w-[60vw]">
       <label className="text-black text-2xl font-Sansation">
-        Based on the details you just gave, I’ll be testing the candidates on these skills.{' '}
+        Based on the details provided, below are the skills recommended.
         <span className="text-gray-400">(Select or Add skills)</span>
       </label>
       <div className="relative mt-10 ml-10 w-[75vw] flex-wrap grid grid-cols-3">

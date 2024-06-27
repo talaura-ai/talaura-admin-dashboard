@@ -5,7 +5,6 @@ import {
   setSelectedModule as setSelectedModuleToRedux,
 } from '../../app/features/moduleSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import IMAGES from '../../assets/images/Images';
 import { AI_API_URL } from '../Assessment/CreateAssessment';
 import AddNewModule from './AddNewModule';
 import EditModule from './EditModule';
@@ -63,7 +62,7 @@ const Modules = () => {
   return (
     <>
       <div className="btn_container flex justify-start gap-4 items-center">
-        <button
+        {/* <button
           className="inline-flex
         p-2
         items-center
@@ -79,7 +78,7 @@ const Modules = () => {
         >
           <img src={IMAGES.Create} className="h-5 w-5" />
           <h3 className="px-1 text-white">Create</h3>
-        </button>
+        </button> */}
 
         {modules.length === 0 && (
           <button

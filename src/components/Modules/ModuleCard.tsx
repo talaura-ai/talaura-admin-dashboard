@@ -18,6 +18,7 @@ import { classNames } from '../Core/classNames';
 
 const ModuleCard: React.FC<any> = ({
   name,
+  type,
   // noOfQuestions,
   // skills,
   // time,
@@ -90,8 +91,11 @@ const ModuleCard: React.FC<any> = ({
       }}
     >
       <div className="flex flex-row items-center justify-between">
-        <div className="grow justify-start items-start">
+        <div className="grow justify-between items-start flex gap-8 pr-10">
           <h1 className="text-orange-text">{name}</h1>
+          <h1>
+            Type <span className="text-gray-400">{type ?? ''}</span>
+          </h1>
         </div>
         {!reviewAble && (
           <>

@@ -421,12 +421,6 @@ const CreateAssessment = () => {
   const dispatch = useAppDispatch();
   const { data: profileData, isLoading: profileLoading } = useGetAssessmentProfilesQuery('');
 
-  useEffect(() => {
-    if (profileData && profileData.status) {
-      dispatch(setAllProfiles(profileData.assessmentProfile));
-    }
-  }, [dispatch, profileData]);
-
   const assessmentsProfiles = useAppSelector((state) => state.assessmentProfiles);
 
   const questionReduxData = useAppSelector((state) => state.questions);
@@ -442,13 +436,15 @@ const CreateAssessment = () => {
   const { selectedModules } = useAppSelector((state) => state.modules);
 
   const [initialQuestionValue, setInitialQuestionValue] = useState('');
-  const [initialQuestionProfile, setInitialQuestionProfile] = useState<any>({});
+  const [initialQuestionProfile, setInitialQuestionProfile] = useState<any>();
 
   useEffect(() => {
-    if (assessmentsProfiles) {
-      setInitialQuestionProfile(assessmentsProfiles[0]);
+    if (profileData && profileData.status) {
+      dispatch(setAllProfiles(profileData.assessmentProfile));
+      if (profileData.assessmentProfile.length)
+        setInitialQuestionProfile(profileData.assessmentProfile[0]);
     }
-  }, [assessmentsProfiles]);
+  }, [dispatch, profileData]);
 
   const [questions, setQuestions] = useState([]);
   const [page, setPage] = useState(0);
@@ -549,6 +545,7 @@ const CreateAssessment = () => {
           Sandbox: 'generate_sandbox_questions',
           'AI Video Interview': 'generate_ai_video_interview_questions',
           Interview: 'generate_voice_to_text_questions',
+          'Voice to Text': 'generate_voice_to_text_questions',
           Quiz: 'generate_quiz_questions',
         };
 
@@ -596,7 +593,7 @@ const CreateAssessment = () => {
       });
 
       if (error) {
-        toast.error(`${error}`);
+        toast.error(`${error?.data?.message ?? error}`);
         return;
       }
       if (data.status === true) {
@@ -1061,7 +1058,7 @@ const CreateAssessment = () => {
 
   return (
     <>
-      <h1 className="text-2xl font-Sansation_Bold">Create Assessment</h1>
+      <h1 className="text-2xl font-Sansation_Bold">Create Program</h1>
       <div className="flex flex-col">
         <ActionButtonContext.Provider value={{ btnState, setBtnState }}>
           <Step steps={steps} setSteps={setSteps} />

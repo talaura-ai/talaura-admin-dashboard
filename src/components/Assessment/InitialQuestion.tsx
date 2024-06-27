@@ -1,14 +1,12 @@
 import Input from '../Core/Input';
-import { Radio, RadioGroup } from '@headlessui/react';
-import { classNames } from '../Core/classNames';
 import LoadingScreen from '../Loading/LoadingScreen';
 
 const InitialQuestion: React.FC<any> = ({
   value,
   setInitialQuestionValue,
-  initialQuestionProfile,
-  setInitialQuestionProfile,
-  assessmentsProfiles,
+  // initialQuestionProfile,
+  // setInitialQuestionProfile,
+  // assessmentsProfiles,
   loading,
 }) => {
   if (loading) {
@@ -16,7 +14,7 @@ const InitialQuestion: React.FC<any> = ({
   }
   return (
     <div className="flex flex-col mt-10 px-5">
-      <fieldset>
+      {/* <fieldset>
         <h1 className="text-black text-2xl font-Sansation_Bold">Are you a?</h1>
         <RadioGroup
           value={initialQuestionProfile.name}
@@ -73,10 +71,10 @@ const InitialQuestion: React.FC<any> = ({
             </Radio>
           ))}
         </RadioGroup>
-      </fieldset>
+      </fieldset> */}
       <div className="flex mt-10">
         <Input
-          label={'What is the name of Assessment?'}
+          label={'Create Program'}
           name={'assessmentName'}
           value={value}
           setValue={setInitialQuestionValue}
