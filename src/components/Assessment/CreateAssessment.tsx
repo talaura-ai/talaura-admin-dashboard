@@ -593,7 +593,8 @@ const CreateAssessment = () => {
       });
 
       if (error) {
-        toast.error(`${error?.data?.message ?? error}`);
+        const err = error as any;
+        toast.error(`${err.data?.message ?? error}`);
         return;
       }
       if (data.status === true) {
@@ -796,12 +797,11 @@ const CreateAssessment = () => {
   }, [actionLoading, btnState, initialQuestionValue, jdData, jdPage, modulesPage, page]);
 
   const isBackDisabled = useCallback(() => {
-    if (page > 1) {
-      return false;
+    if (page === 0 || btnState === 'hideAll') {
+      return true;
     }
-
-    return true;
-  }, [page]);
+    return false;
+  }, [btnState, page]);
 
   const isNextHidden = useCallback(() => {
     if (btnState === 'hideAll') {
@@ -811,19 +811,11 @@ const CreateAssessment = () => {
   }, [btnState]);
 
   const isBackHidden = useCallback(() => {
-    if (page < 1 || btnState === 'hideAll') {
+    if (page === 0 || btnState === 'hideAll') {
       return true;
     }
-    if (page === reviewAssessmentPage) {
-      return false;
-    }
-
-    if (page >= jdPage) {
-      return true;
-    }
-
     return false;
-  }, [btnState, jdPage, page, reviewAssessmentPage]);
+  }, [btnState, page]);
 
   const isCompleteDisabled = () => {
     return false;
