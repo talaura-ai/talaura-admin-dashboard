@@ -16,7 +16,7 @@ const Header = ({
   const assessmentData = useAppSelector((state) =>
     state.assessments.find((assessment) => assessment?._id === assessmentId),
   );
-  console.log(assessmentData);
+
   return (
     <div
       className={`self-stretch flex flex-row items-start justify-start py-[0rem] pr-[0.062rem] pl-[0.187rem] box-border max-w-full text-center text-[1.5rem] text-customGray-100 font-sansation`}
