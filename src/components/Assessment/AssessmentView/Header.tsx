@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { ICandidateReportData } from './types';
+import { useAppSelector } from '../../../app/hooks';
 
 const Header = ({
   isCandidateView = false,
@@ -12,6 +13,10 @@ const Header = ({
 }) => {
   const params = useParams();
   const { assessmentId = '' } = params;
+  const assessmentData = useAppSelector((state) =>
+    state.assessments.find((assessment) => assessment?._id === assessmentId),
+  );
+  console.log(assessmentData);
   return (
     <div
       className={`self-stretch flex flex-row items-start justify-start py-[0rem] pr-[0.062rem] pl-[0.187rem] box-border max-w-full text-center text-[1.5rem] text-customGray-100 font-sansation`}
@@ -23,18 +28,15 @@ const Header = ({
               <a className="[text-decoration:none] flex-1 relative text-base font-bold text-[inherit] z-[1] mq450:text-[1.188rem]">
                 Assessments
               </a>
-              {!isCandidateView && (
-                <>
-                  <div className="flex flex-col items-start justify-start px-[0rem] pb-[0rem] text-base mx-2">
-                    &gt;
-                  </div>
-                  <a
-                    className={`[text-decoration:none] relative text-base font-bold ${isCandidateView ? '' : 'text-burlywood-100 '} inline-block min-w-[1.875rem] z-[1] mq450:text-[1.188rem]`}
-                  >
-                    {assessmentName}
-                  </a>
-                </>
-              )}
+              <div className="flex flex-col items-start justify-start px-[0rem] pb-[0rem] text-base mx-2">
+                &gt;
+              </div>
+              <Link
+                className={`[text-decoration:none] relative text-base font-bold ${isCandidateView ? '' : 'text-burlywood-100 '} inline-block min-w-[1.875rem] z-[1] mq450:text-[1.188rem] hover:text-burlywood-100`}
+                to={`/assessment/view/${assessmentId}`}
+              >
+                {assessmentData?.name}
+              </Link>
               {isCandidateView && (
                 <>
                   <div className="flex flex-col items-start justify-start px-[0rem] pb-[0rem] text-base mx-2">
