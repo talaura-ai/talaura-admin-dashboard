@@ -1,14 +1,22 @@
+import { useContext, useEffect } from 'react';
+import { ActionButtonContext } from '../CreateAssessment';
 import ModuleCard from './ModuleCard';
-import OverView from './OverView';
 
 const EditModule: React.FC<any> = ({ module, editMode, setEditMode }) => {
   const { name, type, noOfQuestions, skills, time, Weightage } = module;
+  const { setBtnState } = useContext(ActionButtonContext);
+
+  useEffect(() => {
+    setBtnState('hideAll');
+    return () => setBtnState('');
+  }, [setBtnState]);
+
   return (
     <>
-      <div className="scrollbar overflow-y-auto h-full dir-rtl">
-        <div className="dir-ltr">
-          <div className="grid grid-cols-7 gap-4">
-            <div className="col-span-4">
+      <div className="scrollbar overflow-y-auto h-full">
+        <div className="">
+          <div className="">
+            <div className="">
               <ModuleCard
                 name={name}
                 type={type}
@@ -20,9 +28,6 @@ const EditModule: React.FC<any> = ({ module, editMode, setEditMode }) => {
                 editMode={editMode}
                 setEditMode={setEditMode}
               />
-            </div>
-            <div className="col-span-3">
-              <OverView editMode={editMode} module={module} setEditMode={setEditMode} />
             </div>
           </div>
         </div>

@@ -32,7 +32,7 @@ const ModuleCard: React.FC<any> = ({
   const [customSkill, setCustomSkill] = useState('');
   const { selectedModules } = useAppSelector((state) => state.modules);
   const dispatch = useAppDispatch();
-  const selectedModule = selectedModules.find((m: any) => m.name === name);
+  const selectedModule = selectedModules.find((m: any) => m.name === name)!;
   const { selectedSkills } = useAppSelector((state) => state.skills);
   const handleCheckboxChange = (event: { target: { value: any; checked: any } }) => {
     const { value, checked } = event.target;
@@ -43,8 +43,6 @@ const ModuleCard: React.FC<any> = ({
       dispatch(removeModuleSkill({ name, skill: value }));
     }
   };
-  // const [openTimer, setOpenTimer] = useState(false);
-  // const [timer, setTimer] = useState("50:00");
   const [weight, setWeight] = useState(() =>
     selectedModule && selectedModule.Weightage ? selectedModule.Weightage : 0,
   );
@@ -92,10 +90,7 @@ const ModuleCard: React.FC<any> = ({
     >
       <div className="flex flex-row items-center justify-between">
         <div className="grow justify-between items-start flex gap-8 pr-10">
-          <h1 className="text-orange-text">{name}</h1>
-          <h1>
-            Type <span className="text-gray-400">{type ?? ''}</span>
-          </h1>
+          <h1 className="text-orange-text">{type}</h1>
         </div>
         {!reviewAble && (
           <>
@@ -107,7 +102,25 @@ const ModuleCard: React.FC<any> = ({
                 />
               </div>
             ) : (
-              <div className=" items-end " onClick={() => dispatch(addModule({ name }))}>
+              <div
+                className=" items-end "
+                onClick={() =>
+                  dispatch(
+                    addModule({
+                      name,
+                      type: '',
+                      noOfQuestions: 0,
+                      position: 0,
+                      question: [],
+                      skills: [],
+                      weightage: '',
+                      Weightage: '',
+                      time: '',
+                      _id: '',
+                    }),
+                  )
+                }
+              >
                 <PlusCircleIcon className="h-6 w-6 text-orange-text" />
               </div>
             )}
@@ -118,13 +131,6 @@ const ModuleCard: React.FC<any> = ({
             <PencilIcon className="h-6 w-6 text-orange-text" />
           </div>
         )}
-      </div>
-      <div className="flex flex-row items-center justify-between">
-        <div>
-          <h3 className="text-xs  text-gray-300">
-            {selectedModule?.question?.filter((que: any) => que?.selected)?.length ?? 0} Question
-          </h3>
-        </div>
       </div>
       <div className="flex flex-row items-center justify-between mt-2">
         <div className="flex flex-row">

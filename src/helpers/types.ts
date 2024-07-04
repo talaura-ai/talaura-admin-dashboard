@@ -27,15 +27,13 @@ export interface IModuleType {
   type: string;
   noOfQuestions: number;
   position: number;
-  question: [
-    {
-      title: string;
-      type: string;
-      options: string[];
-      expectedAnswer: string;
-      _id: string;
-    },
-  ];
+  question: {
+    title: string;
+    type: string;
+    options: string[];
+    expectedAnswer: string;
+    _id: string;
+  }[];
   skills: string[];
   weightage: string;
   Weightage: string;

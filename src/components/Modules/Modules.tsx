@@ -9,7 +9,6 @@ import { AI_API_URL } from '../../helpers/utils';
 import AddNewModule from './AddNewModule';
 import EditModule from './EditModule';
 import ModuleCard from './ModuleCard';
-import OverView from './OverView';
 
 const Modules = () => {
   const { modules } = useAppSelector((state) => state.modules);
@@ -66,7 +65,7 @@ const Modules = () => {
       </div>
       <div className="scrollbar overflow-y-auto h-full dir-rtl">
         <div className="dir-ltr">
-          <div className="grid grid-cols-7 gap-4   pb-20">
+          <div className="pb-20">
             <div className="col-span-4">
               {modules?.map((module, idx: number) => {
                 const { name, type, noOfQuestions, skills, time, Weightage } = module;
@@ -89,9 +88,9 @@ const Modules = () => {
                 );
               })}
             </div>
-            <div className="col-span-3">
+            {/* <div className="col-span-3">
               <OverView />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
