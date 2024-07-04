@@ -1,14 +1,21 @@
+import { useState } from 'react';
 import Input from '../Core/Input';
+import JDDesc from '../JD/JDDesc';
 import LoadingScreen from '../Loading/LoadingScreen';
+import { JDactionButtons } from '../JD/JD';
+import { ArrowRightIcon } from '@heroicons/react/20/solid';
 
 const InitialQuestion: React.FC<any> = ({
   value,
   setInitialQuestionValue,
-  // initialQuestionProfile,
-  // setInitialQuestionProfile,
-  // assessmentsProfiles,
+  assessment,
+  jdData,
+  setJdData,
+  conversation_id,
   loading,
 }) => {
+  const [assistantMessage, setAssistantMessage] = useState('');
+
   if (loading) {
     return <LoadingScreen />;
   }
@@ -72,7 +79,7 @@ const InitialQuestion: React.FC<any> = ({
           ))}
         </RadioGroup>
       </fieldset> */}
-      <div className="flex mt-10">
+      <div className="flex flex-col">
         <Input
           label={'Create Program'}
           name={'assessmentName'}
@@ -80,6 +87,28 @@ const InitialQuestion: React.FC<any> = ({
           setValue={setInitialQuestionValue}
           required
         />
+        <div className="mt-8 ">
+          <label className="text-black text-2xl font-Sansation">
+            <span>2.</span>
+            <ArrowRightIcon className="w-5 h-5 inline mx-2 mb-1" />{' '}
+            <span> Program description</span>
+          </label>
+          <div className="ml-10 max-w-[75vw]">
+            <JDDesc
+              actionButtonsVisible={''}
+              isJobDescriptionRequired={false}
+              assessment={assessment}
+              JDactionButtons={JDactionButtons}
+              jdData={jdData}
+              setJdData={setJdData}
+              jdType={''}
+              conversation_id={conversation_id}
+              setAssisstantMessage={setAssistantMessage}
+              assistantMessage={assistantMessage}
+              jdVisible={true}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

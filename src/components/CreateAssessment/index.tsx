@@ -29,17 +29,15 @@ import {
   useSaveSkillsToAssessmentMutation,
 } from '../../app/services/assessments';
 import IMAGES from '../../assets/images/Images';
+import { IModuleType } from '../../helpers/types';
 import { AI_API_URL, omit } from '../../helpers/utils';
 import InitialQuestion from '../Assessment/InitialQuestion';
-import JD from '../JD/JD';
 import LoadingScreen from '../Loading/LoadingScreen';
 import Modules from '../Modules/Modules';
 import ReviewAssessments from '../ReviewAssessments/ReviewAssessments';
 import Skills from '../Skills/Skills';
-import AssessmentQuestion from './AssessmentQuestion';
 import Step from './Step';
 import SwiperNavButton from './SwiperNavButton';
-import { IModuleType } from '../../helpers/types';
 
 export const ActionButtonContext = createContext<any>('');
 
@@ -52,8 +50,8 @@ const CreateAssessment = () => {
 
   const questionReduxData = useAppSelector((state) => state.questions);
 
-  const [createAssessment, { error: createAssessmentError, isLoading: createAssesmentLoading }] =
-    useCreateAssessmentMutation();
+  const [createAssessment, { error: createAssessmentError }] = useCreateAssessmentMutation();
+  const [createAssessmentLoading, setCreateAssessmentLoading] = useState<boolean>(false);
   const [saveSkillsToAssessment] = useSaveSkillsToAssessmentMutation();
   const [saveModulesToAssessment] = useSaveModulesToAssessmentMutation();
   const [saveQuestionsToAssessment] = useSaveQuestionsToAssessmentMutation();
@@ -78,7 +76,7 @@ const CreateAssessment = () => {
 
   const [skillsData, setSkillsData] = useState<any>([]);
   const [saveQuestionPage, setSaveQuestionPage] = useState(0);
-  const [jdPage, setJdPage] = useState(0);
+  const jdPage = 0;
   const [skillsPage, setSkillsPage] = useState(0);
   const [modulesPage, setModulesPage] = useState(0);
   const [reviewAssessmentPage, setReviewAssessmentPage] = useState(0);
@@ -89,7 +87,7 @@ const CreateAssessment = () => {
 
   useEffect(() => {
     setSkillsPage(() => jdPage + 1);
-  }, [jdPage]);
+  }, []);
 
   useEffect(() => {
     setModulesPage(() => skillsPage + 1);
@@ -106,7 +104,7 @@ const CreateAssessment = () => {
 
   useEffect(() => {
     setSaveQuestionPage(questions.length);
-    setJdPage(questions.length + 1);
+    // setJdPage(questions.length + 1);
   }, [questions, initialQuestionProfile, page]);
 
   useEffect(() => {
@@ -117,8 +115,6 @@ const CreateAssessment = () => {
   const generateSkills = async () => {
     const payloads = {
       description: jdData,
-      // user_id: assessment?.assessmentId,
-      // conversation_id,
     };
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
@@ -273,7 +269,7 @@ const CreateAssessment = () => {
     }
   };
 
-  const createAssesmentMethod = async () => {
+  const createAssessmentMethod = async () => {
     const result = await createAssessment({
       profile: initialQuestionProfile.name,
       name: initialQuestionValue,
@@ -333,7 +329,7 @@ const CreateAssessment = () => {
       return true;
     }
 
-    if (page === jdPage && (!jdData || !jdData.length)) {
+    if (page === jdPage && (!jdData || jdData.length < 3)) {
       return true;
     }
 
@@ -373,7 +369,7 @@ const CreateAssessment = () => {
   }, [btnState]);
 
   const isCompleteDisabled = () => {
-    return false;
+    return true;
   };
 
   const isCompleteHidden = useCallback(() => {
@@ -435,12 +431,16 @@ const CreateAssessment = () => {
   const getActions = ({ idx }: { idx: any }) => {
     if (page === 0 && idx === 1) {
       const createAssessmentAction = async () => {
-        const createResult = await createAssesmentMethod();
+        setCreateAssessmentLoading(true);
+        const createResult = await createAssessmentMethod();
 
         if (createResult.data.status === true) {
           toast.success(createResult.data.message);
+          await generateSkills();
+          setCreateAssessmentLoading(false);
           return Promise.resolve(true);
         }
+        setCreateAssessmentLoading(false);
       };
       return createAssessmentAction;
     }
@@ -450,13 +450,6 @@ const CreateAssessment = () => {
         return saveQuestions();
       };
       return saveQuestionActions;
-    }
-
-    if (page === jdPage) {
-      const jdActions = async () => {
-        return generateSkills();
-      };
-      return jdActions;
     }
 
     if (page === skillsPage) {
@@ -572,17 +565,10 @@ const CreateAssessment = () => {
       initialQuestionProfile={initialQuestionProfile}
       setInitialQuestionProfile={setInitialQuestionProfile}
       assessmentsProfiles={assessmentsProfiles}
-      loading={createAssesmentLoading}
-    />,
-
-    ...questionReduxData.questions.map((q: any) => (
-      <AssessmentQuestion question={q} assessmentsProfiles={assessmentsProfiles} />
-    )),
-    <JD
-      isJobDescriptionRequired={initialQuestionProfile.jobDetails}
+      loading={createAssessmentLoading}
       assessment={assessment}
       jdData={jdData}
-      setJDData={setJDData}
+      setJdData={setJDData}
       conversation_id={conversation_id}
     />,
     <Skills
@@ -593,9 +579,6 @@ const CreateAssessment = () => {
     />,
     <Modules />,
     <ReviewAssessments />,
-    // <ReviewQuestions questions={questionsList}
-
-    // />,
   ];
 
   return (

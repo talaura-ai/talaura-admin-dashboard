@@ -47,7 +47,7 @@ const Input: React.FC<IInput> = ({
         {label}
       </label>
       {type === questionTypes.TEXT ? (
-        <div className="relative mt-10 ml-10 w-[75vw]">
+        <div className="relative mt-8 ml-10 w-[75vw]">
           <input
             type={type}
             name={name}

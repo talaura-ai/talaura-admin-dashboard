@@ -6,10 +6,10 @@ import {
   Transition,
   TransitionChild,
 } from '@headlessui/react';
-import { classNames } from '../Core/classNames';
-import IMAGES from '../../assets/images/Images';
 import { SetStateAction, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
+import IMAGES from '../../assets/images/Images';
+import { classNames } from '../Core/classNames';
 import Insights from './Insights';
 import JDDesc from './JDDesc';
 const AI_API_URL = import.meta.env.VITE_AI_API_URL;
@@ -29,7 +29,7 @@ export enum allowedFileTypes {
   DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 }
 
-const JDactionButtons = [
+export const JDactionButtons = [
   {
     id: 1,
     label: 'Create job Description',
