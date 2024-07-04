@@ -17,6 +17,7 @@ const Skills: React.FC<ISkils> = () => {
 
   const handleSubmitNewSkill = () => {
     dispatch(addSkill(customSkill));
+    dispatch(setSelectedSkill(customSkill));
     setOpen(false);
   };
 

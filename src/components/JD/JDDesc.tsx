@@ -28,10 +28,19 @@ const JDDesc: React.FC<IJDDesc> = ({
   actionButtonsVisible,
 }) => {
   const [aiMessage, setAiMessage] = useState('');
+  const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
     setJdData(aiMessage);
   }, [aiMessage]);
+
+  const handleErrorOnTextChange = (text: string) => {
+    if (text.length < 3) {
+      setIsError(true);
+    } else {
+      setIsError(false);
+    }
+  };
 
   if (isJobDescriptionRequired && actionButtonsVisible) {
     return null;
@@ -99,16 +108,29 @@ const JDDesc: React.FC<IJDDesc> = ({
           </div>
         </>
       ) : (
-        <div className="my-10 bg-white">
-          <Textarea
-            rows={6}
-            name="jd_descriptions"
-            id="jd_descriptions"
-            className="block w-full bg-white rounded-lg border-0 py-1.5 text-black shadow-lg ring-1 ring-inset  ring-gray-300 placeholder:text-gray-400  focus:ring-0 text-lg"
-            value={jdData}
-            onChange={(e) => setJdData(e.target.value)}
-            placeholder="Describe your requirments here"
-          />
+        <div>
+          <div className="mt-10 bg-white">
+            <Textarea
+              rows={6}
+              name="jd_descriptions"
+              id="jd_descriptions"
+              onBlur={(e) => {
+                handleErrorOnTextChange(e.target.value);
+              }}
+              className="block w-full bg-white rounded-lg border-0 py-1.5 text-black shadow-lg ring-1 ring-inset  ring-gray-300 placeholder:text-gray-400  focus:ring-0 text-lg"
+              value={jdData}
+              onChange={(e) => {
+                setJdData(e.target.value);
+                handleErrorOnTextChange(e.target.value);
+              }}
+              placeholder="Describe your requirments here"
+            />
+          </div>
+          {isError && (
+            <p className="mt-1 text-[#FB2121] text-sm font-bold">
+              *Program Description is mandatory{' '}
+            </p>
+          )}
         </div>
       )}
     </>

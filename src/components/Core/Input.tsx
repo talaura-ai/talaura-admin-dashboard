@@ -8,6 +8,7 @@ import {
 import { ArrowRightIcon, CheckIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { questionTypes } from '../../app/features/assessmentsSlice';
 import { classNames } from './classNames';
+import { useState } from 'react';
 
 export interface IInput {
   serialNum?: number;
@@ -36,6 +37,16 @@ const Input: React.FC<IInput> = ({
   required,
   onBlur,
 }) => {
+  const [isError, setIsError] = useState<boolean>(false);
+
+  const handleErrorOnTextChange = (text: string) => {
+    if (text.length < 3) {
+      setIsError(true);
+    } else {
+      setIsError(false);
+    }
+  };
+
   return (
     <div>
       <span className="text-black text-2xl font-Sansation ">
@@ -47,29 +58,42 @@ const Input: React.FC<IInput> = ({
         {label}
       </label>
       {type === questionTypes.TEXT ? (
-        <div className="relative mt-8 ml-10 w-[75vw]">
-          <input
-            type={type}
-            name={name}
-            id={name}
-            className={classNames(
-              'peer text-2xl  w-full border-0 bg-transparent py-1.5 text-gray-900 focus:ring-0 placeholder-gray-300',
-              className,
-            )}
-            placeholder={placeholder}
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            onBlur={(e) => {
-              if (onBlur) {
-                onBlur(e);
-              }
-            }}
-            required={required}
-          />
-          <div
-            className="absolute inset-x-0 bottom-0 border-t border-gray-300 peer-focus:border-t-2 peer-focus:border-indigo-600"
-            aria-hidden="true"
-          />
+        <div>
+          <div className="relative mt-8 ml-10 w-[75vw]">
+            <input
+              type={type}
+              name={name}
+              id={name}
+              className={classNames(
+                'peer text-2xl  w-full border-0 bg-transparent py-1.5 text-gray-900 focus:ring-0 placeholder-gray-300',
+                className,
+              )}
+              placeholder={placeholder}
+              value={value}
+              onChange={(e) => {
+                setValue(e.target.value);
+                handleErrorOnTextChange(e.target.value);
+              }}
+              onBlur={(e) => {
+                if (onBlur) {
+                  onBlur(e);
+                }
+
+                handleErrorOnTextChange(e.target.value);
+              }}
+              required={required}
+            />
+            <div
+              className="absolute inset-x-0 bottom-0 border-t border-gray-300 peer-focus:border-t-2 peer-focus:border-indigo-600"
+              aria-hidden="true"
+            />
+          </div>
+
+          {isError && (
+            <p className="ml-10 mt-1 text-[#FB2121] text-sm font-bold">
+              *Program name is mandatory{' '}
+            </p>
+          )}
         </div>
       ) : type === questionTypes.DROPDOWN ? (
         <Listbox
