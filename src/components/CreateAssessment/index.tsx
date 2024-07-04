@@ -345,11 +345,11 @@ const CreateAssessment = () => {
   }, [actionLoading, btnState, initialQuestionValue, jdData, jdPage, modulesPage, page]);
 
   const isBackDisabled = useCallback(() => {
-    if (page === 0 || btnState === 'hideAll') {
+    if (btnState === 'hideAll') {
       return true;
     }
     return false;
-  }, [btnState, page]);
+  }, [btnState]);
 
   const isNextHidden = useCallback(() => {
     if (btnState === 'hideAll') {
@@ -358,12 +358,19 @@ const CreateAssessment = () => {
     return false;
   }, [btnState]);
 
+  const getFirstBtnText = useCallback(() => {
+    if (page === 0) {
+      return 'Cancel';
+    }
+    return 'Back';
+  }, [page]);
+
   const isBackHidden = useCallback(() => {
-    if (page === 0 || btnState === 'hideAll') {
+    if (btnState === 'hideAll') {
       return true;
     }
     return false;
-  }, [btnState, page]);
+  }, [btnState]);
 
   const isCompleteDisabled = () => {
     return false;
@@ -377,7 +384,7 @@ const CreateAssessment = () => {
     () => [
       {
         id: '1',
-        title: 'Back',
+        title: getFirstBtnText(),
         // action: "",
         type: 'button',
         hidden: isBackHidden(),
@@ -404,7 +411,7 @@ const CreateAssessment = () => {
         isPrimary: true,
       },
     ],
-    [isBackDisabled, isBackHidden, isCompleteHidden, isNextDisabled, isNextHidden],
+    [getFirstBtnText, isBackDisabled, isBackHidden, isCompleteHidden, isNextDisabled, isNextHidden],
   );
 
   useEffect(() => {
@@ -418,7 +425,7 @@ const CreateAssessment = () => {
         }
       }
     };
-    console.log('🚀 ~ useEffect ~ initialQuestionProfile:', initialQuestionProfile);
+    // console.log('🚀 ~ useEffect ~ initialQuestionProfile:', initialQuestionProfile);
 
     if (initialQuestionProfile) {
       getQuestionMethod();
@@ -600,14 +607,9 @@ const CreateAssessment = () => {
 
           <div className="mx-5">
             <Swiper
-              // install Swiper modules
               modules={[Navigation, Pagination, Scrollbar, A11y]}
-              // spaceBetween={50}
               slidesPerView={1}
-              //   navigation
-              //   pagination={{ clickable: true }}
-              //   scrollbar={{ draggable: true }}
-              onSwiper={(swiper) => console.log(swiper)}
+              // onSwiper={(swiper) => console.log(swiper)}
               onSlideChange={(swiper) => setPage(swiper.activeIndex)}
               allowTouchMove={false}
               onEnded={() => navigation('/assessments')}

@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { useSwiper } from 'swiper/react';
 import { ISliderNav } from '../../helpers/types';
 import { classNames } from '../Core/classNames';
@@ -13,10 +14,9 @@ const SwiperNavButton: React.FC<ISliderNav> = ({
   slideTo = 'slideNext',
   setActionCalledLoading,
 }) => {
+  const navigate = useNavigate();
+
   const swiper = useSwiper();
-
-  // const slideTo = () => isPrimary ? swiper.slideNext() :  swiper.slidePrev();
-
   if (hidden) {
     return null;
   }
@@ -25,6 +25,9 @@ const SwiperNavButton: React.FC<ISliderNav> = ({
     <button
       disabled={disabled}
       onClick={async () => {
+        if (children === 'Cancel') {
+          return navigate('/assessments');
+        }
         if (action !== undefined && isPrimary) {
           setActionCalledLoading(true);
           const res = await action();

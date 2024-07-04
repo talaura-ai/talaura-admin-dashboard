@@ -105,7 +105,6 @@ const JDDesc: React.FC<IJDDesc> = ({
             name="jd_descriptions"
             id="jd_descriptions"
             className="block w-full bg-white rounded-lg border-0 py-1.5 text-black shadow-lg ring-1 ring-inset  ring-gray-300 placeholder:text-gray-400  focus:ring-0 text-lg"
-            defaultValue={''}
             value={jdData}
             onChange={(e) => setJdData(e.target.value)}
             placeholder="Describe your requirments here"
