@@ -3,16 +3,10 @@ import { Dispatch, SetStateAction, useContext, useEffect, useReducer, useState }
 import { addModuleInModulesAndSelectedModules } from '../../app/features/moduleSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import IMAGES from '../../assets/images/Images';
-import { ActionButtonContext } from '../Assessment/CreateAssessment';
+import { ActionButtonContext } from '../CreateAssessment';
 
 const moduleTypes = ['Quiz', 'AI Video Interview', 'Voice To Voice', 'Voice to Text'];
 
-{
-  /* <option value="Sandbox">Sandbox</option>   
-<option value="AI Video Interview">AI Video Interview</option>
-<option value="Voice To Voice">Voice To Voice</option>
-<option value="Voice to Text">Voice to Text</option> */
-}
 const AddNewModule: React.FC<any> = ({
   setCreateMode,
 }: {

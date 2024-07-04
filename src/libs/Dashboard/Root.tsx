@@ -6,83 +6,19 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 
-import Sidebar from './Sidebar';
-import ErrorPage from '../../components/Error/ErrorPage';
-import Home from '../../components/Home/Home';
-import AssessmentPage from '../../components/Assessment/AssessmentPage';
-import CreateAssessment from '../../components/Assessment/CreateAssessment';
-import Peoples from '../../components/Peoples/Peoples';
-import Reports from '../../components/Reports/Reports';
 import { useAppSelector } from '../../app/hooks';
-import Login from '../../components/Login/Login';
-import ForgotPassword from '../../components/Login/ForgotPassword';
+import AssessmentPage from '../../components/Assessment/AssessmentPage';
 import AssessmentView from '../../components/Assessment/AssessmentView';
 import CandidateView from '../../components/Assessment/CandidateView';
 import InviteCandidate from '../../components/Assessment/InviteCandidate';
-
-// const router = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: <Sidebar />,
-//     errorElement: <ErrorPage />,
-//     loader: Loader,
-
-//     children: [
-//       {
-//         index: true,
-//         element: <Home />,
-//       },
-//       {
-//         path: "/assessment",
-//         element: <AssessmentPage />,
-
-//       },
-//       {
-//         path: "/assessment/create",
-//         element: <CreateAssessment />
-//       },
-//       {
-//         path: "/peoples",
-//         element: <Peoples />,
-
-//       },
-//       {
-//         path: "/reports",
-//         element: <Reports />,
-
-//       },
-//     ]
-//   },
-//   {
-//     path: "/login",
-//     element: <Login />,
-//     errorElement: <ErrorPage />,
-//   },
-//   {
-//     path: "/forgot-password",
-//     element: <ForgotPassword />,
-//     errorElement: <ErrorPage />,
-//   }
-
-// ]);
-
-// const router = createBrowserRouter(
-//   createRoutesFromElements(
-// <Route path="/" element={<Home />} errorElement={<ErrorPage />}>
-//     <Route path="/login" element={<Login />} errorElement={<ErrorPage />} />
-//     <Route path="/forgot" element={<Login />} errorElement={<ErrorPage />} />
-//     </Route>
-
-//     // <Route path="/" element={<Sidebar />} errorElement={<ErrorPage />}>
-
-//     //   <Route path="dashboard" element={<Home />} />
-//     //   <Route path="assessment" element={<AssessmentPage />} />
-//     //   <Route path="assessment/create" element={<CreateAssessment />} />
-//     //   <Route path="peoples" element={<Peoples />} />
-//     //   <Route path="reports" element={<Reports />} />
-//     // </Route>
-//   )
-// );
+import CreateAssessment from '../../components/CreateAssessment';
+import ErrorPage from '../../components/Error/ErrorPage';
+import Home from '../../components/Home/Home';
+import ForgotPassword from '../../components/Login/ForgotPassword';
+import Login from '../../components/Login/Login';
+import Peoples from '../../components/Peoples/Peoples';
+import Reports from '../../components/Reports/Reports';
+import Sidebar from './Sidebar';
 
 const Root = () => {
   const { token } = useAppSelector((state) => state.admin);

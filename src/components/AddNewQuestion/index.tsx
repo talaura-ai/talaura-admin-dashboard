@@ -3,7 +3,7 @@ import { FormEvent, useContext, useEffect, useReducer } from 'react';
 import { addQuestionToModule } from '../../app/features/moduleSlice';
 import { useAppDispatch } from '../../app/hooks';
 import { omit } from '../../helpers/utils';
-import { ActionButtonContext } from '../Assessment/CreateAssessment';
+import { ActionButtonContext } from '../CreateAssessment';
 
 const AddNewQuestion = (props: { questions: any; module?: any; setIsAddNewQuestion: any }) => {
   const { questions, setIsAddNewQuestion, module } = props ?? {};

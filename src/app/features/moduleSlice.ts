@@ -1,31 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { IModuleType } from '../../helpers/types';
 
-// const mockData = {
-//   modules: [
-//     {
-//       type: "Quiz",
-//       name: "Microsoft Word Proficiency Test",
-//       noOfQuestions: 10,
-//       skills: ["Document Formatting", "Text Editing", "Template Usage"],
-//       time: 15,
-//       Weightage: 20,
-//     },
-//     {
-//       type: "AI Video Interview",
-//       name: "Goal Development Assessment",
-//       noOfQuestions: 5,
-//       skills: [
-//         "Strategic Planning",
-//         "Objective Setting",
-//         "Performance Tracking",
-//       ],
-//       time: 20,
-//       Weightage: 30,
-//     },
-//   ],
-// };
-const initialState: any = {
+const initialState: {
+  modules: IModuleType[];
+  selectedModules: IModuleType[];
+} = {
   modules: [],
   selectedModules: [],
 };
@@ -41,9 +21,11 @@ export const modulesSlice = createSlice({
       // immutable state based off those changes
       state.modules = [...action.payload.modules];
     },
-    addModule: (state, action: PayloadAction<any>) => {
+    addModule: (state, action: PayloadAction<IModuleType>) => {
       const moduleToAdd = state.modules.find((m: { name: any }) => m.name === action.payload.name);
-      state.selectedModules = [...state.selectedModules, moduleToAdd];
+      if (moduleToAdd) {
+        state.selectedModules = [...state.selectedModules, moduleToAdd];
+      }
     },
     addModuleInModulesAndSelectedModules: (state, action: PayloadAction<any>) => {
       state.selectedModules = [...state.selectedModules, action.payload];
@@ -108,7 +90,7 @@ export const modulesSlice = createSlice({
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      const selectedModule = state.selectedModules.find((module: any) => {
+      const selectedModule = state.selectedModules.find((module: IModuleType) => {
         return module.name === action.payload.name;
       });
       if (selectedModule) {
