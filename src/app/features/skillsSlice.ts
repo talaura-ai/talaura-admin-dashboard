@@ -35,7 +35,11 @@ export const skillsSlice = createSlice({
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      state.selectedSkills = [...state.selectedSkills, action.payload];
+      if (Array.isArray(action.payload)) {
+        state.selectedSkills = [...state.selectedSkills, ...action.payload];
+      } else {
+        state.selectedSkills = [...state.selectedSkills, action.payload];
+      }
     },
     removeSelectedSkill: (state, action: PayloadAction<any>) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It

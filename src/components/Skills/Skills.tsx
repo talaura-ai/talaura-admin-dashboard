@@ -9,33 +9,13 @@ export interface ISkils {
   setSkillsData: any;
 }
 
-// const mockSkills = [
-//   "Proficiency in Node.js",
-//   "Experience with Express.js or similar frameworks",
-//   "Strong understanding of JavaScript (ES6+)",
-//   "Knowledge of asynchronous programming and event-driven architecture",
-//   "Experience with RESTful API design and development",
-//   "Familiarity with database technologies (e.g., MongoDB, MySQL, PostgreSQL)",
-//   "Understanding of version control systems (e.g., Git)",
-//   "Experience with testing frameworks (e.g., Mocha, Chai, Jest)",
-//   "Knowledge of containerization and orchestration tools (e.g., Docker, Kubernetes)",
-//   "Familiarity with cloud services (e.g., AWS, Azure, Google Cloud)",
-//   "Strong problem-solving skills",
-// ];
-
 const Skills: React.FC<ISkils> = () => {
   const { skills, selectedSkills } = useAppSelector((state) => state.skills);
-
-  //    const [skillsState, setSkillsState] = useState(() => skills)
-
   const [open, setOpen] = useState(false);
   const [customSkill, setCustomSkill] = useState('');
-  //   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const dispatch = useAppDispatch();
 
   const handleSubmitNewSkill = () => {
-    // setSkillsState((oldSkills) => [...oldSkills, customSkill]);
-
     dispatch(addSkill(customSkill));
     setOpen(false);
   };
@@ -79,9 +59,6 @@ const Skills: React.FC<ISkils> = () => {
                 >
                   {skill}
                 </label>
-                {/* <span id="comments-description" className="text-gray-500">
-                                    <span className="sr-only">New comments </span>so you always know what's happening.
-                                </span> */}
               </div>
             </div>
           );
@@ -90,53 +67,6 @@ const Skills: React.FC<ISkils> = () => {
           <img src={IMAGES.plus} className="w-5 h-5" />
           <span className="text-orange-text text-sm">Add new skill</span>
         </button>
-
-        {/* To add Skills */}
-        {/* <div className="flex flex-col mt-3">
-          <button
-            className="flex flex-row gap-3"
-            onClick={(e) => {
-              e.preventDefault();
-              if (customValue && customValue.length) {
-                setSkillsData((oldSkills) => {
-                  return [
-                    ...oldSkills,
-                    {
-                      name: customValue,
-                      title: customValue,
-                    },
-                  ];
-                });
-              }
-
-              setCustomValue("");
-            }}
-          >
-            <img src={IMAGES.plus} className="w-5 h-5" />
-            <span className="text-light-orange">Add New Field</span>
-          </button>
-          <div className="justify-start">
-            <input
-              type="text"
-              value={customValue}
-              onChange={(e) => setCustomValue(e.target.value)}
-              className="text-xs rounded 
-                            placeholder-gray-300
-                            border-0
-                            shadow
-                            shadow-inset
-                            ring-0
-                            focus:ring-0
-                            "
-              placeholder="Enter your custom field"
-            ></input>
-          </div>
-        </div> */}
-
-        {/* <div
-          className="absolute inset-x-0 bottom-0 border-t border-gray-300 peer-focus:border-t-2 peer-focus:border-indigo-600"
-          aria-hidden="true"
-        /> */}
         <Transition show={open}>
           <Dialog className="relative z-10" onClose={setOpen}>
             <TransitionChild

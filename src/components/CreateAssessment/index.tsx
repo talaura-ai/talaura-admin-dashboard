@@ -18,7 +18,7 @@ import {
   setSelectedModule,
 } from '../../app/features/moduleSlice';
 import { resetQuestionsSlice, setQuestionsToApp } from '../../app/features/questions';
-import { resetSkillsSlice, setSkills } from '../../app/features/skillsSlice';
+import { resetSkillsSlice, setSelectedSkill, setSkills } from '../../app/features/skillsSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useGetAssessmentProfilesQuery } from '../../app/services/assessmentProfiles';
 import {
@@ -130,6 +130,7 @@ const CreateAssessment = () => {
       if (response.ok) {
         setSkillsData(resJSON.skills);
         dispatch(setSkills(resJSON.skills));
+        dispatch(setSelectedSkill(resJSON.skills));
         return Promise.resolve(true);
       }
     } catch (error) {
