@@ -7,10 +7,9 @@ import AddNewQuestion from '../AddNewQuestion';
 export interface ReviewQuestionsProps {
   questions: any;
   module?: any;
-  setShowQuestions: any;
 }
 
-const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module, setShowQuestions }) => {
+const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module }) => {
   const [isAddNewQuestion, setIsAddNewQuestion] = useState<boolean>(false);
   const currentModule = useAppSelector((state) =>
     state?.modules?.selectedModules?.find((mdl: any) => mdl?.name === module?.name),
@@ -90,8 +89,6 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module, setShowQuesti
                       })),
                     }),
                   );
-
-                  setShowQuestions(false);
                 }}
                 className={
                   'mt-2 mx-3 items-center justify-center rounded-md border px-6 py-3 text-base font-medium  shadow-sm hover:bg-orange-text focus:outline-none focus:ring-0 active:animate-pulse bg-orange-text text-white'

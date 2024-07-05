@@ -16,24 +16,30 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import IMAGES from '../../assets/images/Images';
 import { classNames } from '../Core/classNames';
 
-const ModuleCard: React.FC<any> = ({
-  name,
-  type,
-  // noOfQuestions,
-  // skills,
-  // time,
-  handleClick,
-  editable = true,
-  editMode,
-  setEditMode,
-  reviewAble,
-}) => {
+const ModuleCard: React.FC<any> = (props) => {
+  const {
+    name,
+    type,
+    // noOfQuestions,
+    // skills,
+    // time,
+    fromReviewAssessmentScreen,
+    isSelectedModule,
+    handleClick,
+    editable = true,
+    editMode,
+    setEditMode,
+    reviewAble,
+  } = props ?? {};
+
+  console.log(props);
   const [open, setOpen] = useState(false);
   const [customSkill, setCustomSkill] = useState('');
   const { selectedModules } = useAppSelector((state) => state.modules);
   const dispatch = useAppDispatch();
   const selectedModule = selectedModules.find((m: any) => m.name === name)!;
   const { selectedSkills } = useAppSelector((state) => state.skills);
+
   const handleCheckboxChange = (event: { target: { value: any; checked: any } }) => {
     const { value, checked } = event.target;
 
@@ -65,6 +71,7 @@ const ModuleCard: React.FC<any> = ({
 
   const handleSubmitNewSkill = () => {
     dispatch(addSkillInSelectedSkills(customSkill));
+    dispatch(setModuleSkill({ name, skill: customSkill }));
     setOpen(false);
   };
 
@@ -80,8 +87,7 @@ const ModuleCard: React.FC<any> = ({
   // const [duration, setDuration] = useState({});
   return (
     <div
-      className="flex rounded-2xl shadow-inner bg-white p-5 mt-5 mx-2 flex-col"
-      //
+      className={`flex rounded-2xl shadow-inner bg-white p-5 mt-5 mx-2 flex-col  ${isSelectedModule && 'bg-[#FFEFDF]'} `}
       onClick={() => {
         if (reviewAble && handleClick) {
           handleClick();
@@ -125,11 +131,6 @@ const ModuleCard: React.FC<any> = ({
               </div>
             )}
           </>
-        )}
-        {reviewAble && (
-          <div className=" items-end ">
-            <PencilIcon className="h-6 w-6 text-orange-text" />
-          </div>
         )}
       </div>
       <div className="flex flex-row items-center justify-between mt-2">
@@ -198,6 +199,7 @@ const ModuleCard: React.FC<any> = ({
                     className="w-8 p-0 inline ring-0 border-0 focus:ring-0 focus:border-b-1"
                     type="text"
                     value={weight}
+                    disabled={fromReviewAssessmentScreen}
                     onChange={(e) => onChangeWeightage(e)}
                     onBlur={() => handleChangeWeightage()}
                   />
@@ -229,6 +231,7 @@ const ModuleCard: React.FC<any> = ({
                 className="w-8 p-0 inline ring-0 border-0 focus:ring-0 focus:border-b-1"
                 type="text"
                 value={stateTime}
+                disabled={fromReviewAssessmentScreen}
                 onChange={(e) => setStateTime(e.target.value)}
                 onBlur={() => handleChangeDuration()}
               />

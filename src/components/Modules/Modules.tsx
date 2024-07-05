@@ -11,7 +11,7 @@ import EditModule from './EditModule';
 import ModuleCard from './ModuleCard';
 
 const Modules = () => {
-  const { modules } = useAppSelector((state) => state.modules);
+  const { selectedModules: selectedModulesInRedux } = useAppSelector((state) => state.modules);
   const [selectedModule, setSelectedModule] = useState({});
   const [editMode, setEditMode] = useState(false);
   const [createMode, setCreateMode] = useState(false);
@@ -52,10 +52,9 @@ const Modules = () => {
   return (
     <>
       <div className="btn_container flex justify-start gap-4 items-center">
-        {modules.length === 0 && (
+        {selectedModulesInRedux.length === 0 && (
           <button
-            className="inline-flex p-2 items-center justify-center rounded-md bg-orange-text text-white hover:text-gray-500 focus:outline-none m-3
-        "
+            className="inline-flex p-2 items-center justify-center rounded-md bg-orange-text text-white hover:text-gray-500 focus:outline-none m-3"
             onClick={regenerateModule}
           >
             <ArrowPathIcon className="h-5 w-5" />
@@ -63,34 +62,54 @@ const Modules = () => {
           </button>
         )}
       </div>
-      <div className="scrollbar overflow-y-auto h-full dir-rtl">
-        <div className="dir-ltr">
-          <div className="pb-20">
-            <div className="col-span-4">
-              {modules?.map((module, idx: number) => {
-                const { name, type, noOfQuestions, skills, time, Weightage } = module;
+      <div>
+        <div className="flex gap-2 mr-4 justify-end mt-2">
+          <div className="bg-[#FFEFDF] p-2.5 rounded-3xl">
+            <span>Modules:</span>
+            <span className="ml-2">{selectedModulesInRedux.length}</span>
+          </div>
+          <div className="bg-[#FFEFDF] p-2.5 rounded-3xl">
+            <span>Duration:</span>{' '}
+            <span className="ml-2">
+              {selectedModulesInRedux?.reduce((accu, curr) => (accu += +curr.time), 0)} mins
+            </span>
+          </div>
+          <div className="bg-[#FFEFDF] p-2.5 rounded-3xl">
+            <span>Weightage: </span>
+            <span className="ml-2">
+              {selectedModulesInRedux?.reduce((accu, curr) => (accu += +curr.Weightage), 0)} %
+            </span>
+          </div>
+        </div>
+        <div className="scrollbar overflow-y-auto h-full dir-rtl">
+          <div className="dir-ltr ">
+            <div className="pb-20">
+              <div className="col-span-4">
+                {selectedModulesInRedux?.map((module, idx: number) => {
+                  const { name, type, noOfQuestions, skills, time, Weightage } = module ?? {};
 
-                return (
-                  <ModuleCard
-                    key={idx}
-                    name={name}
-                    type={type}
-                    noOfQuestions={noOfQuestions}
-                    skills={skills}
-                    time={time}
-                    Weightage={Weightage}
-                    handleClick={() => {
-                      setSelectedModule(module);
-                      setEditMode(true);
-                    }}
-                    editMode={false}
-                  />
-                );
-              })}
-            </div>
-            {/* <div className="col-span-3">
+                  return (
+                    <ModuleCard
+                      key={idx}
+                      name={name}
+                      type={type}
+                      noOfQuestions={noOfQuestions}
+                      skills={skills}
+                      time={time}
+                      Weightage={Weightage}
+                      handleClick={() => {
+                        setSelectedModule(module);
+                        setEditMode(true);
+                      }}
+                      editMode={false}
+                    />
+                  );
+                })}
+              </div>
+              {/* <div className="col-span-3">
               <OverView />
             </div> */}
+            </div>
           </div>
         </div>
       </div>

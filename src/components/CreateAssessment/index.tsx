@@ -436,9 +436,9 @@ const CreateAssessment = () => {
         const createResult = await createAssessmentMethod();
 
         if (createResult.data.status === true) {
-          toast.success(createResult.data.message);
           await generateSkills();
           setCreateAssessmentLoading(false);
+          toast.success(createResult.data.message);
           return Promise.resolve(true);
         }
         setCreateAssessmentLoading(false);
@@ -620,7 +620,9 @@ const CreateAssessment = () => {
                       action={getActions({ idx })}
                       setActionCalledLoading={setActionCalledLoading}
                     >
-                      {actionLoading ? (
+                      {['Cancel', 'Back'].includes(actionButton.title) ? (
+                        actionButton.title
+                      ) : actionLoading ? (
                         <div className="flex flex-row items-center">
                           {actionButton.title} <LoaderIcon className="mx-1" />
                         </div>
