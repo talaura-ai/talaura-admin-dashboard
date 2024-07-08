@@ -31,8 +31,10 @@ const JDDesc: React.FC<IJDDesc> = ({
   const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
-    setJdData(aiMessage);
-  }, [aiMessage]);
+    if (aiMessage) {
+      setJdData(aiMessage);
+    }
+  }, [aiMessage, isJobDescriptionRequired, setJdData]);
 
   const handleErrorOnTextChange = (text: string) => {
     if (text.length < 3) {
@@ -117,7 +119,9 @@ const JDDesc: React.FC<IJDDesc> = ({
               onBlur={(e) => {
                 handleErrorOnTextChange(e.target.value);
               }}
-              className="block w-full bg-white rounded-lg border-0 py-1.5 text-black shadow-lg ring-1 ring-inset  ring-gray-300 placeholder:text-gray-400  focus:ring-0 text-lg"
+              className="block bg-white rounded-lg shadow-lg ring-1 ring-inset
+               ring-gray-300 placeholder:text-gray-400  peer text-2xl  w-full border-0 
+               bg-transparent py-1.5 text-gray-900 focus:ring-0 placeholder-gray-300"
               value={jdData}
               onChange={(e) => {
                 setJdData(e.target.value);
