@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useAppSelector } from '../../app/hooks';
+import { IModuleType } from '../../helpers/types';
 import ModuleCard from '../Modules/ModuleCard';
 import ReviewQuestions from '../ReviewQuestions/Review';
 export interface ReviewAssessmentsProps {}
 
 const ReviewAssessments: React.FC<ReviewAssessmentsProps> = () => {
   const { selectedModules } = useAppSelector((state) => state.modules);
-  // const [showQuestions, setShowQuestions] = useState(false);
-  const [currentModule, setCurrentModule] = useState(selectedModules[0]);
+  const [currentModule, setCurrentModule] = useState<IModuleType>();
+
+  useEffect(() => setCurrentModule(selectedModules[0]), [selectedModules]);
 
   return (
     <>
@@ -23,17 +25,18 @@ const ReviewAssessments: React.FC<ReviewAssessmentsProps> = () => {
         ) : ( */}
         <div className="flex flex-col gap-x-8 gap-y-3">
           {selectedModules?.map((v, index: number) => (
-            <ModuleCard
-              key={v?.name + index}
-              {...v}
-              reviewAble={true}
-              editable={false}
-              fromReviewAssessmentScreen
-              isSelectedModule={currentModule?.name === v?.name}
-              handleClick={() => {
-                setCurrentModule(v);
-              }}
-            />
+            <Fragment key={index}>
+              <ModuleCard
+                {...v}
+                reviewAble={true}
+                editable={false}
+                fromReviewAssessmentScreen
+                isSelectedModule={currentModule?.name === v?.name}
+                handleClick={() => {
+                  setCurrentModule(v);
+                }}
+              />
+            </Fragment>
           ))}
         </div>
         <div className="grid -mt-5 w-full">

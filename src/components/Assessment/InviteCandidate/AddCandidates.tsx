@@ -14,6 +14,7 @@ import FileUploadModal from './FileUploadModal';
 const AddCandidates = () => {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+  const [mobile, setMobile] = useState<string>('');
   const isNoError = useRef<boolean>(false);
   const allCandidates = useAppSelector((state) => state.inviteCandidate);
   const dispatch = useAppDispatch();
@@ -25,10 +26,11 @@ const AddCandidates = () => {
     if (allCandidates.find((cnd) => cnd.email === email)) {
       return toast.error('Candidate With Email Already Exists');
     }
-    const res = addCandidate({ name, email });
+    const res = addCandidate({ name, email, mobile });
     if (res) {
       setEmail('');
       setName('');
+      setMobile('');
       isNoError.current = false;
       return;
     }
@@ -62,7 +64,7 @@ const AddCandidates = () => {
   };
 
   const addCandidate = (data?: unknown) => {
-    if (data && typeof data === 'object' && 'name' in data && 'email' in data) {
+    if (data && typeof data === 'object' && 'name' in data && 'email' in data && 'mobile' in data) {
       if (allCandidates.find((cnd) => cnd.email === data.email)) {
         return false;
       }
@@ -70,6 +72,7 @@ const AddCandidates = () => {
         addCandidateToInviteList({
           name: data.name as string,
           email: data.email as string,
+          mobile: data.mobile as string,
         }),
       );
       return true;
@@ -99,7 +102,7 @@ const AddCandidates = () => {
               <UserIcon className="w-[27px] h-[20px] absolute left-2 top-3.5" />
               <input
                 type="text"
-                placeholder="Candidate Name"
+                placeholder="Candidate Name*"
                 required
                 minLength={4}
                 value={name}
@@ -110,10 +113,22 @@ const AddCandidates = () => {
           </div>
           <div className="col1_col2 w-full">
             <div className="input_container relative w-full h-[50px]">
+              <UserIcon className="w-[27px] h-[20px] absolute left-2 top-3.5" />
+              <input
+                type="tel"
+                placeholder="Candidate Mobile No"
+                value={mobile}
+                onChange={(e) => setMobile(e.target.value)}
+                className="pl-[35px] h-full rounded-md border border-customGray-80 bg-customGray-70 w-full"
+              />
+            </div>
+          </div>
+          <div className="col1_col2 w-full">
+            <div className="input_container relative w-full h-[50px]">
               <EnvelopeIcon className="w-[27px] h-[20px] absolute left-2 top-3.5" />
               <input
                 type="email"
-                placeholder="Candidate Email ID"
+                placeholder="Candidate Email ID*"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}

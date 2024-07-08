@@ -1,12 +1,9 @@
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react';
-import { CheckCircleIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
 import { PencilIcon } from '@heroicons/react/24/solid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import {
-  addModule,
   removeModuleSkill,
-  removeSelectedModule,
   setModuleSkill,
   updateDuration,
   updateWeightage,
@@ -20,7 +17,7 @@ const ModuleCard: React.FC<any> = (props) => {
   const {
     name,
     type,
-    // noOfQuestions,
+    noOfQuestions,
     // skills,
     // time,
     fromReviewAssessmentScreen,
@@ -32,13 +29,15 @@ const ModuleCard: React.FC<any> = (props) => {
     reviewAble,
   } = props ?? {};
 
-  console.log(props);
   const [open, setOpen] = useState(false);
   const [customSkill, setCustomSkill] = useState('');
   const { selectedModules } = useAppSelector((state) => state.modules);
   const dispatch = useAppDispatch();
   const selectedModule = selectedModules.find((m: any) => m.name === name)!;
   const { selectedSkills } = useAppSelector((state) => state.skills);
+
+  const [weight, setWeight] = useState<number>(0);
+  const [stateTime, setStateTime] = useState<number>(0);
 
   const handleCheckboxChange = (event: { target: { value: any; checked: any } }) => {
     const { value, checked } = event.target;
@@ -49,13 +48,17 @@ const ModuleCard: React.FC<any> = (props) => {
       dispatch(removeModuleSkill({ name, skill: value }));
     }
   };
-  const [weight, setWeight] = useState(() =>
-    selectedModule && selectedModule.Weightage ? selectedModule.Weightage : 0,
-  );
 
-  const [stateTime, setStateTime] = useState(() =>
-    selectedModule && selectedModule.time ? selectedModule.time : 0,
-  );
+  useEffect(() => {
+    if (selectedModule) {
+      if (selectedModule?.Weightage) {
+        setWeight(+selectedModule.Weightage);
+      }
+      if (selectedModule?.time) {
+        setStateTime(+selectedModule.time);
+      }
+    }
+  }, [selectedModule]);
 
   const onChangeWeightage = (e: any) => {
     setWeight(e.target.value);
@@ -87,7 +90,7 @@ const ModuleCard: React.FC<any> = (props) => {
   // const [duration, setDuration] = useState({});
   return (
     <div
-      className={`flex rounded-2xl shadow-inner bg-white p-5 mt-5 mx-2 flex-col  ${isSelectedModule && 'bg-[#FFEFDF]'} `}
+      className={`flex rounded-2xl shadow-inner bg-white p-5 mt-5 mx-2 flex-col  ${isSelectedModule && '!bg-[#FFEFDF]'} `}
       onClick={() => {
         if (reviewAble && handleClick) {
           handleClick();
@@ -98,7 +101,7 @@ const ModuleCard: React.FC<any> = (props) => {
         <div className="grow justify-between items-start flex gap-8 pr-10">
           <h1 className="text-orange-text">{type}</h1>
         </div>
-        {!reviewAble && (
+        {/* {!reviewAble && (
           <>
             {selectedModules.includes(selectedModule) ? (
               <div className=" items-end ">
@@ -131,10 +134,13 @@ const ModuleCard: React.FC<any> = (props) => {
               </div>
             )}
           </>
-        )}
+        )} */}
       </div>
       <div className="flex flex-row items-center justify-between mt-2">
-        <div className="flex flex-row">
+        <div className={`flex  flex-col`}>
+          {fromReviewAssessmentScreen && (
+            <span className="text-xs text-[#BDBDBD]">{noOfQuestions ?? 0} questions</span>
+          )}
           <h1 className="">Skills</h1>
           {editable && selectedModule?.type !== 'Sandbox' && (
             <div className="p-1 mx-2" onClick={handleClick}>
@@ -196,7 +202,7 @@ const ModuleCard: React.FC<any> = (props) => {
               <span className="text-gray-300">
                 {selectedModule && selectedModule.Weightage ? (
                   <input
-                    className="w-8 p-0 inline ring-0 border-0 focus:ring-0 focus:border-b-1"
+                    className={`w-8 p-0 inline ring-0 border-0 focus:ring-0 focus:border-b-1 ${isSelectedModule && '!bg-[#FFEFDF]'}`}
                     type="text"
                     value={weight}
                     disabled={fromReviewAssessmentScreen}
@@ -228,11 +234,11 @@ const ModuleCard: React.FC<any> = (props) => {
               }}
             >
               <input
-                className="w-8 p-0 inline ring-0 border-0 focus:ring-0 focus:border-b-1"
+                className={`w-8 p-0 inline ring-0 border-0 focus:ring-0 focus:border-b-1 ${isSelectedModule && '!bg-[#FFEFDF]'}`}
                 type="text"
                 value={stateTime}
                 disabled={fromReviewAssessmentScreen}
-                onChange={(e) => setStateTime(e.target.value)}
+                onChange={(e) => setStateTime(+e.target.value)}
                 onBlur={() => handleChangeDuration()}
               />
               min

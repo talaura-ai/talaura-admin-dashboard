@@ -2,7 +2,7 @@ import { XCircleIcon } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { removeCandidateFromInviteList } from '../../../app/features/inviteCandidateSlice';
 
-const columns = ['Name', 'Email', 'Remove'];
+const columns = ['Name', 'Mobile', 'Email', 'Remove'];
 const AddedCandidatesTable = () => {
   const allCandidates = useAppSelector((state) => state.inviteCandidate);
   const dispatch = useAppDispatch();
@@ -12,11 +12,11 @@ const AddedCandidatesTable = () => {
   return (
     <div className="mt-10 w-full">
       <div className="flex flex-col justify-center w-full">
-        <div className="row1 justify-start my-2 text-left mx-16">
+        <div className="row1 justify-start my-2 text-left">
           <span className="text-left text-lg text-black w-full">0 Candidates invite</span>
         </div>
         <div className="row2 self-center w-full">
-          <div className="table_container overflow-scroll mx-16">
+          <div className="table_container overflow-scroll">
             <table className="w-full divide-y divide-customGray-250 bg-white rounded-md">
               <thead className="border-collapse">
                 <tr className="divide-customGray-250 divide-x">
@@ -36,6 +36,9 @@ const AddedCandidatesTable = () => {
                   <tr key={idx} className="text-left even:bg-gray-30 even:bg-gray-50">
                     <td className="whitespace-nowrap py-1.5 pl-4 text-sm font-medium text-customGray-100 sm:pl-0 min-w-[15rem] text-lg">
                       <span className="pl-4">{candidate.name}</span>
+                    </td>
+                    <td className="whitespace-nowrap py-1.5 pl-4 text-sm font-medium text-customGray-100 sm:pl-0 min-w-[15rem]">
+                      <span className="pl-4">{candidate.mobile}</span>
                     </td>
                     <td className="whitespace-nowrap py-1.5 pl-4 text-sm font-medium text-customGray-100 sm:pl-0 min-w-[15rem]">
                       <span className="pl-4">{candidate.email}</span>

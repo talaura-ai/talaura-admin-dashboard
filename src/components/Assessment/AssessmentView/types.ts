@@ -75,6 +75,7 @@ export interface ICandidate {
 export interface IInviteCandidateItem {
   name: string;
   email: string;
+  mobile: string;
 }
 
 export interface IAddCandidateApiPayload {

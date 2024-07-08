@@ -30,7 +30,7 @@ import {
 } from '../../app/services/assessments';
 import IMAGES from '../../assets/images/Images';
 import { IModuleType } from '../../helpers/types';
-import { AI_API_URL, omit } from '../../helpers/utils';
+import { AI_API_URL, ModuleTypesURLS, omit } from '../../helpers/utils';
 import InitialQuestion from '../Assessment/InitialQuestion';
 import LoadingScreen from '../Loading/LoadingScreen';
 import Modules from '../Modules/Modules';
@@ -149,15 +149,6 @@ const CreateAssessment = () => {
     }
     try {
       const promiseMap = selectedModules.map(async (selectedModule: IModuleType) => {
-        const ModuleTypesURLS = {
-          'Voice To Voice': 'generate_voice_to_voice_questions',
-          Sandbox: 'generate_sandbox_questions',
-          'AI Video Interview': 'generate_ai_video_interview_questions',
-          Interview: 'generate_voice_to_text_questions',
-          'Voice to Text': 'generate_voice_to_text_questions',
-          Quiz: 'generate_quiz_questions',
-        };
-
         const headers = new Headers();
         headers.append('Content-Type', 'application/json');
         const fetchModuleQuestionRes = await fetch(

@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { addQuestionToModule } from '../../app/features/moduleSlice';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import IMAGES from '../../assets/images/Images';
+import { useAppSelector } from '../../app/hooks';
 import AddNewQuestion from '../AddNewQuestion';
 
 export interface ReviewQuestionsProps {
@@ -15,10 +13,10 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module }) => {
     state?.modules?.selectedModules?.find((mdl: any) => mdl?.name === module?.name),
   );
   const questions = currentModule?.question ?? [];
-  const [questionsSelectedStatus, setQuestionsSelectedStatusArr] = useState<boolean[]>(
-    questions?.map((que: any) => que?.selected),
-  );
-  const dispatch = useAppDispatch();
+  // const [questionsSelectedStatus, setQuestionsSelectedStatusArr] = useState<boolean[]>(
+  //   questions?.map((que: any) => que?.selected),
+  // );
+  // const dispatch = useAppDispatch();
   if (isAddNewQuestion) {
     return (
       <AddNewQuestion
@@ -34,9 +32,10 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module }) => {
       <div className="relative mt-10 w-full mx-10 z-[999]">
         <div className="grid grid-cols-1 h-screen">
           <div className="flex flex-col h-[50vh] rounded-lg shadow-inner bg-white p-8 overflow-scroll z-50">
+            <h2 className="font-Sansation_Bold font-[700]">Sample Questions</h2>
             {questions?.map((v: any, index: number) => (
               <div key={v?.title + index} className="flex my-2 items-center">
-                <div className="flex h-6 items-center">
+                {/* <div className="flex h-6 items-center">
                   <input
                     id="review"
                     aria-describedby="offers-description"
@@ -50,14 +49,14 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module }) => {
                     }}
                     className="h-6 w-6 rounded border-gray-300 bg-white shadow-xl text-orange-text checked:bg-orange-text ring-0"
                   />
-                </div>
+                </div> */}
                 <div className="ml-4">
                   <h3 className="text-[16px] text-[#000000] font-Sansation">Q. {v?.title}</h3>
                   <h3 className="text-[16px] text-[#000000] font-Sansation">{v?.description}</h3>
                 </div>
               </div>
             ))}
-            <div>
+            {/* <div>
               <button
                 className="flex flex-row mt-4 items-center gap-3"
                 onClick={() => setIsAddNewQuestion(true)}
@@ -65,7 +64,7 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module }) => {
                 <img src={IMAGES.plus} className="w-5 h-5" />
                 <span className="text-light-orange">Add New Question</span>
               </button>
-            </div>
+            </div> */}
             <div className="flex flex-row justify-center items-center">
               {!questions?.length ? (
                 <h1>
@@ -77,7 +76,7 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module }) => {
               )}
             </div>
 
-            <div className="flex flex-row mt-6 justify-center">
+            {/* <div className="flex flex-row mt-6 justify-center">
               <button
                 onClick={() => {
                   dispatch(
@@ -91,12 +90,13 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module }) => {
                   );
                 }}
                 className={
-                  'mt-2 mx-3 items-center justify-center rounded-md border px-6 py-3 text-base font-medium  shadow-sm hover:bg-orange-text focus:outline-none focus:ring-0 active:animate-pulse bg-orange-text text-white'
+                  `mt-2 mx-3 items-center justify-center rounded-md border px-6 py-3 text-base font-medium
+                   shadow-sm hover:bg-orange-text focus:outline-none focus:ring-0 active:animate-pulse bg-orange-text text-white`
                 }
               >
                 Done
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
