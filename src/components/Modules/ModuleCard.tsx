@@ -141,12 +141,14 @@ const ModuleCard: React.FC<any> = (props) => {
           {fromReviewAssessmentScreen && (
             <span className="text-xs text-[#BDBDBD]">{noOfQuestions ?? 0} questions</span>
           )}
-          <h1 className="">Skills</h1>
-          {editable && selectedModule?.type !== 'Sandbox' && (
-            <div className="p-1 mx-2" onClick={handleClick}>
-              <PencilIcon className="h-3 w-3 text-orange-text" />
-            </div>
-          )}
+          <div className="flex">
+            <h1 className="">Skills</h1>
+            {editable && selectedModule?.type !== 'Sandbox' && (
+              <div className="p-1 mx-2" onClick={handleClick}>
+                <PencilIcon className="h-3 w-3 text-orange-text" />
+              </div>
+            )}
+          </div>
         </div>
       </div>
       <div className={classNames('flex  ', editMode ? 'flex-col' : 'flex-row items-center')}>

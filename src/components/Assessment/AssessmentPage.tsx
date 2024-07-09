@@ -13,49 +13,6 @@ import IMAGES from '../../assets/images/Images';
 import { classNames } from '../Core/classNames';
 import EmptyDataScreen from '../EmptyDataScreen/EmptyDataScreen';
 
-// const assessmentsData = [
-//   {
-//     id: 1,
-//     name: "Graphic Designer",
-//     department: "iOS Department",
-//     duration: "125 mins",
-//     status: "Active",
-//     invites: 657,
-//     completed: 625,
-//     ongoing: 32,
-//   },
-//   {
-//     id: 2,
-//     name: "HR Manager",
-//     department: "HR Department",
-//     duration: "125 mins",
-//     status: "Active",
-//     invites: 657,
-//     completed: 625,
-//     ongoing: 32,
-//   },
-//   {
-//     id: 3,
-//     name: "Android Expert",
-//     department: "Mobile Department",
-//     duration: "125 mins",
-//     status: "Active",
-//     invites: 657,
-//     completed: 625,
-//     ongoing: 32,
-//   },
-//   {
-//     id: 4,
-//     name: "React Developer",
-//     department: "IT Department",
-//     duration: "125 mins",
-//     status: "Active",
-//     invites: 657,
-//     completed: 625,
-//     ongoing: 32,
-//   },
-// ];
-
 const omitFieldsToRenderInMap = [
   'id',
   'name',
@@ -134,7 +91,7 @@ const AssessmentPage = () => {
           <Menu as="div" className="relative inline-block text-left">
             <div>
               <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 font-Sansation_Regular">
-                Sort By
+                Sort By {sortBy}
                 <img src={IMAGES.sortDown} alt="" className="h-4 w-4 pl-1" />{' '}
               </MenuButton>
             </div>

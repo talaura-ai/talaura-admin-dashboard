@@ -105,6 +105,7 @@ const AddCandidates = () => {
                 placeholder="Candidate Name*"
                 required
                 minLength={4}
+                maxLength={30}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="pl-[35px] h-full rounded-md border border-customGray-80 bg-customGray-70 w-full"
@@ -117,6 +118,7 @@ const AddCandidates = () => {
               <input
                 type="tel"
                 placeholder="Candidate Mobile No"
+                maxLength={14}
                 value={mobile}
                 onChange={(e) => setMobile(e.target.value)}
                 className="pl-[35px] h-full rounded-md border border-customGray-80 bg-customGray-70 w-full"
@@ -130,6 +132,7 @@ const AddCandidates = () => {
                 type="email"
                 placeholder="Candidate Email ID*"
                 required
+                maxLength={30}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="pl-[35px] h-full rounded-md border border-customGray-80 bg-customGray-70 w-full"
