@@ -95,7 +95,7 @@ const AddCandidates = () => {
         setOpenUploadModel={setOpenUploadModel}
         handleFileUpload={readExcelFile}
       />
-      <div className="main_container shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] flex w-full justify-start items-center bg-white py-4 px-20">
+      <div className="main_container shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] flex w-full justify-start items-center bg-white pt-4 pb-6 px-20">
         <form className="col1 flex items-center gap-2.5 w-full" onSubmit={onAddCandidate}>
           <div className="col1_col1 w-full">
             <div className="input_container relative w-full h-[50px]">
@@ -104,13 +104,18 @@ const AddCandidates = () => {
                 type="text"
                 placeholder="Candidate Name*"
                 required
-                minLength={4}
+                minLength={3}
                 maxLength={30}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="pl-[35px] h-full rounded-md border border-customGray-80 bg-customGray-70 w-full"
               />
             </div>
+            {name.length !== 0 && name.length < 4 && (
+              <p className="mt-1 text-[#FB2121] text-sm font-bold absolute">
+                *Name must be of 4 to 30 chars
+              </p>
+            )}
           </div>
           <div className="col1_col2 w-full">
             <div className="input_container relative w-full h-[50px]">
@@ -118,12 +123,18 @@ const AddCandidates = () => {
               <input
                 type="tel"
                 placeholder="Candidate Mobile No"
-                maxLength={14}
+                maxLength={15}
                 value={mobile}
+                pattern="^\d{1,15}$"
                 onChange={(e) => setMobile(e.target.value)}
                 className="pl-[35px] h-full rounded-md border border-customGray-80 bg-customGray-70 w-full"
               />
             </div>
+            {mobile.length !== 0 && !mobile.match('^\\d{1,15}$') && (
+              <p className="mt-1 text-[#FB2121] text-sm font-bold absolute">
+                *Can only contains digits and max 15 chars
+              </p>
+            )}
           </div>
           <div className="col1_col2 w-full">
             <div className="input_container relative w-full h-[50px]">
@@ -132,12 +143,18 @@ const AddCandidates = () => {
                 type="email"
                 placeholder="Candidate Email ID*"
                 required
+                minLength={6}
                 maxLength={30}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="pl-[35px] h-full rounded-md border border-customGray-80 bg-customGray-70 w-full"
               />
             </div>
+            {email.length !== 0 && email.length < 4 && (
+              <p className="mt-1 text-[#FB2121] text-sm font-bold absolute">
+                *Email must be of 6 to 30 chars
+              </p>
+            )}
           </div>
           <div className="col1_col3">
             <button
