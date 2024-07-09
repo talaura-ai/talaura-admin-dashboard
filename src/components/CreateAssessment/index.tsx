@@ -44,7 +44,7 @@ export const ActionButtonContext = createContext<any>('');
 const CreateAssessment = () => {
   const [btnState, setBtnState] = useState<string>('');
   const dispatch = useAppDispatch();
-  const { data: profileData, isLoading: profileLoading } = useGetAssessmentProfilesQuery('');
+  const { data: profileData, isLoading: profileLoading, error } = useGetAssessmentProfilesQuery('');
 
   const assessmentsProfiles = useAppSelector((state) => state.assessmentProfiles);
 
@@ -65,11 +65,15 @@ const CreateAssessment = () => {
 
   useEffect(() => {
     if (profileData && profileData.status) {
+      console.log('profileData', profileData);
       dispatch(setAllProfiles(profileData.assessmentProfile));
       if (profileData.assessmentProfile.length)
         setInitialQuestionProfile(profileData.assessmentProfile[0]);
+    } else if (error && 'status' in error && error.status === 401) {
+      toast.error('Your login token got expire, please login again');
+      dispatch(logout());
     }
-  }, [dispatch, profileData]);
+  }, [dispatch, error, profileData]);
 
   const [questions, setQuestions] = useState([]);
   const [page, setPage] = useState(0);
