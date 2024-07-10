@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { AssessmentsState } from '../../helpers/types';
 
 // export const mockData = [
 
@@ -2315,55 +2316,13 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 //     }
 // ]
 
-export interface IAssessmentQuestionOptions {
-  name?: {
-    type: string;
-  };
-  title?: {
-    type: string;
-  };
-}
-
-export enum questionTypes {
-  DROPDOWN = 'dropdown',
-  TEXT = 'text',
-  MULTIPLE_CHOICE = 'multiple-choice',
-}
-export interface IAssessmentQuestion {
-  _id: any;
-  name: string;
-  type: any;
-  profile: string;
-  title: string;
-  answer: any;
-  options: IAssessmentQuestionOptions;
-}
-export interface IAssessmentModule {
-  _id: any;
-  name: string;
-  type: 'Code Sandbox' | 'Quizzes';
-  noOfQuestion: number;
-  skills: string[];
-  weightage: string;
-  time: string;
-}
-
-export interface AssessmentsState {
-  _id: any;
-  name: string;
-  title: string;
-  profileType: string;
-  question: IAssessmentQuestion[];
-  module: IAssessmentModule[];
-}
-
-const initialState: any[] = [];
+const initialState: AssessmentsState[] = [];
 
 export const assessmentsSlice = createSlice({
   name: 'assessments',
   initialState,
   reducers: {
-    getAll: (_state, action: PayloadAction<any>) => {
+    getAll: (_state, action: PayloadAction<AssessmentsState[]>) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
@@ -2371,7 +2330,7 @@ export const assessmentsSlice = createSlice({
       return [...action.payload];
     },
 
-    getByName: (state, action: PayloadAction<any>) => {
+    getByName: (state, action: PayloadAction<{ assessmentId: string }>) => {
       const { assessmentId } = action.payload;
       state.filter((assessment) => assessment.name === assessmentId);
     },

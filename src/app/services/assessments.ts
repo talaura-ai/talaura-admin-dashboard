@@ -1,8 +1,8 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { RootState } from '../store';
-import { AssessmentsState } from '../features/assessmentsSlice';
 import { IAssessmentDetails } from '../../components/Assessment/AssessmentView/types';
+import { AssessmentsState } from '../../helpers/types';
+import { RootState } from '../store';
 
 const BASE_URL = 'https://fantasytradingleague.com/api/talaura/';
 
@@ -87,6 +87,22 @@ export const assessmentApi = createApi({
       }),
       invalidatesTags: ['Assessments'],
     }),
+    duplicateAssessment: builder.mutation({
+      query: (data: { _id: string; name: string }) => ({
+        url: `organization/assessment/duplicate`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Assessments'],
+    }),
+    renameAssessment: builder.mutation({
+      query: (data: { _id: string; name: string }) => ({
+        url: `organization/assessment/rename`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Assessments'],
+    }),
   }),
 });
 
@@ -101,4 +117,6 @@ export const {
   useGetAssessmentByIDQuery,
   useSaveModulesToAssessmentMutation,
   useSaveQuestionsToAssessmentMutation,
+  useDuplicateAssessmentMutation,
+  useRenameAssessmentMutation,
 } = assessmentApi;

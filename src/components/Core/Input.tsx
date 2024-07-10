@@ -6,9 +6,9 @@ import {
   Transition,
 } from '@headlessui/react';
 import { ArrowRightIcon, CheckIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
-import { questionTypes } from '../../app/features/assessmentsSlice';
 import { classNames } from './classNames';
 import { useState } from 'react';
+import { questionTypes } from '../../helpers/types';
 
 export interface IInput {
   serialNum?: number;

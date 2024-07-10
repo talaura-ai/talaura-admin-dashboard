@@ -1,8 +1,10 @@
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react';
 import { EllipsisHorizontalIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import moment from 'moment';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { Link, NavLink } from 'react-router-dom';
+import { logout } from '../../app/features/adminSlice';
 import { getAll } from '../../app/features/assessmentsSlice';
 import { resetModulesSlice } from '../../app/features/moduleSlice';
 import { resetQuestionsSlice } from '../../app/features/questions';
@@ -10,8 +12,10 @@ import { resetSkillsSlice } from '../../app/features/skillsSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useGetAllQuery } from '../../app/services/assessments';
 import IMAGES from '../../assets/images/Images';
+import { IAssessmentModalDt, IMenuItems } from '../../helpers/types';
 import { classNames } from '../Core/classNames';
 import EmptyDataScreen from '../EmptyDataScreen/EmptyDataScreen';
+import AssessmentActionModal from './AssessmentActionModal';
 
 const omitFieldsToRenderInMap = [
   'id',
@@ -30,25 +34,39 @@ const omitFieldsToRenderInMap = [
   'skills',
   '__v',
 ];
-const sortItems = ['Date', 'Name', 'Status'];
-const menuItems = ['Duplicate', 'Rename', 'Invite', 'Invite via link'];
-
+const sortItems: ('date' | 'name' | 'status')[] = ['date', 'name', 'status'];
+const menuItems: IMenuItems[] = [
+  { id: 1, text: 'Duplicate', onClickModal: 'duplicate' },
+  { id: 2, text: 'Rename', onClickModal: 'rename' },
+  { id: 3, text: 'Invite', onClickModal: '' },
+];
 const AssessmentPage = () => {
   const assessments = useAppSelector((state) => state.assessments);
+  const [modalToShow, setModalToShow] = useState<IAssessmentModalDt>('');
   const assessmentProfiles = useAppSelector((state) => state.assessmentProfiles);
   const [filterBy, setFilterBy] = useState('');
-  const [sortBy, setSortBy] = useState('name');
-  const { data: assessmentData } = useGetAllQuery('');
+  const [sortBy, setSortBy] = useState<'date' | 'name' | 'status'>('name');
+  const { data: assessmentData, error } = useGetAllQuery('');
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (assessmentData) {
       dispatch(getAll(assessmentData.assessments));
+    } else if (error && 'status' in error && error.status === 401) {
+      toast.error('Your login token got expire, please login again');
+      dispatch(logout());
     }
-  }, [dispatch, assessmentData]);
+  }, [dispatch, assessmentData, error]);
+
+  const showModalFor = useCallback((assessmentId: string, text: IMenuItems['onClickModal']) => {
+    if (text) {
+      setModalToShow({ assessmentId, text });
+    }
+  }, []);
 
   return (
     <div>
+      <AssessmentActionModal showModalData={modalToShow} setShowModalData={setModalToShow} />
       <div className="flex">
         <div className="grow">
           <h1 className="text-4xl font-medium text-black">Assessments</h1>
@@ -110,10 +128,10 @@ const AssessmentPage = () => {
                     <MenuItem key={index}>
                       {({ focus }) => (
                         <button
-                          onClick={() => setSortBy(item.toLowerCase())}
+                          onClick={() => setSortBy(item)}
                           className={classNames(
                             focus ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                            'block px-4 py-2 text-sm',
+                            'block px-4 py-2 text-sm capitalize',
                           )}
                         >
                           {item}
@@ -131,18 +149,7 @@ const AssessmentPage = () => {
           <NavLink
             type="button"
             to="/assessments/create"
-            className="
-                          inline-flex
-                           h-8 w-36
-                            items-center
-                             justify-center
-                              rounded-md
-                               bg-orange-text
-                                 text-white
-                                  hover:text-gray-500
-                                   focus:outline-none  
-                                      
-                                   "
+            className="inline-flex h-8 w-36 items-center justify-center rounded-md bg-orange-text text-white hover:text-gray-500 focus:outline-none"
             state={{ assessmentProfiles }}
             onClick={() => {
               dispatch(resetSkillsSlice());
@@ -167,14 +174,12 @@ const AssessmentPage = () => {
               )
               .slice()
 
-              .sort((a, b) => {
+              .sort((a: any, b: any) => {
                 if (a[sortBy] > b[sortBy]) return 1;
                 if (a[sortBy] < b[sortBy]) return -1;
                 return 0;
-
-                // const  a[sortBy] - b[sortBy]
               })
-              .map((assessment, index) => {
+              .map((assessment: any, index) => {
                 return (
                   <li key={index} className="col-span-1 flex rounded-md shadow-sm">
                     <div className="flex flex-1 items-center justify-between truncate rounded-r-md border-b border-r border-t border-gray-200 bg-white">
@@ -191,7 +196,7 @@ const AssessmentPage = () => {
                           {assessment.name}
                         </Link>
                         <p className="text-gray-400 text-md text-center">
-                          {assessment.department}{' '}
+                          {'department' in assessment && (assessment.department as string)}{' '}
                         </p>
                       </div>
 
@@ -237,19 +242,22 @@ const AssessmentPage = () => {
                             leaveTo="transform opacity-0 scale-95"
                           >
                             <MenuItems className="absolute right-0 z-[999] mt-2 mr-5 w-150 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                              <div className="py-1">
+                              <div className="">
                                 {menuItems.map((item, index) => (
                                   <MenuItem key={index}>
                                     {({ focus }) => (
-                                      <a
-                                        href="#"
+                                      <button
                                         className={classNames(
                                           focus ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                          'block px-4 py-2 text-sm',
+                                          'block px-4 py-2 text-sm w-full',
                                         )}
+                                        onClick={() =>
+                                          showModalFor(assessment._id, item.onClickModal)
+                                        }
+                                        key={item.id}
                                       >
-                                        {item}
-                                      </a>
+                                        {item.text}
+                                      </button>
                                     )}
                                   </MenuItem>
                                 ))}
