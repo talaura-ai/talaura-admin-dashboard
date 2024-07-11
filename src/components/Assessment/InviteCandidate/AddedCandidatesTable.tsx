@@ -10,7 +10,7 @@ const AddedCandidatesTable = () => {
     dispatch(removeCandidateFromInviteList(email));
   };
   return (
-    <div className="mt-10 w-full">
+    <div className="mt-6 w-full">
       <div className="flex flex-col justify-center w-full">
         <div className="row1 justify-start my-2 text-left">
           <span className="text-left text-lg text-black w-full">
@@ -18,7 +18,7 @@ const AddedCandidatesTable = () => {
           </span>
         </div>
         <div className="row2 self-center w-full">
-          <div className="table_container overflow-scroll">
+          <div className="table_container overflow-scroll max-h-[450px]">
             <table className="w-full divide-y divide-customGray-250 bg-white rounded-md">
               <thead className="border-collapse">
                 <tr className="divide-customGray-250 divide-x">
