@@ -45,7 +45,7 @@ const AssessmentPage = () => {
   const [modalToShow, setModalToShow] = useState<IAssessmentModalDt>('');
   const assessmentProfiles = useAppSelector((state) => state.assessmentProfiles);
   const [filterBy, setFilterBy] = useState('');
-  const [sortBy, setSortBy] = useState<'date' | 'name' | 'status'>('name');
+  const [sortBy, setSortBy] = useState<'date' | 'name' | 'status'>('date');
   const { data: assessmentData, error } = useGetAllQuery('');
   const dispatch = useAppDispatch();
 
@@ -109,7 +109,7 @@ const AssessmentPage = () => {
           <Menu as="div" className="relative inline-block text-left">
             <div>
               <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 font-Sansation_Regular">
-                Sort By {sortBy}
+                {sortBy}
                 <img src={IMAGES.sortDown} alt="" className="h-4 w-4 pl-1" />{' '}
               </MenuButton>
             </div>
@@ -175,8 +175,12 @@ const AssessmentPage = () => {
               .slice()
 
               .sort((a: any, b: any) => {
-                if (a[sortBy] > b[sortBy]) return 1;
-                if (a[sortBy] < b[sortBy]) return -1;
+                if (sortBy === 'name') {
+                  return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
+                } else if (sortBy === 'date') {
+                  return new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1;
+                }
+
                 return 0;
               })
               .map((assessment: any, index) => {

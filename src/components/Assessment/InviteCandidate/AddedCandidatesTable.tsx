@@ -1,6 +1,6 @@
 import { XCircleIcon } from '@heroicons/react/24/outline';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { removeCandidateFromInviteList } from '../../../app/features/inviteCandidateSlice';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 
 const columns = ['Name', 'Mobile', 'Email', 'Remove'];
 const AddedCandidatesTable = () => {
@@ -13,7 +13,9 @@ const AddedCandidatesTable = () => {
     <div className="mt-10 w-full">
       <div className="flex flex-col justify-center w-full">
         <div className="row1 justify-start my-2 text-left">
-          <span className="text-left text-lg text-black w-full">0 Candidates invite</span>
+          <span className="text-left text-lg text-black w-full">
+            {allCandidates.length} Candidates invite
+          </span>
         </div>
         <div className="row2 self-center w-full">
           <div className="table_container overflow-scroll">

@@ -36,7 +36,7 @@ export default function Login() {
           ```
         */}
       <div className="flex  flex-1">
-        <div className="flex flex-0.5">
+        <div className="flex w-[50%]">
           <img className="h-screen w-full" src={IMAGES.loginSplitPic} alt="" />
         </div>
         <div className="flex flex-1 justify-center items-center">
