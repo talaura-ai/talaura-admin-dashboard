@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
-import { questionTypes } from '../../app/features/assessmentsSlice';
 import { updateQuestion } from '../../app/features/questions';
 import { useAppDispatch } from '../../app/hooks';
-import { IAssessmentQuestionProps } from '../../helpers/types';
+import { IAssessmentQuestionProps, questionTypes } from '../../helpers/types';
 import useFormContext from '../../hooks/useFormContext';
 import Input from '../Core/Input';
 import MultipleChoices from '../Core/MultipleChoices';
