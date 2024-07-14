@@ -1,10 +1,11 @@
 import { FunctionComponent, useEffect, useMemo, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useGetCandidateReportsMutation } from '../../app/services/candidates';
+import Header from '../AssessmentView/Header';
 import ErrorPage from '../Error/ErrorPage';
 import LoadingScreen from '../Loading/LoadingScreen';
-import Header from '../AssessmentView/Header';
 import CandidateDashBoard from './CandidateDashBoard';
+import VideoView from './VideoView';
 
 const CandidateView: FunctionComponent = () => {
   const location = useLocation();
@@ -18,10 +19,7 @@ const CandidateView: FunctionComponent = () => {
 
   const TabData = [
     { id: 1, text: 'Summary' },
-    { id: 2, text: 'Cognitive Abilities' },
-    { id: 3, text: 'Video' },
-    { id: 4, text: 'Custom' },
-    { id: 5, text: 'English' },
+    { id: 2, text: 'Video' },
   ];
 
   const [activeTab, setActiveTab] = useState<{
@@ -30,6 +28,10 @@ const CandidateView: FunctionComponent = () => {
 
   const activeTabComponent = useMemo(() => {
     switch (activeTab.text) {
+      case 'Summary':
+        return <CandidateDashBoard candidateData={candidateData} />;
+      case 'Video':
+        return <VideoView />;
       default:
         return <CandidateDashBoard candidateData={candidateData} />;
     }
@@ -37,8 +39,7 @@ const CandidateView: FunctionComponent = () => {
 
   useEffect(() => {
     if (candidateId) getCandidatesReports(candidateId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [candidateId, getCandidatesReports]);
 
   if (isLoading || isUninitialized) {
     return <LoadingScreen />;
@@ -47,11 +48,15 @@ const CandidateView: FunctionComponent = () => {
   if (isError) {
     return <ErrorPage />;
   }
-
+  console.log('candidateData', candidateData);
   if (isSuccess) {
     return (
       <section className="flex-1 bg-floralwhite flex flex-col items-start justify-start box-border gap-4 text-center text-[1.25rem] text-customGray-100 font-sansation lg:pl-[1.625rem] lg:pr-[1.563rem] lg:box-border ] mq750:pt-[1.25rem] mq750:box-border mq1050:pt-[1.688rem] mq1050:pb-[1.25rem] mq1050:box-border">
-        <Header isCandidateView candidateData={candidateData} />
+        <Header
+          isCandidateView
+          candidateData={candidateData}
+          assessmentName={candidateData?.name}
+        />
 
         <div className="self-stretch flex flex-row flex-wrap items-start justify-start relative max-w-full">
           {TabData.map((tab) => (

@@ -12,7 +12,7 @@ import { candidatesApi } from './services/candidates';
 const persistConfig = {
   key: 'root1',
   storage,
-  whitelist: ['admin', 'inviteCandidate'],
+  // whitelist: ['admin', 'inviteCandidate'],
   // blacklist: ["admin"]
 };
 

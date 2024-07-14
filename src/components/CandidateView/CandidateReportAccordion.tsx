@@ -26,8 +26,8 @@ const CandidateReportAccordion = ({ report }: { report: ICandidateReportDataRepo
       {isExpanded && (
         <div className="inner_content">
           {report.report.map((dt, idx) => (
-            <div className="flex justify-between flex-row items-end gap-4">
-              <div className="content relative my-2 text-left w-full" key={idx}>
+            <div className="flex justify-between flex-row items-end gap-4" key={idx}>
+              <div className="content relative my-2 text-left w-full">
                 <span className="text-left text-xs font-bold text-black">{dt?.name}</span>
                 <div className="overflow-hidden bg-sandybrown h-2.5 rounded-full w-full">
                   <span
