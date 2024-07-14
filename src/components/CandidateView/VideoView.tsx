@@ -92,9 +92,8 @@ const VideoView = () => {
             {isVideoPlayed ? (
               <div className="h-full w-full">
                 <iframe
-                  src="https://www.youtube.com/embed/vUnv5M3tVwE?autoplay=1"
+                  src="https://www.youtube.com/embed/H8Lyj2D_cWo?autoplay=1"
                   allow="autoplay"
-                  referrerPolicy="strict-origin-when-cross-origin"
                   className="w-full h-[264px] p-2"
                   allowFullScreen
                 ></iframe>
