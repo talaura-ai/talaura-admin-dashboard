@@ -2,7 +2,7 @@ import { PlusCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import dayjs from 'dayjs';
 import { Dispatch, FormEvent, SetStateAction, useState } from 'react';
 import toast from 'react-hot-toast';
-import { useExtendCandidateAssessmentDurationMutation } from '../../../../app/services/candidates';
+import { useExtendCandidateAssessmentDurationMutation } from '../../../app/services/candidates';
 
 const ExtendModal = (props: {
   extendUserId: string;

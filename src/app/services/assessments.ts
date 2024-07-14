@@ -1,6 +1,6 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { IAssessmentDetails } from '../../components/Assessment/AssessmentView/types';
+import { IAssessmentDetails } from '../../components/AssessmentView/types';
 import { AssessmentsState } from '../../helpers/types';
 import { RootState } from '../store';
 

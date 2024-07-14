@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { IInviteCandidateItem } from '../../components/Assessment/AssessmentView/types';
+import { createSlice } from '@reduxjs/toolkit';
+import { IInviteCandidateItem } from '../../components/AssessmentView/types';
 
 const initialState: IInviteCandidateItem[] = [];
 

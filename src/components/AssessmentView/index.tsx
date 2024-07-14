@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { useGetAssessmentByIDQuery } from '../../../app/services/assessments';
-import ErrorPage from '../../Error/ErrorPage';
-import LoadingScreen from '../../Loading/LoadingScreen';
+import { useGetAssessmentByIDQuery } from '../../app/services/assessments';
+import ErrorPage from '../Error/ErrorPage';
+import LoadingScreen from '../Loading/LoadingScreen';
 import Header from './Header';
 import PendingTab from './PendingTab';
 import SummaryTab from './SummaryTab';

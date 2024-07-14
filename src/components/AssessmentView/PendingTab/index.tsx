@@ -11,9 +11,9 @@ import * as xlsx from 'xlsx';
 import {
   useGetAllCandidatesQuery,
   useNotifyCandidateMutation,
-} from '../../../../app/services/candidates';
-import ErrorPage from '../../../Error/ErrorPage';
-import LoadingScreen from '../../../Loading/LoadingScreen';
+} from '../../../app/services/candidates';
+import ErrorPage from '../../Error/ErrorPage';
+import LoadingScreen from '../../Loading/LoadingScreen';
 import { ICandidate } from '../types';
 import ExtendModal from './ExtendModal';
 import Header from './Header';

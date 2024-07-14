@@ -1,6 +1,6 @@
 import { XCircleIcon } from '@heroicons/react/24/outline';
-import { removeCandidateFromInviteList } from '../../../app/features/inviteCandidateSlice';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { removeCandidateFromInviteList } from '../../app/features/inviteCandidateSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 const columns = ['Name', 'Mobile', 'Email', 'Remove'];
 const AddedCandidatesTable = () => {

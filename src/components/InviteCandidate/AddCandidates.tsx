@@ -8,14 +8,14 @@ import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { read, utils } from 'xlsx';
-import { addCandidateToInviteList } from '../../../app/features/inviteCandidateSlice';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { addCandidateToInviteList } from '../../app/features/inviteCandidateSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   capitalizeEachWordFirstCharacter,
   emailRegex,
   mobileNumberRegex,
   nameRegex,
-} from '../../../helpers/utils';
+} from '../../helpers/utils';
 import FileUploadModal from './FileUploadModal';
 
 export interface IFormInput {

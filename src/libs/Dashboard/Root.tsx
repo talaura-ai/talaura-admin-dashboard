@@ -8,12 +8,12 @@ import {
 
 import { useAppSelector } from '../../app/hooks';
 import AssessmentPage from '../../components/Assessment/AssessmentPage';
-import AssessmentView from '../../components/Assessment/AssessmentView';
-import CandidateView from '../../components/Assessment/CandidateView';
-import InviteCandidate from '../../components/Assessment/InviteCandidate';
+import AssessmentView from '../../components/AssessmentView';
+import CandidateView from '../../components/CandidateView';
 import CreateAssessment from '../../components/CreateAssessment';
 import ErrorPage from '../../components/Error/ErrorPage';
 import Home from '../../components/Home/Home';
+import InviteCandidate from '../../components/InviteCandidate';
 import ForgotPassword from '../../components/Login/ForgotPassword';
 import Login from '../../components/Login/Login';
 import Peoples from '../../components/Peoples/Peoples';

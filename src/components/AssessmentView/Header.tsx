@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
+import { useAppSelector } from '../../app/hooks';
 import { ICandidateReportData } from './types';
-import { useAppSelector } from '../../../app/hooks';
 
 const Header = ({
   isCandidateView = false,

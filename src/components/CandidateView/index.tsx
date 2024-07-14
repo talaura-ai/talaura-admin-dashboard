@@ -1,10 +1,10 @@
 import { FunctionComponent, useEffect, useMemo, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { useGetCandidateReportsMutation } from '../../../app/services/candidates';
-import CandidateDashBoard from '../../CandidateView/CandidateDashBoard';
-import LoadingScreen from '../../Loading/LoadingScreen';
-import ErrorPage from '../../Error/ErrorPage';
-import Header from '../../AssessmentView/Header';
+import { useGetCandidateReportsMutation } from '../../app/services/candidates';
+import ErrorPage from '../Error/ErrorPage';
+import LoadingScreen from '../Loading/LoadingScreen';
+import Header from '../AssessmentView/Header';
+import CandidateDashBoard from './CandidateDashBoard';
 
 const CandidateView: FunctionComponent = () => {
   const location = useLocation();

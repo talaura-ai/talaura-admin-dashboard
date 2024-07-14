@@ -2,9 +2,9 @@ import dayjs from 'dayjs';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
-import { clearInviteList } from '../../../app/features/inviteCandidateSlice';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { useInviteCandidateMutation } from '../../../app/services/candidates';
+import { clearInviteList } from '../../app/features/inviteCandidateSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useInviteCandidateMutation } from '../../app/services/candidates';
 import { IAddCandidateApiPayload } from '../AssessmentView/types';
 
 interface IFormInput {

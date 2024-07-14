@@ -3,7 +3,7 @@ import {
   IAddCandidateApiPayload,
   ICandidateData,
   ICandidateReportData,
-} from '../../components/Assessment/AssessmentView/types';
+} from '../../components/AssessmentView/types';
 import { IExtendCandidateAssessmentPayload } from '../../helpers/types';
 import { RootState } from '../store';
 
