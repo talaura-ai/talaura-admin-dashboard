@@ -1,67 +1,28 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { ICandidateReportData } from '../AssessmentView/types';
 
-const VideoView = () => {
+const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) => {
   const [isVideoPlayed, setIsVideoPlayed] = useState<boolean>(false);
-  const Data = {
-    score: 74,
-    transcript: [
-      {
-        id: 1,
-        sender: 'AI',
-        text: 'kjbrk cj ekc kjekvek jner ernln lekrlrv klvnenerk knvrefvkrler vreknvrklne knrelfnvkre evjkn k kv elvknrfnrvkrekjrev erkv ke kve erk vrle rkf',
-      },
-      {
-        id: 2,
-        sender: 'ME',
-        text: 'kjbrk cj ekc ',
-      },
-      {
-        id: 3,
-        sender: 'AI',
-        text: 'kjbrk cj ekc kjekvek jner ernln lekrlrv klvnenerk knvrefvkrler vreknvrklne knrelfnvkre evjkn k kv elvknrfnrvkrekjrev erkv ke kve erk vrle rkf',
-      },
-      {
-        id: 4,
-        sender: 'ME',
-        text: 'kjbrk cj ekc kjekvek jner ernln lekrlrv klvnenerk knvrefvkrler vreknvrklne knrelfnvkre evjkn k kv elvknrfnrvkrekjrev erkv ke kve erk vrle rkf',
-      },
-      {
-        id: 5,
-        sender: 'AI',
-        text: 'kjbrk cj ekc kjekvek jner ernln lekrlrv klvnenerk knvrefvkrler vreknvrklne knrelfnvkre evjkn k kv elvknrfnrvkrekjrev erkv ke kve erk vrle rkf',
-      },
-      {
-        id: 6,
-        sender: 'ME',
-        text: 'kjbrk cj ekc kjekvek jner ernln lekrlrv klvnenerk knvrefvkrler vreknvrklne knrelfnvkre evjkn k kv elvknrfnrvkrekjrev erkv ke kve erk vrle rkf',
-      },
-      {
-        id: 7,
-        sender: 'AI',
-        text: 'kjbrk cj ekc kjekvek jner ernln lekrlrv klvnenerk knvrefvkrler vreknvrklne knrelfnvkre evjkn k kv elvknrfnrvkrekjrev erkv ke kve erk vrle rkf',
-      },
-      {
-        id: 8,
-        sender: 'ME',
-        text: 'kjbrk cj ekc kjekvek jner ernln lekrlrv klvnenerk knvrefvkrler vreknvrklne knrelfnvkre evjkn k kv elvknrfnrvkrekjrev erkv ke kve erk vrle rkf',
-      },
-      {
-        id: 9,
-        sender: 'AI',
-        text: 'kjbrk cj ekc kjekvek jner ernln lekrlrv klvnenerk knvrefvkrler vreknvrklne knrelfnvkre evjkn k kv elvknrfnrvkrekjrev erkv ke kve erk vrle rkf',
-      },
-      {
-        id: 10,
-        sender: 'AI',
-        text: 'kjbrk cj ekc kjekvek jner ernln lekrlrv klvnenerk knvrefvkrler vreknvrklne knrelfnvkre evjkn k kv elvknrfnrvkrekjrev erkv ke kve erk vrle rkf',
-      },
-      {
-        id: 11,
-        sender: 'Me',
-        text: 'kjbrk cj ekc kjekvek jner ernln lekrlrv klvnenerk knvrefvkrler vreknvrklne knrelfnvkre evjkn k kv elvknrfnrvkrekjrev erkv ke kve erk vrle rkf',
-      },
-    ],
-  };
+  const reportData = candidateData?.report.find((rp) => rp.moduleType === 'AI Video Interview');
+
+  const userAiChat: { id: number; sender: string; message: string }[] = useMemo(() => {
+    let answer = '';
+    if (reportData?.question && reportData.question.length) {
+      answer = reportData.question[0].answer;
+    }
+    const splitMessages = answer.split(/(?=User:|AI:)/);
+
+    let idx = 0;
+    return splitMessages.map((message) => {
+      const [speaker, ...content] = message.split(':');
+      return {
+        id: ++idx,
+        sender: speaker.trim() === 'AI' ? speaker : 'USR',
+        message: content.join(':').trim(),
+      };
+    });
+  }, [reportData?.question]);
+
   return (
     <div className="flex flex-col w-full">
       <div className="self-end flex justify-between mb-4 w-full">
@@ -85,7 +46,7 @@ const VideoView = () => {
         <div className="w-1/2 border border-[#E0E0E0] shadow-[0_4px_4px_0_(0,0,0,0.25)] rounded-[10px] bg-white">
           <div className="bg-[#E4FFE0] pt-[10px] pb-3">
             <span className="text-[#40B24B] font-Sansation_Regular font-bold text-xl">
-              Interview Score : {Data.score}
+              Interview Score : {reportData?.average ?? 0}
             </span>
           </div>
           <div className="flex justify-center items-center h-[264px]">
@@ -110,7 +71,7 @@ const VideoView = () => {
             <span className="text-2xl text-black text-left font-Sansation_Bold">Transcript</span>
           </div>
           <div className="chat-container h-[254px] overflow-scroll p-[18px]">
-            {Data.transcript.map((dt) => (
+            {userAiChat.map((dt) => (
               <div
                 className={`flex ${dt.sender === 'AI' ? 'flex-row' : 'flex-row-reverse'} justify-start items-center mb-5 gap-2`}
                 key={dt.id}
@@ -124,7 +85,7 @@ const VideoView = () => {
                   <p
                     className={`text-black text-xs ${dt.sender === 'AI' ? 'text-left' : 'text-right'}`}
                   >
-                    {dt.text}
+                    {dt.message}
                   </p>
                 </div>
               </div>

@@ -31,7 +31,7 @@ const CandidateView: FunctionComponent = () => {
       case 'Summary':
         return <CandidateDashBoard candidateData={candidateData} />;
       case 'Video':
-        return <VideoView />;
+        return <VideoView candidateData={candidateData} />;
       default:
         return <CandidateDashBoard candidateData={candidateData} />;
     }

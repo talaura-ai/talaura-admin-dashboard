@@ -103,6 +103,7 @@ export interface ICandidateReportDataReportItem {
   moduleType: string;
   average: number;
   description?: string;
+  question?: { title: string; answer: string }[];
   accuracy?: string;
   areaToImprove?: string;
 }
