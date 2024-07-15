@@ -35,7 +35,7 @@ const AddCandidates = () => {
   const allCandidates = useAppSelector((state) => state.inviteCandidate);
   const dispatch = useAppDispatch();
 
-  const [openUploadModel, setOpenUploadModel] = useState<boolean>(false);
+  const [openUploadModel, setOpenUploadModel] = useState<boolean>(true);
 
   const onSubmit: SubmitHandler<IFormInput> = (data, e) => {
     e?.preventDefault();
@@ -112,7 +112,12 @@ const AddCandidates = () => {
                 {...register('name', {
                   required: { value: true, message: 'Name is required' },
                   pattern: { value: nameRegex, message: 'Check name format' },
+                  minLength: {
+                    value: 3,
+                    message: 'Must have 3 characters',
+                  },
                 })}
+                minLength={3}
                 type="text"
                 placeholder="Candidate Name*"
                 className="pl-[35px] h-full rounded-md border border-customGray-80 bg-customGray-70 w-full"
@@ -134,7 +139,16 @@ const AddCandidates = () => {
                     value: mobileNumberRegex,
                     message: 'Please enter only numerical value',
                   },
+                  maxLength: {
+                    value: 10,
+                    message: 'Mobile no. should contains 10 digits',
+                  },
+                  minLength: {
+                    value: 10,
+                    message: 'Mobile no. should contains 10 digits',
+                  },
                 })}
+                maxLength={10}
                 type="tel"
                 placeholder="Candidate Mobile No"
                 className="pl-[35px] h-full rounded-md border border-customGray-80 bg-customGray-70 w-full"
@@ -187,11 +201,11 @@ const AddCandidates = () => {
               <span className="text-base whitespace-nowrap font-normal">Bulk Upload</span>
             </button>
           </div>
-          <div className="col2_col2">
+          {/* <div className="col2_col2">
             <button className="h-[50px] w-[50px] border border-sandybrown text-sandybrown rounded-lg flex justify-start items-center py-4 px-2.5">
               <img src="/images/DbExport.png" alt="" className="w-[27px] h-[20px]" />
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

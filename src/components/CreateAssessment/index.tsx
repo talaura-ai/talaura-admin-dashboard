@@ -47,6 +47,7 @@ const CreateAssessment = () => {
   const { data: profileData, isLoading: profileLoading, error } = useGetAssessmentProfilesQuery('');
 
   const assessmentsProfiles = useAppSelector((state) => state.assessmentProfiles);
+  const assessmentsInStore = useAppSelector((state) => state.assessments);
 
   const questionReduxData = useAppSelector((state) => state.questions);
 
@@ -265,16 +266,35 @@ const CreateAssessment = () => {
     }
   };
 
-  const createAssessmentMethod = async () => {
-    const result = await createAssessment({
-      profile: initialQuestionProfile.name,
-      name: initialQuestionValue,
-    });
-
-    if (result.data.status === true) {
-      setAssessment(result.data);
+  const isAssessmentNameAlreadyExist = (name: string) => {
+    try {
+      if (
+        assessmentsInStore.find(
+          (assmnt) => assmnt.name.trim().toLowerCase() === name.trim().toLowerCase(),
+        )
+      ) {
+        toast.error('Assignment with same name already exists');
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return true;
     }
-    return result;
+  };
+
+  const createAssessmentMethod = async () => {
+    if (!isAssessmentNameAlreadyExist(initialQuestionValue)) {
+      const result = await createAssessment({
+        profile: initialQuestionProfile.name,
+        name: initialQuestionValue,
+      });
+
+      if (result.data.status === true) {
+        setAssessment(result.data);
+      }
+      return result;
+    }
   };
 
   const [steps, setSteps] = useState(() => [
@@ -430,7 +450,7 @@ const CreateAssessment = () => {
         setCreateAssessmentLoading(true);
         const createResult = await createAssessmentMethod();
 
-        if (createResult.data.status === true) {
+        if (createResult?.data.status === true) {
           await generateSkills();
           setCreateAssessmentLoading(false);
           toast.success(createResult.data.message);

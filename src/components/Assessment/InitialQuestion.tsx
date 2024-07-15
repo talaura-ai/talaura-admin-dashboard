@@ -81,7 +81,7 @@ const InitialQuestion: React.FC<any> = ({
       </fieldset> */}
       <div className="flex flex-col">
         <Input
-          label={'Create Program'}
+          label={'Name'}
           name={'assessmentName'}
           value={value}
           setValue={setInitialQuestionValue}
@@ -90,8 +90,7 @@ const InitialQuestion: React.FC<any> = ({
         <div className="mt-8 ">
           <label className="text-black text-2xl font-Sansation">
             <span>2.</span>
-            <ArrowRightIcon className="w-5 h-5 inline mx-2 mb-1" />{' '}
-            <span> Program description</span>
+            <ArrowRightIcon className="w-5 h-5 inline mx-2 mb-1" /> <span>Description</span>
           </label>
           <div className="ml-10 max-w-[75vw]">
             <JDDesc

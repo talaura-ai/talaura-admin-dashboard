@@ -39,18 +39,33 @@ const FileUploadModal = ({
 
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
+
+  const downloadSampleFile = () => {
+    const link = document.createElement('a');
+    link.href = '/TalAuraSampleUser.csv';
+    link.download = 'TalAuraSampleUser.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <Dialog open={openUploadModel} onClose={() => {}}>
-      <div className="flex w-screen h-screen flex-col items-center justify-center bg-grey-lighter fixed top-0 left-0 z-50 bg-customGray-300 pt-[-20px]">
-        <div className="bg-customGray-400 flex items-center justify-center p-3 rounded-xl relative">
-          <div className="w-full max-w-md p-9 bg-white rounded-lg shadow-lg">
+      <div className="flex w-screen h-screen flex-col items-center justify-center bg-grey-lighter fixed top-0 left-0 z-50 bg-customGray-300 pt-[-20px] shadow-lg">
+        <div className="bg-white flex items-center justify-center p-3 rounded-lg relative">
+          <div className="w-[500px] max-w-md p-3 bg-white rounded-lg">
             <XCircleIcon
-              className="h-10 w-10 absolute right-4 top-4"
+              className="h-6 w-6 absolute right-2 top-2"
               onClick={() => setOpenUploadModel(false)}
             />
-            <h1 className="text-center text-2xl sm:text-2xl font-semibold mb-4 text-gray-800">
-              File Drop and Upload
-            </h1>
+            <div className="mb-6 flex justify-center">
+              <button
+                className="border border-black text-lg px-10 py-2 rounded-lg"
+                onClick={downloadSampleFile}
+              >
+                Export Sample sheet
+              </button>
+            </div>
             <div
               className="bg-customGray-400 p-8 text-center rounded-lg border-dashed border-2 border-customGray-300 hover:border-blue-500 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
               id="dropzone"
@@ -73,21 +88,10 @@ const FileUploadModal = ({
                 htmlFor="fileInput"
                 className="cursor-pointer flex flex-col items-center space-y-2"
               >
-                <svg
-                  className="w-16 h-16 text-gray-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                  ></path>
-                </svg>
+                <img src="/images/CloudImg.png" className="h-[66px] w-[97px] object-cover" />
                 <span className="text-gray-600">Drag and drop your files here</span>
                 <span className="text-gray-500 text-sm">(or click to select)</span>
+                <span className="text-gray-500 text-sm">csv xls xlsx Allowed</span>
               </label>
               <input
                 type="file"
@@ -104,6 +108,11 @@ const FileUploadModal = ({
               />
             </div>
             <div className="mt-6 text-center" id="fileList" ref={fileListRef}></div>
+            <div className="flex justify-end">
+              <button className="py-1 px-11 text-xl bg-[#CC8448] rounded-lg text-white">
+                Done
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -12,12 +12,12 @@ export const ModuleTypesURLS = {
   Quiz: 'generate_quiz_questions',
 };
 
-export const mobileNumberRegex = /^[6-9][0-9]{9}$/g; // check for first digit between 6-9 and total 10 digits
+export const mobileNumberRegex = /^[0-9]{10}$/; // check for first digit between 6-9 and total 10 digits
 
 export const emailRegex =
   /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-export const nameRegex = /^[ a-zA-z].+([\s][a-zA-Z ].+)*$/g; // check lowercase/ uppercase including space ` ` and min length 3
+export const nameRegex = /^[a-zA-Z][a-zA-Z\s]{2,}$/; // check lowercase/ uppercase including space ` ` and min length 3
 
 export const capitalizeEachWordFirstCharacter = (str: string) =>
   str.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());

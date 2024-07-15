@@ -64,6 +64,8 @@ const Skills: React.FC<ISkils> = () => {
             </div>
           );
         })}
+      </div>
+      <div className="ml-10">
         <button className="flex flex-row py-5 gap-1" onClick={() => setOpen(true)}>
           <img src={IMAGES.plus} className="w-5 h-5" />
           <span className="text-orange-text text-sm">Add new skill</span>
