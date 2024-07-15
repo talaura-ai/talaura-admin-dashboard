@@ -617,7 +617,7 @@ const CreateAssessment = () => {
                 return (
                   <SwiperSlide
                     key={slideIDX}
-                    className="h-[65vh] max-h-[65vh]"
+                    // className="h-[65vh] max-h-[65vh]"
                     data-swiper-parallax={window.screenX * 0.95}
                     data-swiper-parallax-opacity={'0.5'}
                   >
@@ -625,8 +625,7 @@ const CreateAssessment = () => {
                   </SwiperSlide>
                 );
               })}
-
-              <div className={'px-5 w-full   flex flex-row justify-end absolute bottom-0'}>
+              <div className={'px-5 mt-4 w-full flex flex-row justify-end'}>
                 {actionButtons.map((actionButton, idx) => {
                   return (
                     <SwiperNavButton

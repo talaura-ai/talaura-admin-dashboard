@@ -29,13 +29,14 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module }) => {
 
   return (
     <>
-      <div className="relative mt-10 w-full mx-10 z-[999]">
-        <div className="grid grid-cols-1 h-screen">
-          <div className="flex flex-col h-[50vh] rounded-lg shadow-inner bg-white p-8 overflow-scroll z-50">
+      <div className="relative w-full mx-10 z-[999]">
+        <div className="grid grid-cols-1 h-[340px] overflow-y-auto">
+          <div className="flex flex-col rounded-lg shadow-inner bg-white p-8 overflow-scroll z-50">
             <h2 className="font-Sansation_Bold font-[700]">Sample Questions</h2>
-            {questions?.map((v: any, index: number) => (
-              <div key={v?.title + index} className="flex my-2 items-center">
-                {/* <div className="flex h-6 items-center">
+            {(currentModule?.type === 'Quiz' ? questions.slice(0, 5) : questions)?.map(
+              (v: any, index: number) => (
+                <div key={v?.title + index} className="flex my-2 items-center">
+                  {/* <div className="flex h-6 items-center">
                   <input
                     id="review"
                     aria-describedby="offers-description"
@@ -50,12 +51,13 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module }) => {
                     className="h-6 w-6 rounded border-gray-300 bg-white shadow-xl text-orange-text checked:bg-orange-text ring-0"
                   />
                 </div> */}
-                <div className="ml-4">
-                  <h3 className="text-[16px] text-[#000000] font-Sansation">Q. {v?.title}</h3>
-                  <h3 className="text-[16px] text-[#000000] font-Sansation">{v?.description}</h3>
+                  <div className="ml-4">
+                    <h3 className="text-[16px] text-[#000000] font-Sansation">Q. {v?.title}</h3>
+                    <h3 className="text-[16px] text-[#000000] font-Sansation">{v?.description}</h3>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ),
+            )}
             {/* <div>
               <button
                 className="flex flex-row mt-4 items-center gap-3"

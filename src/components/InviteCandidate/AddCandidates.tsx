@@ -35,7 +35,7 @@ const AddCandidates = () => {
   const allCandidates = useAppSelector((state) => state.inviteCandidate);
   const dispatch = useAppDispatch();
 
-  const [openUploadModel, setOpenUploadModel] = useState<boolean>(true);
+  const [openUploadModel, setOpenUploadModel] = useState<boolean>(false);
 
   const onSubmit: SubmitHandler<IFormInput> = (data, e) => {
     e?.preventDefault();
@@ -195,7 +195,6 @@ const AddCandidates = () => {
             <button
               className={`border border-sandybrown text-sandybrown rounded-lg flex justify-start items-center py-[12px] px-2.5`}
               onClick={() => setOpenUploadModel(true)}
-              disabled={!isValid}
             >
               <DocumentArrowUpIcon className="w-[17px] h-[22px]" />
               <span className="text-base whitespace-nowrap font-normal">Bulk Upload</span>

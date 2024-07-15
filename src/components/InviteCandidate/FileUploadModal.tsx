@@ -109,7 +109,10 @@ const FileUploadModal = ({
             </div>
             <div className="mt-6 text-center" id="fileList" ref={fileListRef}></div>
             <div className="flex justify-end">
-              <button className="py-1 px-11 text-xl bg-[#CC8448] rounded-lg text-white">
+              <button
+                className="py-1 px-11 text-xl bg-[#CC8448] rounded-lg text-white"
+                onClick={() => setOpenUploadModel(false)}
+              >
                 Done
               </button>
             </div>

@@ -20,4 +20,7 @@ export const emailRegex =
 export const nameRegex = /^[a-zA-Z][a-zA-Z\s]{2,}$/; // check lowercase/ uppercase including space ` ` and min length 3
 
 export const capitalizeEachWordFirstCharacter = (str: string) =>
-  str.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
+  str
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');

@@ -36,7 +36,7 @@ export const skillsSlice = createSlice({
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
       if (Array.isArray(action.payload)) {
-        state.selectedSkills = [...state.selectedSkills, ...action.payload];
+        state.selectedSkills = [...action.payload];
       } else {
         state.selectedSkills = [...state.selectedSkills, action.payload];
       }

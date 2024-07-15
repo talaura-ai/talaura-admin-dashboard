@@ -90,7 +90,7 @@ const ModuleCard: React.FC<any> = (props) => {
   // const [duration, setDuration] = useState({});
   return (
     <div
-      className={`flex rounded-2xl shadow-inner bg-white p-5 mt-5 mx-2 flex-col  ${isSelectedModule && '!bg-[#FFEFDF]'} `}
+      className={`flex rounded-2xl shadow-inner bg-white p-5 mb-5 mx-2 flex-col  ${isSelectedModule && '!bg-[#FFEFDF]'} `}
       onClick={() => {
         if (reviewAble && handleClick) {
           handleClick();
@@ -185,13 +185,13 @@ const ModuleCard: React.FC<any> = (props) => {
               );
             })}
 
-            <button className="flex flex-row py-5 gap-1" onClick={() => setOpen(true)}>
+            {/* <button className="flex flex-row py-5 gap-1" onClick={() => setOpen(true)}>
               <img src={IMAGES.plus} className="w-5 h-5" />
               <span className="text-orange-text text-sm">Add new skill</span>
-            </button>
+            </button> */}
           </>
         ) : (
-          <p className="text-gray-300 text-sm">
+          <p className="text-gray-700 text-sm">
             {selectedModule?.skills?.join(',') ?? 'Some Skills'}
           </p>
         )}
@@ -201,7 +201,7 @@ const ModuleCard: React.FC<any> = (props) => {
           <div>
             <h1>
               Weightage:{' '}
-              <span className="text-gray-300">
+              <span className="text-gray-700">
                 {selectedModule && selectedModule.Weightage ? (
                   <input
                     className={`w-8 p-0 inline ring-0 border-0 focus:ring-0 focus:border-b-1 ${isSelectedModule && '!bg-[#FFEFDF]'}`}
@@ -225,7 +225,7 @@ const ModuleCard: React.FC<any> = (props) => {
           className="p-2 w-20 focus:ring-0 active:ring-0 focus:border-0 active:border-0"
           //   contentEditable
         >
-          <p className="text-gray-300">{selectedModule.Weightage}%</p>
+          <p className="text-gray-700">{selectedModule.Weightage}%</p>
         </div> */}
           <div className="flex grow justify-end items-center">
             <img src={IMAGES.Time} className="h-4 w-4 justify-center items-center" />

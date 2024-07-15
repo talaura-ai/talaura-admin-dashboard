@@ -13,7 +13,7 @@ const ReviewAssessments: React.FC<ReviewAssessmentsProps> = () => {
 
   return (
     <>
-      <div className="relative mt-10 w-90 mx-10 flex flex-row scrollbar overflow-y-auto">
+      <div className="relative mt-10 mx-10 flex flex-row">
         {/* {showQuestions ? (
           <div className="grid w-full">
             <ReviewQuestions
@@ -23,7 +23,7 @@ const ReviewAssessments: React.FC<ReviewAssessmentsProps> = () => {
             />
           </div>
         ) : ( */}
-        <div className="flex flex-col gap-x-8 gap-y-3">
+        <div className="flex flex-col gap-x-8 gap-y-3 h-[340px] overflow-y-auto">
           {selectedModules?.map((v, index: number) => (
             <Fragment key={index}>
               <ModuleCard
@@ -39,7 +39,7 @@ const ReviewAssessments: React.FC<ReviewAssessmentsProps> = () => {
             </Fragment>
           ))}
         </div>
-        <div className="grid -mt-5 w-full">
+        <div className="grid w-full h-[340px] overflow-y-auto">
           <ReviewQuestions module={currentModule} questions={currentModule?.question} />
         </div>
         {/* )} */}
