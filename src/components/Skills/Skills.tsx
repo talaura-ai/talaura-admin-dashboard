@@ -32,10 +32,10 @@ const Skills: React.FC<ISkils> = () => {
   };
 
   return (
-    <div className="mt-10 w-[60vw]">
+    <div className="mt-10">
       <label className="text-black text-2xl font-Sansation">
         Based on the details provided, below are the skills recommended.
-        <span className="text-gray-400">(Select or Add skills)</span>
+        <span className="text-gray-400">(Edit skills)</span>
       </label>
       <div className="relative mt-10 ml-10 w-[75vw] flex-wrap grid grid-cols-3">
         {skills.map((skill: any, idx: number) => {

@@ -4,7 +4,7 @@ import {
   PlusCircleIcon,
   UserIcon,
 } from '@heroicons/react/24/outline';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { read, utils } from 'xlsx';
@@ -30,7 +30,14 @@ const AddCandidates = () => {
     handleSubmit,
     formState: { errors, isValid },
     reset,
-  } = useForm<IFormInput>({ mode: 'all' });
+  } = useForm<IFormInput>({
+    mode: 'all',
+    defaultValues: {
+      name: '',
+      mobile: '',
+      email: '',
+    },
+  });
 
   const allCandidates = useAppSelector((state) => state.inviteCandidate);
   const dispatch = useAppDispatch();
@@ -38,71 +45,85 @@ const AddCandidates = () => {
   const [openUploadModel, setOpenUploadModel] = useState<boolean>(false);
 
   const onSubmit: SubmitHandler<IFormInput> = (data, e) => {
-    e?.preventDefault();
-    if (allCandidates.find((cnd) => cnd.email === data.email || cnd.mobile === data.mobile)) {
-      return toast.error('Candidate With Email or Mobile Already Exists');
-    }
-    const res = addCandidate({
-      name: capitalizeEachWordFirstCharacter(data.name),
-      email: data.email,
-      mobile: data.mobile,
-    });
-    if (res) {
-      reset();
-      return;
-    }
-    return toast.error('Candidate With Email or Mobile Already Exists');
-  };
-
-  const readExcelFile = (file: File) => {
-    const reader = new FileReader();
-
-    reader.onload = (event) => {
-      if (event.target?.result && typeof event.target?.result !== 'string') {
-        const data = new Uint8Array(event.target.result);
-        const workbook = read(data, { type: 'array' });
-
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-
-        const jsonData = utils.sheet_to_json(worksheet);
-
-        if (!Array.isArray(jsonData)) return toast.error('File Data is not in List');
-        jsonData.forEach((dt) => addCandidate(dt));
-        toast.success('Read Success');
+    try {
+      e?.preventDefault();
+      const res = addCandidate({
+        name: capitalizeEachWordFirstCharacter(data.name),
+        email: data.email,
+        mobile: data.mobile,
+      });
+      if (res) {
+        reset();
+      } else {
+        toast.error('Candidate With Email or Mobile Already Exists');
       }
-    };
-
-    reader.onerror = (error) => {
-      console.error('Error reading file:', error);
-    };
-
-    reader.readAsArrayBuffer(file);
-  };
-
-  const addCandidate = (data?: unknown) => {
-    if (data && typeof data === 'object' && 'name' in data && 'email' in data && 'mobile' in data) {
-      if (allCandidates.find((cnd) => cnd.email === data.email || cnd.mobile === data.mobile)) {
-        return false;
-      }
-      dispatch(
-        addCandidateToInviteList({
-          name: capitalizeEachWordFirstCharacter(data.name as string),
-          email: data.email as string,
-          mobile: data.mobile as string,
-        }),
-      );
-      return true;
+    } catch (err: any) {
+      toast.error(err.message);
     }
   };
+
+  const addCandidate = useCallback(
+    (data?: unknown) => {
+      if (
+        data &&
+        typeof data === 'object' &&
+        'name' in data &&
+        'email' in data &&
+        'mobile' in data
+      ) {
+        if (allCandidates.find((cnd) => cnd.email === data.email || cnd.mobile === data.mobile)) {
+          return false;
+        }
+        dispatch(
+          addCandidateToInviteList({
+            name: capitalizeEachWordFirstCharacter(data.name as string),
+            email: data.email as string,
+            mobile: data.mobile as string,
+          }),
+        );
+        return true;
+      }
+    },
+    [allCandidates, dispatch],
+  );
+
+  const readExcelFile = useCallback(
+    (file: File) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result && typeof event.target?.result !== 'string') {
+          const data = new Uint8Array(event.target.result);
+          const workbook = read(data, { type: 'array' });
+
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+
+          const jsonData = utils.sheet_to_json(worksheet);
+
+          if (!Array.isArray(jsonData)) return toast.error('File Data is not in List');
+          jsonData.forEach((dt) => addCandidate(dt));
+          toast.success('Read Success');
+        }
+      };
+
+      reader.onerror = (error) => {
+        console.error('Error reading file:', error);
+      };
+
+      reader.readAsArrayBuffer(file);
+    },
+    [addCandidate],
+  );
 
   return (
     <>
-      <FileUploadModal
-        openUploadModel={openUploadModel}
-        setOpenUploadModel={setOpenUploadModel}
-        handleFileUpload={readExcelFile}
-      />
+      {openUploadModel && (
+        <FileUploadModal
+          openUploadModel={openUploadModel}
+          setOpenUploadModel={setOpenUploadModel}
+          handleFileUpload={readExcelFile}
+        />
+      )}
       <div className="main_container shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] flex w-full justify-start items-center bg-white pt-4 pb-6 px-20">
         <form className="col1 flex items-center gap-2.5 w-full" onSubmit={handleSubmit(onSubmit)}>
           <div className="col1_col1 w-full">

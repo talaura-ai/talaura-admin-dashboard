@@ -599,7 +599,7 @@ const CreateAssessment = () => {
 
   return (
     <>
-      <h1 className="text-2xl font-Sansation_Bold">Create Program</h1>
+      <h1 className="text-2xl font-Sansation_Bold">Create Assessment</h1>
       <div className="flex flex-col">
         <ActionButtonContext.Provider value={{ btnState, setBtnState }}>
           <Step steps={steps} setSteps={setSteps} />

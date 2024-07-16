@@ -29,7 +29,7 @@ const Input: React.FC<IInput> = ({
   label = 'title',
   type = 'text',
   name = 'name',
-  placeholder = 'Enter Program Name',
+  placeholder = 'Enter Assessment Name',
   className = '',
   value,
   setValue,
@@ -91,7 +91,7 @@ const Input: React.FC<IInput> = ({
 
           {isError && (
             <p className="ml-10 mt-1 text-[#FB2121] text-sm font-bold">
-              *Program name is mandatory{' '}
+              *Assessment name is mandatory{' '}
             </p>
           )}
         </div>

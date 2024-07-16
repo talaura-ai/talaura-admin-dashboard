@@ -22,5 +22,6 @@ export const nameRegex = /^[a-zA-Z][a-zA-Z\s]{2,}$/; // check lowercase/ upperca
 export const capitalizeEachWordFirstCharacter = (str: string) =>
   str
     .split(' ')
+    .filter((ch) => Boolean(ch))
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(' ');

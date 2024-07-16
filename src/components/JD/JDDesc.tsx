@@ -127,12 +127,12 @@ const JDDesc: React.FC<IJDDesc> = ({
                 setJdData(e.target.value);
                 handleErrorOnTextChange(e.target.value);
               }}
-              placeholder="Describe your requirments here"
+              placeholder="Describe your requirements here"
             />
           </div>
           {isError && (
             <p className="mt-1 text-[#FB2121] text-sm font-bold">
-              *Program Description is mandatory{' '}
+              *Assessment Description is mandatory{' '}
             </p>
           )}
         </div>
