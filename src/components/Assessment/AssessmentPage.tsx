@@ -1,6 +1,5 @@
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react';
 import { EllipsisHorizontalIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import moment from 'moment';
 import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, NavLink } from 'react-router-dom';
@@ -17,23 +16,6 @@ import { classNames } from '../Core/classNames';
 import EmptyDataScreen from '../EmptyDataScreen/EmptyDataScreen';
 import AssessmentActionModal from './AssessmentActionModal';
 
-const omitFieldsToRenderInMap = [
-  'id',
-  'name',
-  'department',
-  'updatedAt',
-  'organizationId',
-  'type',
-  'answer',
-  '_id',
-  'options',
-  'title',
-  'profile',
-  'question',
-  'module',
-  'skills',
-  '__v',
-];
 const sortItems: ('date' | 'name' | 'status')[] = ['date', 'name', 'status'];
 const menuItems: IMenuItems[] = [
   { id: 1, text: 'Duplicate', onClickModal: 'duplicate' },
@@ -183,95 +165,101 @@ const AssessmentPage = () => {
 
                 return 0;
               })
-              .map((assessment: any, index) => {
+              .map((assessment, index) => {
                 return (
-                  <li key={index} className="col-span-1 flex rounded-md shadow-sm">
-                    <div className="flex flex-1 items-center justify-between truncate rounded-r-md border-b border-r border-t border-gray-200 bg-white">
-                      <div
-                        className={
-                          'bg-brand-color h-10 w-2 flex flex-shrink-0 items-center justify-center rounded-r-md text-sm font-medium text-white  '
-                        }
-                      ></div>
-                      <div className="flex-1 truncate px-4 py-2 text-sm text-left">
-                        <Link
-                          to={`/assessment/view/${assessment._id}`}
-                          className="font-bold text-orange-text font-Sansation_Regular text-2xl text-center"
-                        >
-                          {assessment.name}
-                        </Link>
-                        <p className="text-gray-400 text-md text-center">
-                          {'department' in assessment && (assessment.department as string)}{' '}
-                        </p>
-                      </div>
-
-                      {Object.keys(assessment)
-                        .filter((k) => !omitFieldsToRenderInMap.includes(k))
-                        .map((key) => {
-                          return (
-                            <div
-                              className="flex-1 truncate px-1 py-2 text-sm text-center"
-                              key={key}
-                            >
-                              <h2 className="font-bold  font-Sansation_Regular text-md text-center">
-                                {moment(assessment[key]).isValid()
-                                  ? moment(assessment[key]).format('DD MMM YYYY')
-                                  : assessment[key]}
-                              </h2>
-                              <p className="text-gray-300 text-sm text-center">{key}</p>
-                            </div>
-                          );
-                        })}
-
-                      <div className="flex pr-2">
-                        {/* <button
-                                          type="button"
-                                          className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-transparent bg-white text-gray-400 hover:text-gray-500 focus:outline-none  "
-                                      >
-                                          <span className="sr-only">Open options</span>
-                                          <EllipsisHorizontalIcon className="h-5 w-5" aria-hidden="true" />
-                                      </button> */}
-                        <Menu as="div" className="inline-block text-left">
-                          <div>
-                            <MenuButton className="inline-flex w-full justify-center   bg-white px-3 py-2 text-sm font-semibold text-gray-400   font-Sansation_Regular">
-                              <EllipsisHorizontalIcon className="h-5 w-5" aria-hidden="true" />{' '}
-                            </MenuButton>
+                  <Link to={`/assessment/view/${assessment._id}`}>
+                    <li key={index} className="col-span-1 flex rounded-md shadow-sm">
+                      <div className="flex flex-1 items-center justify-between truncate rounded-r-md border-b border-r border-t border-gray-200 bg-white">
+                        <div
+                          className={
+                            'absolute bg-brand-color h-10 w-2 flex flex-shrink-0 items-center justify-center rounded-r-md text-sm font-medium text-white'
+                          }
+                        ></div>
+                        <div className="truncate px-4 py-2 text-sm text-center flex flex-col w-[400px]">
+                          <span className="font-bold text-orange-text font-Sansation_Regular text-2xl">
+                            {assessment.name}
+                          </span>
+                          {/* <span className="text-gray-400 text-md">
+                            {assessment?.department ?? ''}
+                          </span> */}
+                        </div>
+                        <div>
+                          <div className="truncate px-4 py-2 text-sm text-center flex flex-col">
+                            <span className="text-lg">
+                              {assessment?.module?.reduce(
+                                (prev, curr) => (prev += +curr.time),
+                                0,
+                              ) ?? 0}{' '}
+                              mins
+                            </span>
+                            <span className="text-[#BDBDBD]">duration</span>
                           </div>
+                          {'totalInvites' in assessment && (
+                            <div className="truncate px-4 py-2 text-sm text-center flex flex-col">
+                              <span className="text-lg">{assessment.totalInvites}</span>
+                              <span className="text-[#BDBDBD]">Invites</span>
+                            </div>
+                          )}
 
-                          <Transition
-                            enter="transition ease-out duration-100"
-                            enterFrom="transform opacity-0 scale-95"
-                            enterTo="transform opacity-100 scale-100"
-                            leave="transition ease-in duration-75"
-                            leaveFrom="transform opacity-100 scale-100"
-                            leaveTo="transform opacity-0 scale-95"
-                          >
-                            <MenuItems className="absolute right-0 z-[999] mt-2 mr-5 w-150 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                              <div className="">
-                                {menuItems.map((item, index) => (
-                                  <MenuItem key={index}>
-                                    {({ focus }) => (
-                                      <button
-                                        className={classNames(
-                                          focus ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                          'block px-4 py-2 text-sm w-full',
-                                        )}
-                                        onClick={() =>
-                                          showModalFor(assessment._id, item.onClickModal)
-                                        }
-                                        key={item.id}
-                                      >
-                                        {item.text}
-                                      </button>
-                                    )}
-                                  </MenuItem>
-                                ))}
-                              </div>
-                            </MenuItems>
-                          </Transition>
-                        </Menu>
+                          {'totalCompleted' in assessment && (
+                            <div className="truncate px-4 py-2 text-sm text-center flex flex-col">
+                              <span className="text-lg">{assessment.totalCompleted}</span>
+                              <span className="text-[#BDBDBD]">Completed</span>
+                            </div>
+                          )}
+
+                          {'totalOngoing' in assessment && (
+                            <div className="truncate px-4 py-2 text-sm text-center flex flex-col">
+                              <span className="text-lg">{assessment.totalOngoing}</span>
+                              <span className="text-[#BDBDBD]">Ongoing</span>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex pr-2">
+                          <Menu as="div" className="inline-block text-left">
+                            <div>
+                              <MenuButton className="inline-flex w-full justify-center   bg-white px-3 py-2 text-sm font-semibold text-gray-400   font-Sansation_Regular">
+                                <EllipsisHorizontalIcon className="h-5 w-5" aria-hidden="true" />{' '}
+                              </MenuButton>
+                            </div>
+
+                            <Transition
+                              enter="transition ease-out duration-100"
+                              enterFrom="transform opacity-0 scale-95"
+                              enterTo="transform opacity-100 scale-100"
+                              leave="transition ease-in duration-75"
+                              leaveFrom="transform opacity-100 scale-100"
+                              leaveTo="transform opacity-0 scale-95"
+                            >
+                              <MenuItems className="absolute right-0 z-[999] mt-2 mr-5 w-150 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                <div className="">
+                                  {menuItems.map((item, index) => (
+                                    <MenuItem key={index}>
+                                      {({ focus }) => (
+                                        <button
+                                          className={classNames(
+                                            focus ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                            'block px-4 py-2 text-sm w-full',
+                                          )}
+                                          onClick={() =>
+                                            showModalFor(assessment._id, item.onClickModal)
+                                          }
+                                          key={item.id}
+                                        >
+                                          {item.text}
+                                        </button>
+                                      )}
+                                    </MenuItem>
+                                  ))}
+                                </div>
+                              </MenuItems>
+                            </Transition>
+                          </Menu>
+                        </div>
                       </div>
-                    </div>
-                  </li>
+                    </li>
+                  </Link>
                 );
               })
           ) : (

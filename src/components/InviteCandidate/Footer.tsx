@@ -6,6 +6,7 @@ import { clearInviteList } from '../../app/features/inviteCandidateSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useInviteCandidateMutation } from '../../app/services/candidates';
 import { IAddCandidateApiPayload } from '../AssessmentView/types';
+import { useMemo } from 'react';
 
 interface IFormInput {
   startDateTime: string;
@@ -17,6 +18,15 @@ const Footer = () => {
   const dispatch = useAppDispatch();
   const [inviteAllCandidate] = useInviteCandidateMutation();
 
+  const timeDateRoundOffToNextHour = useMemo(() => {
+    let now = dayjs();
+    if (now.minute() !== 0 || now.second() !== 0 || now.millisecond() !== 0) {
+      now = now.add(1, 'hour');
+    }
+    now = now.minute(0).second(0).millisecond(0);
+    return now;
+  }, []);
+
   const {
     register,
     formState: { isValid },
@@ -24,8 +34,8 @@ const Footer = () => {
     handleSubmit,
   } = useForm<IFormInput>({
     defaultValues: {
-      startDateTime: dayjs().format('YYYY-MM-DD[T]hh:mm'),
-      endDateTime: dayjs().add(1, 'hour').format('YYYY-MM-DD[T]hh:mm'),
+      startDateTime: timeDateRoundOffToNextHour.format('YYYY-MM-DD[T]hh:mm'),
+      endDateTime: timeDateRoundOffToNextHour.add(1, 'hour').format('YYYY-MM-DD[T]hh:mm'),
     },
   });
 
@@ -34,7 +44,7 @@ const Footer = () => {
       e?.preventDefault();
       const payload: IAddCandidateApiPayload = {
         assessmentId,
-        candidates: allCandidates,
+        candidates: allCandidates.filter((cnd) => cnd.isValid === true),
         startsAt: dayjs(data.startDateTime).valueOf(),
         endsOn: dayjs(data.endDateTime).valueOf(),
       };
@@ -86,9 +96,9 @@ const Footer = () => {
             />
             <input
               type="datetime-local"
-              {...register('startDateTime', {
+              {...register('endDateTime', {
                 required: true,
-                min: dayjs(getValues('startDateTime')).format('YYYY-MM-DD[T]hh:mm'),
+                min: dayjs(getValues('endDateTime')).format('YYYY-MM-DD[T]hh:mm'),
               })}
               className="h-full pl-10 border border-customGray-80"
             />

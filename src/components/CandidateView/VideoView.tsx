@@ -1,8 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { ICandidateReportData } from '../AssessmentView/types';
 
 const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) => {
-  const [isVideoPlayed, setIsVideoPlayed] = useState<boolean>(false);
+  // const [isVideoPlayed, setIsVideoPlayed] = useState<boolean>(false);
   const reportData = candidateData?.report.find((rp) => rp.moduleType === 'AI Video Interview');
 
   const userAiChat: { id: number; sender: string; message: string }[] = useMemo(() => {
@@ -50,7 +50,7 @@ const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) 
             </span>
           </div>
           <div className="flex justify-center items-center h-[264px]">
-            {isVideoPlayed ? (
+            {/* {isVideoPlayed ? (
               <div className="h-full w-full">
                 <iframe
                   src="https://www.youtube.com/embed/H8Lyj2D_cWo?autoplay=1"
@@ -59,11 +59,13 @@ const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) 
                   allowFullScreen
                 ></iframe>
               </div>
-            ) : (
-              <button onClick={() => setIsVideoPlayed(true)}>
-                <img src="/images/YouTube.png" alt="YouTube Play" />
-              </button>
-            )}
+            ) : ( */}
+            <button
+            // onClick={() => setIsVideoPlayed(true)}
+            >
+              <img src="/images/YouTube.png" alt="YouTube Play" />
+            </button>
+            {/* )} */}
           </div>
         </div>
         <div className="w-1/2 border border-[#E0E0E0] shadow-[0_4px_4px_0_(0,0,0,0.25)] rounded-[10px] bg-white">
@@ -73,11 +75,11 @@ const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) 
           <div className="chat-container h-[254px] overflow-scroll p-[18px]">
             {userAiChat.map((dt) => (
               <div
-                className={`flex ${dt.sender === 'AI' ? 'flex-row' : 'flex-row-reverse'} justify-start items-center mb-5 gap-2`}
+                className={`flex ${dt.sender === 'AI' ? 'flex-row' : 'flex-row-reverse'} justify-start items-center mb-5 gap-2 w-full`}
                 key={dt.id}
               >
-                <div className="chat-img bg-[#E4E1E1] rounded-[110px] h-full w-[30px] px-[7.5px] flex justify-center items-center">
-                  <span className={`text-sm text-[#CC8448] w-3 break-all text-center leading-4`}>
+                <div className="bg-[#E4E1E1] rounded-full h-[40px] w-[40px] flex justify-center items-center">
+                  <span className={`text-sm text-[#CC8448] text-center leading-4`}>
                     {dt.sender}
                   </span>
                 </div>
@@ -98,22 +100,7 @@ const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) 
           <span className="text-2xl text-black text-left font-Sansation_Bold">AI Context</span>
         </div>
         <div className="py-4 px-10 text-black text-left text-sm">
-          <p>
-            kjbrk cj ekc kjekvek jner ernln lekrlrv klvnenerk knvrefvkrler vreknvrklne knrelfnvkre
-            evjkn k kv elvknrfnrvkrekjrev erkv ke kve erk vrle rkfkjbrk cj ekc kjekvek jner ernln
-            lekrlrv klvnenerk knvrefvkrler vreknvrklne knrelfnvkre evjkn k kv elvknrfnrvkrekjrev
-            erkv ke kve erk vrle rkf kjbrk cj ekc kjekvek jner ernln lekrlrv klvnenerk knvrefvkrler
-            vreknvrklne knrelfnvkre evjkn k kv elvknrfnrvkrekjrev erkv ke kve erk vrle rkf kjbrk cj
-            ekc kjekvek jner ernln lekrlrv klvnenerk knvrefvkrler vreknvrklne knrelfnvkre evjkn k kv
-            elvknrfnrvkrekjrev erkv ke kve erk vrle rkfkjbrk cj ekc kjekvek jner ernln lekrlrv
-            klvnenerk knvrefvkrler vreknvrklne knrelfnvkre evjkn k kv elvknrfnrvkrekjrev erkv ke kve
-            erk vrle rkfVerbal Reasoning : kjbrk cj ekc kjekvek jner ernln lekrlrv klvnenerk
-            knvrefvkrler vreknvrklne knrelfnvkre evjkn k kv elvknrfnrvkrekjrev erkv ke kve erk vrle
-            rkfData Interpretation : vrle rkf kjbrk cj ekc kjekvek jner ernln lekrlrv klvnenerk
-            knvrefvkrler vreknvrklne knrelfnvkre evjkn k kv elvknrfnrvkrekjrev erkv ke kve erk vrle
-            rkfkjbrk cj ekc kjekvek jner ernln lekrlrv klvnenerk knvrefvkrler vreknvrklne
-            knrelfnvkre evjkn k kv elvknrfnrvkrekjrev erkv ke kve erk vrle rkf
-          </p>
+          <p>{reportData?.description}</p>
         </div>
       </div>
     </div>

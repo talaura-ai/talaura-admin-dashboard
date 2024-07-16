@@ -93,6 +93,9 @@ export interface AssessmentsState {
   module: Module[];
   createdAt: string;
   updatedAt: string;
+  totalInvites?: number;
+  totalCompleted?: number;
+  totalOngoing?: number;
   __v: number;
 }
 

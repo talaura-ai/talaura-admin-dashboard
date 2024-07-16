@@ -76,6 +76,7 @@ export interface IInviteCandidateItem {
   name: string;
   email: string;
   mobile: string;
+  isValid: boolean;
 }
 
 export interface IAddCandidateApiPayload {

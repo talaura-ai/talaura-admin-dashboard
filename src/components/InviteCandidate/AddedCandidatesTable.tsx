@@ -35,17 +35,25 @@ const AddedCandidatesTable = () => {
               </thead>
               <tbody className="divide-y divide-customGray-250 shadow-[0_1px_4px_0_rgba(0,0,0,0.25)] text-sandybrown">
                 {allCandidates?.map((candidate, idx) => (
-                  <tr key={idx} className="text-left even:bg-gray-30 even:bg-gray-50">
-                    <td className="whitespace-nowrap py-1.5 pl-4 text-sm font-medium text-customGray-100 sm:pl-0 min-w-[15rem] text-lg">
+                  <tr key={idx} className={`text-left even:bg-gray-30 even:bg-gray-50`}>
+                    <td
+                      className={`whitespace-nowrap py-1.5 pl-4 text-sm font-medium text-customGray-100 sm:pl-0 min-w-[15rem] text-lg ${!candidate.isValid && '!text-[#FB2121]'}`}
+                    >
                       <span className="pl-4">{candidate.name}</span>
                     </td>
-                    <td className="whitespace-nowrap py-1.5 pl-4 text-sm font-medium text-customGray-100 sm:pl-0 min-w-[15rem]">
+                    <td
+                      className={`whitespace-nowrap py-1.5 pl-4 text-sm font-medium text-customGray-100 sm:pl-0 min-w-[15rem] ${!candidate.isValid && '!text-[#FB2121]'}`}
+                    >
                       <span className="pl-4">{candidate.mobile}</span>
                     </td>
-                    <td className="whitespace-nowrap py-1.5 pl-4 text-sm font-medium text-customGray-100 sm:pl-0 min-w-[15rem]">
+                    <td
+                      className={`whitespace-nowrap py-1.5 pl-4 text-sm font-medium text-customGray-100 sm:pl-0 min-w-[15rem] ${!candidate.isValid && '!text-[#FB2121]'}`}
+                    >
                       <span className="pl-4">{candidate.email}</span>
                     </td>
-                    <td className="whitespace-nowrap py-1.5 pl-4 text-sm font-medium text-sandybrown sm:pl-0 min-w-[15rem] flex text-center items-center justify-center">
+                    <td
+                      className={`whitespace-nowrap py-1.5 pl-4 text-sm font-medium text-sandybrown sm:pl-0 min-w-[15rem] flex text-center items-center justify-center ${!candidate.isValid && '!text-[#FB2121]'}`}
+                    >
                       <button className="flex" onClick={() => removeCandidate(candidate.email)}>
                         <span>
                           <XCircleIcon className="h-6 w-6" />

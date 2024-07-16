@@ -62,6 +62,19 @@ const AddCandidates = () => {
     }
   };
 
+  const validateData = useCallback(
+    ({ name, email, mobile }: { name: string; email: string; mobile: string }) => {
+      if (!name || !email || !mobile || name.length < 3 || mobile.length !== 10) {
+        return false;
+      }
+      if (!name.match(nameRegex) || !email.match(emailRegex) || !mobile.match(mobileNumberRegex)) {
+        return false;
+      }
+      return true;
+    },
+    [],
+  );
+
   const addCandidate = useCallback(
     (data?: unknown) => {
       if (
@@ -71,20 +84,28 @@ const AddCandidates = () => {
         'email' in data &&
         'mobile' in data
       ) {
+        const nm = (data.name as string).trim();
+        const eml = (data.email as string).trim();
+        const mob = ((data.mobile + '') as string).trim();
         if (allCandidates.find((cnd) => cnd.email === data.email || cnd.mobile === data.mobile)) {
           return false;
         }
         dispatch(
           addCandidateToInviteList({
-            name: capitalizeEachWordFirstCharacter(data.name as string),
-            email: data.email as string,
-            mobile: data.mobile as string,
+            name: capitalizeEachWordFirstCharacter(nm),
+            email: eml,
+            mobile: mob,
+            isValid: validateData({
+              name: nm,
+              email: eml,
+              mobile: mob,
+            }),
           }),
         );
         return true;
       }
     },
-    [allCandidates, dispatch],
+    [allCandidates, dispatch, validateData],
   );
 
   const readExcelFile = useCallback(
@@ -101,6 +122,7 @@ const AddCandidates = () => {
           const jsonData = utils.sheet_to_json(worksheet);
 
           if (!Array.isArray(jsonData)) return toast.error('File Data is not in List');
+          console.log('jsonData', jsonData);
           jsonData.forEach((dt) => addCandidate(dt));
           toast.success('Read Success');
         }

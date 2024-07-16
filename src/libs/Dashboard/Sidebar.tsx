@@ -1,17 +1,3 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
@@ -23,20 +9,16 @@ import IMAGES from '../../assets/images/Images';
 import { classNames } from '../../components/Core/classNames';
 
 const navigation = [
-  { name: 'Dashboard', href: '/', icon: IMAGES.Dashboard, current: true },
+  // { name: 'Dashboard', href: '/', icon: IMAGES.Dashboard, current: true },
   {
     name: 'Assesment',
     href: '/assessments',
     icon: IMAGES.Assessments,
     current: false,
   },
-  { name: 'People', href: '/peoples', icon: IMAGES.People, current: false },
-  { name: 'Reports', href: '/reports', icon: IMAGES.Graph, current: false },
+  // { name: 'People', href: '/peoples', icon: IMAGES.People, current: false },
+  // { name: 'Reports', href: '/reports', icon: IMAGES.Graph, current: false },
 ];
-// const userNavigation = [
-//   { name: 'Your profile', href: '#' },
-//   { name: 'Sign out', href: '#' },
-// ]
 
 export default function Sidebar() {
   const admin = useAppSelector((state) => state.admin);
@@ -44,14 +26,6 @@ export default function Sidebar() {
 
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-white">
-        <body class="h-full">
-        ```
-      */}
       <div>
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
@@ -101,12 +75,7 @@ export default function Sidebar() {
 
                   <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-app-color px-6 pb-2 ring-1 ring-white/10">
                     <div className="flex h-16 shrink-0 items-center">
-                      <h1
-                        className="font-sans
-                text-2xl text-brand-color text-center "
-                      >
-                        TalAura
-                      </h1>
+                      <h1 className="font-sans text-2xl text-brand-color text-center">TalAura</h1>
                     </div>
                     <nav className="flex flex-1 flex-col">
                       <ul role="list" className="-mx-2 flex-1 space-y-1 justify-center ">
