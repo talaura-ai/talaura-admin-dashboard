@@ -63,7 +63,7 @@ const Modules = () => {
         )}
       </div>
       <div>
-        <div className="flex gap-2 mr-4 justify-end mt-2">
+        <div className="flex gap-2 mr-4 justify-end mt-2 mb-4">
           <div className="bg-[#FFEFDF] p-2.5 rounded-3xl">
             <span>Modules:</span>
             <span className="ml-2">{selectedModulesInRedux.length}</span>

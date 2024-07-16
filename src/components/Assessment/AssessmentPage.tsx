@@ -167,8 +167,8 @@ const AssessmentPage = () => {
               })
               .map((assessment, index) => {
                 return (
-                  <Link to={`/assessment/view/${assessment._id}`}>
-                    <li key={index} className="col-span-1 flex rounded-md shadow-sm">
+                  <Link to={`/assessment/view/${assessment._id}`} key={index}>
+                    <li className="col-span-1 flex rounded-md shadow-sm">
                       <div className="flex flex-1 items-center justify-between truncate rounded-r-md border-b border-r border-t border-gray-200 bg-white">
                         <div
                           className={

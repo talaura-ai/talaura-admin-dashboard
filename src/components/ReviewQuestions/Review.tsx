@@ -29,7 +29,7 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module }) => {
 
   return (
     <>
-      <div className="relative w-full mx-10 z-[999]">
+      <div className="relative w-full z-[999]">
         <div className="grid grid-cols-1 h-[340px] overflow-y-auto">
           <div className="flex flex-col rounded-lg shadow-inner bg-white p-8 overflow-scroll z-50">
             <h2 className="font-Sansation_Bold font-[700]">Sample Questions</h2>
@@ -52,7 +52,14 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module }) => {
                   />
                 </div> */}
                   <div className="ml-4">
-                    <h3 className="text-[16px] text-[#000000] font-Sansation">Q. {v?.title}</h3>
+                    {v.type === 'Quiz' ? (
+                      <h3 className="text-[16px] text-[#000000] font-Sansation">Q. {v?.title}</h3>
+                    ) : (
+                      <div
+                        id="modifiedText"
+                        dangerouslySetInnerHTML={{ __html: v?.title.replace(/(\d+)/g, '<br>$1') }}
+                      />
+                    )}
                     <h3 className="text-[16px] text-[#000000] font-Sansation">{v?.description}</h3>
                   </div>
                 </div>

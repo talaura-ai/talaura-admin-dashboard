@@ -23,11 +23,7 @@ const Step: React.FC<any> = ({ steps }) => {
               {step.status === 'complete' ? (
                 <>
                   <div className="absolute inset-0 flex items-center w-full" aria-hidden="true">
-                    <div
-                      className="h-2 w-full
-                    bg-gradient-to-r from-[#E5A971] from-8% via-[#F3BC84] via-37% to-white to-80%
-                  "
-                    />
+                    <div className="h-2 w-full bg-[#F3BC84]" />
                   </div>
                   <a className="relative flex h-10 w-10 items-center justify-center rounded-full bg-white hover:bg-white border border-spacing-2 border-brand-color outline outline-1 outline-brand-color shadow-md shadow-brand-color">
                     {/* <CheckIcon className="h-5 w-5 text-white" aria-hidden="true" /> */}

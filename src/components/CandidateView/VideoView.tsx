@@ -83,7 +83,7 @@ const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) 
                     {dt.sender}
                   </span>
                 </div>
-                <div className="chat-text">
+                <div className="chat-text  max-w-[80%]">
                   <p
                     className={`text-black text-xs ${dt.sender === 'AI' ? 'text-left' : 'text-right'}`}
                   >

@@ -66,7 +66,6 @@ const CreateAssessment = () => {
 
   useEffect(() => {
     if (profileData && profileData.status) {
-      console.log('profileData', profileData);
       dispatch(setAllProfiles(profileData.assessmentProfile));
       if (profileData.assessmentProfile.length)
         setInitialQuestionProfile(profileData.assessmentProfile[0]);
@@ -307,13 +306,20 @@ const CreateAssessment = () => {
     },
     {
       id: 2,
-      name: 'Test Modules',
+      name: 'Test Skills',
       href: '#',
       status: 'upcoming',
       icon: IMAGES.rectangle_3,
     },
     {
       id: 3,
+      name: 'Test Modules',
+      href: '#',
+      status: 'upcoming',
+      icon: IMAGES.rectangle_3,
+    },
+    {
+      id: 4,
       name: 'Review',
       href: '#',
       status: 'upcoming',
@@ -501,70 +507,73 @@ const CreateAssessment = () => {
   const navigation = useNavigate();
 
   useEffect(() => {
-    if (questionReduxData.questions.length) {
+    // if (skillsInRedux && Array.isArray(skillsInRedux) && skillsInRedux.length ) {
+    if (page === 1) {
       setSteps((oldSteps) => {
-        const old = oldSteps;
-        old.forEach((s) => {
-          if (s.id === 1) {
-            s.status = 'current';
+        return oldSteps.map((stp) => {
+          switch (stp.id) {
+            case 1:
+              stp.status = 'complete';
+              break;
+            case 2:
+              stp.status = 'current';
+              break;
+            case 3:
+              stp.status = 'upcoming';
+              break;
+            case 4:
+              stp.status = 'upcoming';
+              break;
           }
-          if (s.id === 2) {
-            s.status = 'upcoming';
-          }
-
-          if (s.id === 3) {
-            s.status = 'upcoming';
-          }
+          return stp;
         });
-
-        return old;
+      });
+    }
+    // if (modulesInRedux && Array.isArray(modulesInRedux) && modulesInRedux.length) {
+    if (page === 2) {
+      setSteps((oldSteps) => {
+        return oldSteps.map((stp) => {
+          switch (stp.id) {
+            case 1:
+              stp.status = 'complete';
+              break;
+            case 2:
+              stp.status = 'complete';
+              break;
+            case 3:
+              stp.status = 'current';
+              break;
+            case 4:
+              stp.status = 'upcoming';
+              break;
+          }
+          return stp;
+        });
       });
     }
 
-    if (selectedModules.length) {
+    if (page === 3) {
       setSteps((oldSteps) => {
-        const old = oldSteps;
-        old.forEach((s) => {
-          if (s.id === 1) {
-            s.status = 'complete';
+        return oldSteps.map((stp) => {
+          switch (stp.id) {
+            case 1:
+              stp.status = 'complete';
+              break;
+            case 2:
+              stp.status = 'complete';
+              break;
+            case 3:
+              stp.status = 'complete';
+              break;
+            case 4:
+              stp.status = 'current';
+              break;
           }
-          if (s.id === 2) {
-            s.status = 'current';
-          }
-
-          if (s.id === 3) {
-            s.status = 'upcoming';
-          }
+          return stp;
         });
-
-        return old;
       });
     }
-
-    if (
-      selectedModules.length &&
-      selectedModules[0].question &&
-      selectedModules[0].question.length
-    ) {
-      setSteps((oldSteps) => {
-        const old = oldSteps;
-        old.forEach((s) => {
-          if (s.id === 1) {
-            s.status = 'complete';
-          }
-          if (s.id === 2) {
-            s.status = 'complete';
-          }
-
-          if (s.id === 3) {
-            s.status = 'current';
-          }
-        });
-
-        return old;
-      });
-    }
-  }, [questionReduxData, selectedModules]);
+  }, [page]);
 
   if (
     profileLoading ||

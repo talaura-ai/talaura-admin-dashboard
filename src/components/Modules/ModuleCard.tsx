@@ -1,6 +1,6 @@
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react';
 import { PencilIcon } from '@heroicons/react/24/solid';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import {
   removeModuleSkill,
@@ -61,7 +61,8 @@ const ModuleCard: React.FC<any> = (props) => {
   }, [selectedModule]);
 
   const onChangeWeightage = (e: any) => {
-    setWeight(e.target.value);
+    console.log('e.target.value', e.target.value, typeof e.target.value);
+    setWeight(isNaN(+e.target.value) ? 0 : +e.target.value);
   };
   const handleChangeWeightage = async () => {
     dispatch(
@@ -78,14 +79,18 @@ const ModuleCard: React.FC<any> = (props) => {
     setOpen(false);
   };
 
-  const handleChangeDuration = async () => {
+  const handleChangeDuration = useCallback(async () => {
     dispatch(
       updateDuration({
         name: name,
         time: !isNaN(Number(stateTime)) ? Number(stateTime) : 0,
       }),
     );
-  };
+  }, [dispatch, name, stateTime]);
+
+  useEffect(() => {
+    handleChangeDuration();
+  }, [handleChangeDuration]);
 
   // const [duration, setDuration] = useState({});
   return (
@@ -192,7 +197,7 @@ const ModuleCard: React.FC<any> = (props) => {
           </>
         ) : (
           <p className="text-gray-700 text-sm">
-            {selectedModule?.skills?.join(',') ?? 'Some Skills'}
+            {selectedModule?.skills?.join(', ') ?? 'Some Skills'}
           </p>
         )}
       </div>
@@ -202,9 +207,9 @@ const ModuleCard: React.FC<any> = (props) => {
             <h1>
               Weightage:{' '}
               <span className="text-gray-700">
-                {selectedModule && selectedModule.Weightage ? (
+                {selectedModule && (selectedModule.Weightage || +selectedModule.Weightage === 0) ? (
                   <input
-                    className={`w-8 p-0 inline ring-0 border-0 focus:ring-0 focus:border-b-1 ${isSelectedModule && '!bg-[#FFEFDF]'}`}
+                    className={`w-10 px-1 rounded-sm inline ring-0 py-0 focus:ring-0 focus:border-b-1 ${isSelectedModule && '!bg-[#FFEFDF]'}`}
                     type="text"
                     value={weight}
                     disabled={fromReviewAssessmentScreen}
@@ -230,20 +235,43 @@ const ModuleCard: React.FC<any> = (props) => {
           <div className="flex grow justify-end items-center">
             <img src={IMAGES.Time} className="h-4 w-4 justify-center items-center" />
             <span
-              className="justify-center items-center ml-1"
+              className="flex justify-center items-center ml-1"
               onClick={() => {
                 // setOpenTimer(true);
               }}
             >
-              <input
+              {/* <input
                 className={`w-8 p-0 inline ring-0 border-0 focus:ring-0 focus:border-b-1 ${isSelectedModule && '!bg-[#FFEFDF]'}`}
                 type="text"
                 value={stateTime}
                 disabled={fromReviewAssessmentScreen}
                 onChange={(e) => setStateTime(+e.target.value)}
                 onBlur={() => handleChangeDuration()}
-              />
-              min
+              /> */}
+              <div className="flex flex-row items-center">
+                {!fromReviewAssessmentScreen && (
+                  <button
+                    className="border rounded-md bg-golden-200 mx-2 px-2 text-lg"
+                    onClick={() => {
+                      setStateTime((prev) => (prev !== 0 ? prev - 10 : prev));
+                    }}
+                  >
+                    -
+                  </button>
+                )}
+                <span>{stateTime}</span>
+                {!fromReviewAssessmentScreen && (
+                  <button
+                    className="border rounded-md bg-golden-200 mx-2 px-2 text-lg"
+                    onClick={() => {
+                      setStateTime((prev) => (prev !== 60 ? prev + 10 : prev));
+                    }}
+                  >
+                    +
+                  </button>
+                )}
+              </div>
+              <span> min</span>
             </span>
           </div>
         </div>

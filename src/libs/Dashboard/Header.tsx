@@ -40,18 +40,18 @@ const Header: React.FC<IHeader> = ({ user, setSidebarOpen }) => {
           <div className="relative">
             <div className="-m-1.5 flex items-center p-1.5">
               <img
-                className="h-8 w-8 rounded-full bg-gray-50"
-                src="https://images.unsplash.com/photo-1679477084664-6e86877c401a?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                className="h-full w-[9.5rem] bg-gray-50 object-cover"
+                src="https://mastersunion.org/assets/img/logo/old-mu-on-white.svg"
                 alt=""
               />
-              <span className="hidden lg:flex lg:items-center">
+              {/* <span className="hidden lg:flex lg:items-center">
                 <span
                   className="ml-4 text-sm font-semibold leading-6 text-gray-900"
                   aria-hidden="true"
                 >
                   {user.username}
                 </span>
-              </span>
+              </span> */}
             </div>
           </div>
           <button

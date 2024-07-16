@@ -9,7 +9,14 @@ const initialState: {
   modules: [],
   selectedModules: [],
 };
-
+const durationNoOfQuestionsMap = new Map([
+  [10, 15],
+  [20, 30],
+  [30, 45],
+  [40, 60],
+  [50, 75],
+  [60, 90],
+]);
 export const modulesSlice = createSlice({
   name: 'modules',
   initialState,
@@ -105,6 +112,9 @@ export const modulesSlice = createSlice({
       const selectedModule = state.selectedModules.find((module: any) => {
         return module.name === action.payload.name;
       });
+      if (selectedModule?.type === 'Quiz') {
+        selectedModule.noOfQuestions = durationNoOfQuestionsMap.get(action.payload.time) ?? 0;
+      }
       if (selectedModule) {
         selectedModule.time = action.payload.time;
       }

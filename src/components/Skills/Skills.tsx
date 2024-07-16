@@ -33,7 +33,7 @@ const Skills: React.FC<ISkils> = () => {
 
   return (
     <div className="mt-10">
-      <label className="text-black text-2xl font-Sansation">
+      <label className="text-black text-2xl font-Sansation ml-10">
         Based on the details provided, below are the skills recommended.
         <span className="text-gray-400">(Edit skills)</span>
       </label>
