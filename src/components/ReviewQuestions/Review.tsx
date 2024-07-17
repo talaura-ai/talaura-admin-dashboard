@@ -55,9 +55,10 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module }) => {
                     {v.type === 'Quiz' ? (
                       <h3 className="text-[16px] text-[#000000] font-Sansation">Q. {v?.title}</h3>
                     ) : (
-                      <div
-                        id="modifiedText"
-                        dangerouslySetInnerHTML={{ __html: v?.title.replace(/(\d+)/g, '<br>$1') }}
+                      <p
+                        dangerouslySetInnerHTML={{
+                          __html: v?.title.replace(/(\d)(?=\.)/g, '<br>$1'),
+                        }}
                       />
                     )}
                     <h3 className="text-[16px] text-[#000000] font-Sansation">{v?.description}</h3>

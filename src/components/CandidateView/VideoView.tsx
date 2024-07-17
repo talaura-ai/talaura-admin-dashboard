@@ -100,7 +100,11 @@ const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) 
           <span className="text-2xl text-black text-left font-Sansation_Bold">AI Context</span>
         </div>
         <div className="py-4 px-10 text-black text-left text-sm">
-          <p>{reportData?.description}</p>
+          <p
+            dangerouslySetInnerHTML={{
+              __html: reportData?.description?.replace(/(\d)(?=\.)/g, '<br>$1') ?? '',
+            }}
+          />
         </div>
       </div>
     </div>
