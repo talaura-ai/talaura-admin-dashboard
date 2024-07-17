@@ -107,6 +107,7 @@ export interface ICandidateReportDataReportItem {
   question?: { title: string; answer: string }[];
   accuracy?: string;
   areaToImprove?: string;
+  videoUrl?: string;
 }
 export interface ICandidateReportData {
   status: boolean;

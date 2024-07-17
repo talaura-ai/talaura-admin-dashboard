@@ -1,3 +1,11 @@
+import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+
+const AWS_REGION = import.meta.env.VITE_AWS_REGION;
+const AWS_BUCKET_NAME = import.meta.env.VITE_AWS_BUCKET_NAME;
+const AWS_ACCESS_KEY_ID = import.meta.env.VITE_AWS_ACCESS_KEY_ID;
+const AWS_SECRET_ACCESS_KEY = import.meta.env.VITE_AWS_SECRET_ACCESS_KEY;
+
 export const omit = (obj: { [key: string]: any }, keys: string[]) => {
   return Object.fromEntries(Object.entries(obj).filter((pair) => !keys.includes(pair[0])));
 };
@@ -25,3 +33,25 @@ export const capitalizeEachWordFirstCharacter = (str: string) =>
     .filter((ch) => Boolean(ch))
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(' ');
+
+export const generateSignedUrlS3 = async (s3url?: string) => {
+  if (!s3url) {
+    return '';
+  }
+  const REGION = AWS_REGION;
+  const s3Client = new S3Client({
+    region: REGION,
+    credentials: {
+      accessKeyId: AWS_ACCESS_KEY_ID,
+      secretAccessKey: AWS_SECRET_ACCESS_KEY,
+    },
+  });
+
+  const command = new GetObjectCommand({
+    Bucket: AWS_BUCKET_NAME,
+    Key: s3url,
+  });
+
+  const signedUrl = await getSignedUrl(s3Client, command, { expiresIn: 2 * 60 * 60 }); //2hr
+  return signedUrl;
+};

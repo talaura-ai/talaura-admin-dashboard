@@ -1,9 +1,32 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import toast from 'react-hot-toast';
+import { generateSignedUrlS3 } from '../../helpers/utils';
 import { ICandidateReportData } from '../AssessmentView/types';
+import LoadingScreen from '../Loading/LoadingScreen';
 
 const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) => {
-  // const [isVideoPlayed, setIsVideoPlayed] = useState<boolean>(false);
+  const [isVideoPlayed, setIsVideoPlayed] = useState<boolean>(false);
+  const [videoSignedUrl, setVideoSignedUrl] = useState<string>('');
+  const [isVideoLoading, setIsVideoLoading] = useState<boolean>(false);
   const reportData = candidateData?.report.find((rp) => rp.moduleType === 'AI Video Interview');
+
+  const createSignedUrl = useCallback(async () => {
+    try {
+      if (!reportData?.videoUrl) {
+        return toast.error('No video found');
+      }
+      setIsVideoLoading(true);
+      const urlObject = new URL(reportData?.videoUrl);
+      const videoPath = urlObject.pathname.slice(1);
+      const signedUrl = await generateSignedUrlS3(videoPath);
+      setVideoSignedUrl(signedUrl);
+      setIsVideoPlayed(true);
+      setIsVideoLoading(false);
+    } catch (error: any) {
+      toast.error(error?.message ?? 'Unable to play video');
+      setIsVideoLoading(false);
+    }
+  }, [reportData?.videoUrl]);
 
   const userAiChat: { id: number; sender: string; message: string }[] = useMemo(() => {
     let answer = '';
@@ -50,22 +73,20 @@ const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) 
             </span>
           </div>
           <div className="flex justify-center items-center h-[264px]">
-            {/* {isVideoPlayed ? (
+            {isVideoLoading ? (
+              <LoadingScreen />
+            ) : isVideoPlayed ? (
               <div className="h-full w-full">
-                <iframe
-                  src="https://www.youtube.com/embed/H8Lyj2D_cWo?autoplay=1"
-                  allow="autoplay"
-                  className="w-full h-[264px] p-2"
-                  allowFullScreen
-                ></iframe>
+                <video className="w-full h-[254px] p-2" controls autoPlay>
+                  <source src={videoSignedUrl} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
               </div>
-            ) : ( */}
-            <button
-            // onClick={() => setIsVideoPlayed(true)}
-            >
-              <img src="/images/YouTube.png" alt="YouTube Play" />
-            </button>
-            {/* )} */}
+            ) : (
+              <button onClick={createSignedUrl}>
+                <img src="/images/YouTube.png" alt="YouTube Play" />
+              </button>
+            )}
           </div>
         </div>
         <div className="w-1/2 border border-[#E0E0E0] shadow-[0_4px_4px_0_(0,0,0,0.25)] rounded-[10px] bg-white">
