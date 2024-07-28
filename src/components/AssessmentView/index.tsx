@@ -24,7 +24,8 @@ const AssessmentView = () => {
   const TabData = [
     { id: 1, text: 'Summary' },
     { id: 2, text: 'Pending' },
-    { id: 3, text: 'Completed' },
+    { id: 3, text: 'Expired' },
+    { id: 4, text: 'Completed' },
   ];
   const [activeTab, setActiveTab] = useState<{
     text: string;
@@ -34,6 +35,8 @@ const AssessmentView = () => {
     switch (activeTab.text) {
       case 'Pending':
         return <PendingTab status="Pending" />;
+      case 'Expired':
+        return <PendingTab status="Expired" />;
       case 'Completed':
         return <PendingTab status="Completed" />;
       case 'Summary':

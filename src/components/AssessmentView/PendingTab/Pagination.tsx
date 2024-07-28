@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useMemo } from 'react';
 const Pagination = ({
   totalCandidates,
   currentPage = 1,
-  sizePerPage = 20,
+  sizePerPage = 10,
   totalPages = 1,
   setCurrentPage,
   setSizePerPage,
@@ -45,7 +45,6 @@ const Pagination = ({
     return paginationTabs;
   }, [currentPage, totalPages]);
 
-  console.log('paginationTabs', paginationTabs);
   return (
     <div className="w-full rounded-b-xl overflow-hidden">
       <div className="bg-white flex justify-between px-4 py-2">
@@ -95,13 +94,11 @@ const Pagination = ({
               defaultValue={sizePerPage}
               onChange={(e) => setSizePerPage(+e.target.value)}
             >
-              {Array(20)
-                .fill('')
-                .map((_, i) => (
-                  <option key={i + 1} value={i + 1}>
-                    {i + 1}
-                  </option>
-                ))}
+              {[5, 10, 20, 30, 40, 50].map((val) => (
+                <option key={val} value={val}>
+                  {val}
+                </option>
+              ))}
             </Select>
           </div>
         </div>

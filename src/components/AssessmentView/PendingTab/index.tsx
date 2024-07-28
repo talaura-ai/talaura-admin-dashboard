@@ -1,5 +1,3 @@
-import { DocumentDuplicateIcon } from '@heroicons/react/24/outline';
-import Clipboard from 'clipboard';
 import dayjs from 'dayjs';
 import 'dayjs/locale/en-in';
 import timeZone from 'dayjs/plugin/timezone';
@@ -8,10 +6,7 @@ import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useParams } from 'react-router-dom';
 import * as xlsx from 'xlsx';
-import {
-  useGetAllCandidatesQuery,
-  useNotifyCandidateMutation,
-} from '../../../app/services/candidates';
+import { useGetAllCandidatesQuery } from '../../../app/services/candidates';
 import ErrorPage from '../../Error/ErrorPage';
 import LoadingScreen from '../../Loading/LoadingScreen';
 import { ICandidate } from '../types';
@@ -23,27 +18,35 @@ dayjs.extend(utc);
 dayjs.extend(timeZone);
 
 const columnsForPendingTable = [
-  'Candidate Name',
-  'Invite Date',
-  'Start Date',
-  'Expiry Date',
-  'Test Action',
-  'Action',
-  'Invite Link',
+  { id: 1, apiKey: 'name', text: 'Candidate Name' },
+  { id: 2, apiKey: 'quizStatus', text: 'Quiz' },
+  { id: 3, apiKey: 'textToTextStatus', text: 'Text To Text' },
+  { id: 4, apiKey: 'videoAiInterviewStatus', text: 'Video AI Interview' },
+  { id: 5, apiKey: '', text: 'Test Action' },
+  { id: 6, apiKey: '', text: 'Action' },
+];
+const columnsForExpiredTable = [
+  { id: 1, apiKey: 'name', text: 'Candidate Name' },
+  { id: 2, apiKey: 'expiredOn', text: 'Expired On' },
+  { id: 3, apiKey: 'quizStatus', text: 'Quiz' },
+  { id: 4, apiKey: 'textToTextStatus', text: 'Text To Text' },
+  { id: 5, apiKey: 'videoAiInterviewStatus', text: 'Video AI Interview' },
+  { id: 6, apiKey: '', text: 'Test Action' },
+  { id: 7, apiKey: '', text: 'Action' },
 ];
 
 const columnsForCompletedTable = [
-  'Candidate Name',
-  'Start Date',
-  'Completed On',
-  'TAL Score',
-  'Cognitive Score',
-  'Status',
+  { id: 1, apiKey: 'name', text: 'Candidate Name' },
+  { id: 2, apiKey: 'completedOn', text: 'Complete On' },
+  { id: 3, apiKey: 'taiScore', text: 'TAI Score' },
+  { id: 4, apiKey: 'percentile', text: 'Percentile' },
+  { id: 5, apiKey: 'suspiciousActivity', text: 'Suspicious Activity' },
+  { id: 6, apiKey: '', text: 'Action' },
 ];
-const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
+const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | 'Completed' }) => {
   const [filterStatus, setFilterStatus] = useState<string>(status);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [sizePerPage, setSizePerPage] = useState<number>(5);
+  const [sizePerPage, setSizePerPage] = useState<number>(10);
   const { assessmentId = '' } = useParams();
   const checkbox = useRef<HTMLInputElement>(null);
 
@@ -66,7 +69,7 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
     status: filterStatus,
   });
 
-  const [notifyCandidate] = useNotifyCandidateMutation();
+  // const [notifyCandidate] = useNotifyCandidateMutation();
 
   const toggleAll = () => {
     setSelectedPeople(
@@ -123,14 +126,14 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
     }
   };
 
-  const onNotifyCandidate = (candidateId: string) => {
-    try {
-      notifyCandidate(candidateId);
-      toast.success('Candidate Notified Successfully');
-    } catch (error) {
-      toast.success('Problem Notifying Candidate');
-    }
-  };
+  // const onNotifyCandidate = (candidateId: string) => {
+  //   try {
+  //     notifyCandidate(candidateId);
+  //     toast.success('Candidate Notified Successfully');
+  //   } catch (error) {
+  //     toast.success('Problem Notifying Candidate');
+  //   }
+  // };
 
   if (isLoading || isFetching || isUninitialized) {
     return <LoadingScreen />;
@@ -168,14 +171,16 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
                       </th>
                       {(status === 'Pending'
                         ? columnsForPendingTable
-                        : columnsForCompletedTable
-                      ).map((val, idx) => (
+                        : status === 'Expired'
+                          ? columnsForExpiredTable
+                          : columnsForCompletedTable
+                      ).map((val) => (
                         <th
-                          key={idx}
+                          key={val.id}
                           scope="col"
-                          className={`pl-4 pr-3 text-sm font-semibold text-gray-900 text-left whitespace-nowrap`}
+                          className={`pl-4 pr-3 text-sm font-semibold text-gray-900 ${val.id === 1 ? 'text-left' : 'text-center'}`}
                         >
-                          <span>{val}</span>
+                          <span>{val.text}</span>
                         </th>
                       ))}
                     </tr>
@@ -201,48 +206,99 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
                             }
                           />
                         </td>
-                        <td className="whitespace-nowrap py-4 pl-4 text-sm font-medium text-gray-900 sm:pl-0 min-w-[8rem]">
+                        <td className="whitespace-nowrap pl-4 text-sm font-medium text-gray-900 sm:pl-0 min-w-[8rem]">
                           <Link
                             to={status === 'Completed' ? `candidate/${candidate._id}` : ''}
-                            className="pl-4 text-customGray-100"
+                            className="pl-4 text-customGray-100 flex flex-col justify-start"
                           >
-                            {candidate.name}
+                            <span>{candidate.name}</span>
+                            <p>{candidate.email}</p>
                           </Link>
                         </td>
-                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                        {status === 'Expired' && (
+                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0 text-center">
+                            <span className="text-customGray-100">
+                              {candidate?.expiredOn
+                                ? dayjs(candidate?.expiredOn).format('DD MMM, YYYY')
+                                : '--'}
+                            </span>
+                          </td>
+                        )}
+                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0 text-center">
                           <span className="text-customGray-100">
-                            {dayjs(candidate.createdAt).format('DD MMM, YYYY [at] hh:mm A')}
+                            {status === 'Completed'
+                              ? candidate.completedOn
+                                ? dayjs(candidate.createdAt).format('DD MMM, YYYY')
+                                : '--'
+                              : candidate?.quizStatus ?? '--'}
                           </span>
                         </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {dayjs(
-                            status === 'Completed' ? candidate?.completedOn : candidate.startsAt,
-                          ).format('DD MMM, YYYY [at] hh:mm A')}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {status === 'Completed'
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
+                          {(status === 'Completed'
                             ? candidate.paiScore
-                            : dayjs(candidate?.endsOn).format('DD MMM, YYYY [at] hh:mm A')}
+                            : candidate?.textToTextStatus) ?? '--'}
                         </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
                           {status === 'Completed'
-                            ? Math.floor(Math.random() * (100 - 10))
-                            : candidate.status}
+                            ? candidate?.percentile
+                              ? candidate?.percentile + '/ 100'
+                              : '--'
+                            : candidate?.videoAiInterviewStatus ?? '--'}
                         </td>
-                        {status !== 'Completed' && (
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            <div className="flex items-center text-sandybrown">
-                              <button onClick={() => setExtendUserId(candidate._id)}>
-                                <span>Extend</span>
+
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
+                          {status === 'Pending'
+                            ? 'Ongoing'
+                            : status === 'Expired'
+                              ? 'Expired'
+                              : candidate?.suspiciousActivity ?? '--'}
+                        </td>
+                        {status === 'Pending' && (
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center flex justify-center items-center">
+                            <button
+                              onClick={() => alert('Api Pending')}
+                              className="text-sandybrown pt-2.5"
+                            >
+                              Reset
+                            </button>
+                          </td>
+                        )}
+                        {status === 'Expired' && (
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center flex justify-center items-center">
+                            <button
+                              onClick={() => setExtendUserId(candidate._id)}
+                              className="text-sandybrown pt-2.5"
+                            >
+                              Extend
+                            </button>
+                          </td>
+                        )}
+                        {status === 'Completed' && (
+                          <td className="whitespace-nowrap px-3 py-1 text-sm text-gray-500 text-center flex justify-center items-center gap-2">
+                            <div className="flex flex-col gap-1">
+                              <button
+                                className="rounded-[4px] border border-[#ACACAC] p-1 px-2 flex items-center gap-1 text-[#ACACAC] text-sm"
+                                onClick={() => alert('Api Pending')}
+                              >
+                                <img src="/images/Check.png" className="h-3 w-3" />
+                                <span>Select</span>
                               </button>
-                              <div className="h-[10px] w-[2px] bg-customGray-50 mx-2" />
-                              <button onClick={() => onNotifyCandidate(candidate._id)}>
-                                <span>Notify</span>
+                              <button
+                                className="rounded-[4px] border border-[#ACACAC] p-1 px-2 flex items-center gap-1 text-[#ACACAC] text-sm"
+                                onClick={() => alert('Api Pending')}
+                              >
+                                <img src="/images/Cross.png" className="h-3 w-3" />
+                                <span>Reject</span>
+                              </button>
+                            </div>
+                            <div>
+                              <button onClick={() => alert('Api Pending')}>
+                                <img src="/images/Download2.png" className="h-6 w-6" />
                               </button>
                             </div>
                           </td>
                         )}
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        {/* <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           {status === 'Completed' ? (
                             'Completed'
                           ) : (
@@ -256,7 +312,7 @@ const PendingTab = ({ status = 'Pending' }: { status?: string }) => {
                               <span>Copy</span>
                             </button>
                           )}
-                        </td>
+                        </td> */}
                       </tr>
                     ))}
                   </tbody>

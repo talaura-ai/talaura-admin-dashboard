@@ -56,20 +56,28 @@ export interface ICandidate {
   assessmentId: string;
   name: string;
   email: string;
+  mobile?: string;
   status: string;
   question: {
     name: string;
     title: string;
     _id: string;
   }[];
+  isSelected?: boolean;
   startsAt: string;
   endsOn: string;
   createdAt: string;
   updatedAt: string;
   completedOn?: string;
+  expiredOn?: string;
+  suspiciousActivity?: string;
   paiScore?: number;
   cognitiveScore?: number;
+  percentile?: number;
   __v: 0;
+  quizStatus?: string;
+  textToTextStatus?: string;
+  videoAiInterviewStatus?: string;
 }
 
 export interface IInviteCandidateItem {
