@@ -70,7 +70,6 @@ export interface ICandidate {
   updatedAt: string;
   completedOn?: string;
   expiredOn?: string;
-  suspiciousActivity?: string;
   paiScore?: number;
   cognitiveScore?: number;
   percentile?: number;
@@ -78,6 +77,8 @@ export interface ICandidate {
   quizStatus?: string;
   textToTextStatus?: string;
   videoAiInterviewStatus?: string;
+  suspiciousActivity: boolean;
+  selectStatus?: string;
 }
 
 export interface IInviteCandidateItem {

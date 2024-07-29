@@ -6,11 +6,13 @@ const Header = ({
   setFilterStatus,
   filterStatus,
   statusFromParam,
+  handleUpdateCandidatesStatus,
 }: {
   exportDataToCsv: () => void;
   setFilterStatus: Dispatch<SetStateAction<string>>;
   filterStatus: string;
   statusFromParam: string;
+  handleUpdateCandidatesStatus: (status: 'Select' | 'Reject', candidate?: string) => Promise<void>;
 }) => {
   useEffect(() => {
     if (statusFromParam === 'Completed') {
@@ -91,7 +93,7 @@ const Header = ({
           <>
             <button
               className="cursor-pointer [border:none] p-2 bg-peru-100 flex-1 rounded-3xs flex flex-row items-start justify-start box-border min-w-[6.438rem] z-[1] hover:bg-peru-200"
-              onClick={() => alert('Api Pending')}
+              onClick={() => handleUpdateCandidatesStatus('Select')}
             >
               <div className="flex-1 relative text-base font-sansation text-white text-center z-[1] mq450:text-[1.188rem]">
                 Select
@@ -99,7 +101,7 @@ const Header = ({
             </button>
             <button
               className="cursor-pointer [border:none] p-2 bg-peru-100 flex-1 rounded-3xs flex flex-row items-start justify-start box-border min-w-[6.438rem] z-[1] hover:bg-peru-200"
-              onClick={() => alert('Api Pending')}
+              onClick={() => handleUpdateCandidatesStatus('Reject')}
             >
               <div className="flex-1 relative text-base font-sansation text-white text-center z-[1] mq450:text-[1.188rem]">
                 Reject

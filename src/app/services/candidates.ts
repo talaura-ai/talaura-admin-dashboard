@@ -32,11 +32,15 @@ export const candidatesApi = createApi({
   endpoints: (builder) => ({
     getAllCandidates: builder.query<
       ICandidateData,
-      { id: string; pageSize?: number; status?: string; pageNum?: number }
+      { id: string; pageSize?: number; status?: string; pageNum?: number; currentTab?: string }
     >({
       query: (args) => {
-        const { id, pageSize = 6, status, pageNum = 0 } = args;
+        const { id, pageSize = 6, status, pageNum = 0, currentTab } = args;
+
         let url = `organization/candidate/fetchCandidate?assessmentId=${id}`;
+        if (currentTab === 'Completed') {
+          url = `organization/candidate/fetchCandidateCompleted?assessmentId=${id}`;
+        }
         if (pageSize) {
           url += `&pageSize=${pageSize}`;
         }
@@ -44,7 +48,7 @@ export const candidatesApi = createApi({
           url += `&status=${status}`;
         }
         if (pageNum) {
-          url += `&pageNum=${pageNum}`;
+          url += `&page=${pageNum}`;
         }
         return url;
       },
@@ -90,6 +94,21 @@ export const candidatesApi = createApi({
         method: 'POST',
         body: data,
       }),
+      invalidatesTags: ['Candidates'],
+    }),
+    updateCandidatesStatus: builder.mutation<
+      unknown,
+      {
+        status: string;
+        candidates: string[];
+      }
+    >({
+      query: (data: { status: string; candidates: string[] }) => ({
+        url: 'organization/candidate/updateStatus',
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Candidates'],
     }),
   }),
 });
@@ -102,4 +121,5 @@ export const {
   useGetCandidateReportsMutation,
   useNotifyCandidateMutation,
   useExtendCandidateAssessmentDurationMutation,
+  useUpdateCandidatesStatusMutation,
 } = candidatesApi;

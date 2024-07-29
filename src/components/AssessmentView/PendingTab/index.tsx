@@ -2,11 +2,14 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/en-in';
 import timeZone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useParams } from 'react-router-dom';
 import * as xlsx from 'xlsx';
-import { useGetAllCandidatesQuery } from '../../../app/services/candidates';
+import {
+  useGetAllCandidatesQuery,
+  useUpdateCandidatesStatusMutation,
+} from '../../../app/services/candidates';
 import ErrorPage from '../../Error/ErrorPage';
 import LoadingScreen from '../../Loading/LoadingScreen';
 import { ICandidate } from '../types';
@@ -55,6 +58,10 @@ const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | '
   const [selectedPeople, setSelectedPeople] = useState<string[]>([]);
   const [extendUserId, setExtendUserId] = useState<string>('');
 
+  useEffect(() => {
+    setSelectedPeople([]);
+  }, [status]);
+
   const {
     data: candidatesData,
     isLoading,
@@ -67,7 +74,9 @@ const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | '
     pageNum: currentPage,
     pageSize: sizePerPage,
     status: filterStatus,
+    currentTab: status,
   });
+  const [updateCandidatesStatus] = useUpdateCandidatesStatusMutation();
 
   // const [notifyCandidate] = useNotifyCandidateMutation();
 
@@ -135,6 +144,26 @@ const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | '
   //   }
   // };
 
+  const handleUpdateCandidatesStatus = useCallback(
+    async (status: 'Select' | 'Reject', candidate?: string) => {
+      try {
+        const candidatesToUpdates = candidate ? [candidate] : selectedPeople;
+        if (candidatesToUpdates.length === 0) {
+          toast.error('No Candidate to Update');
+          return;
+        }
+        await updateCandidatesStatus({
+          status,
+          candidates: candidatesToUpdates,
+        });
+        toast.success('Updated Successfully');
+      } catch (error) {
+        toast.success('Error Updating Status');
+      }
+    },
+    [selectedPeople, updateCandidatesStatus],
+  );
+
   if (isLoading || isFetching || isUninitialized) {
     return <LoadingScreen />;
   }
@@ -151,6 +180,7 @@ const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | '
           filterStatus={filterStatus}
           setFilterStatus={setFilterStatus}
           statusFromParam={status}
+          handleUpdateCandidatesStatus={handleUpdateCandidatesStatus}
         />
         <ExtendModal extendUserId={extendUserId} setExtendUserId={setExtendUserId} />
         <div className="">
@@ -246,12 +276,16 @@ const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | '
                             : candidate?.videoAiInterviewStatus ?? '--'}
                         </td>
 
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
+                        <td
+                          className={`whitespace-nowrap px-3 py-4 text-sm text-center ${status === 'Completed' ? (candidate?.suspiciousActivity ? 'text-[#40B24B]' : 'text-[#FB2121]') : 'text-gray-500'}`}
+                        >
                           {status === 'Pending'
                             ? 'Ongoing'
                             : status === 'Expired'
                               ? 'Expired'
-                              : candidate?.suspiciousActivity ?? '--'}
+                              : candidate?.suspiciousActivity
+                                ? 'Detected'
+                                : 'Not Detected'}
                         </td>
                         {status === 'Pending' && (
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center flex justify-center items-center">
@@ -278,14 +312,18 @@ const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | '
                             <div className="flex flex-col gap-1">
                               <button
                                 className="rounded-[4px] border border-[#ACACAC] p-1 px-2 flex items-center gap-1 text-[#ACACAC] text-sm"
-                                onClick={() => alert('Api Pending')}
+                                onClick={() =>
+                                  handleUpdateCandidatesStatus('Select', candidate._id)
+                                }
                               >
                                 <img src="/images/Check.png" className="h-3 w-3" />
                                 <span>Select</span>
                               </button>
                               <button
                                 className="rounded-[4px] border border-[#ACACAC] p-1 px-2 flex items-center gap-1 text-[#ACACAC] text-sm"
-                                onClick={() => alert('Api Pending')}
+                                onClick={() =>
+                                  handleUpdateCandidatesStatus('Reject', candidate._id)
+                                }
                               >
                                 <img src="/images/Cross.png" className="h-3 w-3" />
                                 <span>Reject</span>
