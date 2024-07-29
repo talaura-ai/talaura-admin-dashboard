@@ -74,11 +74,9 @@ export interface ICandidate {
   cognitiveScore?: number;
   percentile?: number;
   __v: 0;
-  quizStatus?: string;
-  textToTextStatus?: string;
-  videoAiInterviewStatus?: string;
   suspiciousActivity: boolean;
   selectStatus?: string;
+  module?: { _id: string; name: string; type: string; time: number; status: string; __v: number }[];
 }
 
 export interface IInviteCandidateItem {

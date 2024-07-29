@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/en-in';
 import timeZone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useParams } from 'react-router-dom';
 import * as xlsx from 'xlsx';
@@ -20,11 +20,11 @@ dayjs.locale('en-in');
 dayjs.extend(utc);
 dayjs.extend(timeZone);
 
-const columnsForPendingTable = [
+let columnsForPendingTable = [
   { id: 1, apiKey: 'name', text: 'Candidate Name' },
-  { id: 2, apiKey: 'quizStatus', text: 'Quiz' },
-  { id: 3, apiKey: 'textToTextStatus', text: 'Text To Text' },
-  { id: 4, apiKey: 'videoAiInterviewStatus', text: 'Video AI Interview' },
+  { id: 2, apiKey: 'quiz', text: 'Quiz' },
+  { id: 3, apiKey: 'text to text', text: 'Text To Text' },
+  { id: 4, apiKey: 'ai video interview', text: 'Video AI Interview' },
   { id: 5, apiKey: '', text: 'Test Action' },
   { id: 6, apiKey: '', text: 'Action' },
 ];
@@ -57,7 +57,7 @@ const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | '
   const [indeterminate, setIndeterminate] = useState(false);
   const [selectedPeople, setSelectedPeople] = useState<string[]>([]);
   const [extendUserId, setExtendUserId] = useState<string>('');
-
+  const allTypesInResponseSet = useRef(new Set());
   useEffect(() => {
     setSelectedPeople([]);
   }, [status]);
@@ -164,6 +164,30 @@ const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | '
     [selectedPeople, updateCandidatesStatus],
   );
 
+  const updatePendingTabColumns = useCallback(() => {
+    if (
+      status !== 'Pending' ||
+      !candidatesData ||
+      !Array.isArray(candidatesData.Candidate) ||
+      !candidatesData.Candidate.length
+    ) {
+      return;
+    }
+    allTypesInResponseSet.current = new Set(
+      candidatesData?.Candidate[0]?.module?.map((mdl) => mdl.type.toLowerCase()),
+    );
+    const allTypesIncluded = new Set(['ai video interview', 'quiz', 'text to text']);
+    allTypesIncluded.forEach((val) => {
+      if (!allTypesInResponseSet.current.has(val)) {
+        columnsForPendingTable = columnsForPendingTable.filter(({ apiKey }) => apiKey !== val);
+      }
+    });
+  }, [candidatesData, status]);
+
+  useEffect(() => {
+    updatePendingTabColumns();
+  }, [updatePendingTabColumns]);
+
   if (isLoading || isFetching || isUninitialized) {
     return <LoadingScreen />;
   }
@@ -245,97 +269,155 @@ const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | '
                             <p>{candidate.email}</p>
                           </Link>
                         </td>
-                        {status === 'Expired' && (
-                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0 text-center">
-                            <span className="text-customGray-100">
-                              {candidate?.expiredOn
-                                ? dayjs(candidate?.expiredOn).format('DD MMM, YYYY')
-                                : '--'}
-                            </span>
-                          </td>
-                        )}
-                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0 text-center">
-                          <span className="text-customGray-100">
-                            {status === 'Completed'
-                              ? candidate.completedOn
-                                ? dayjs(candidate.createdAt).format('DD MMM, YYYY')
-                                : '--'
-                              : candidate?.quizStatus ?? '--'}
-                          </span>
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
-                          {(status === 'Completed'
-                            ? candidate.paiScore
-                            : candidate?.textToTextStatus) ?? '--'}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
-                          {status === 'Completed'
-                            ? candidate?.percentile
-                              ? candidate?.percentile + '/ 100'
-                              : '--'
-                            : candidate?.videoAiInterviewStatus ?? '--'}
-                        </td>
-
-                        <td
-                          className={`whitespace-nowrap px-3 py-4 text-sm text-center ${status === 'Completed' ? (candidate?.suspiciousActivity ? 'text-[#40B24B]' : 'text-[#FB2121]') : 'text-gray-500'}`}
-                        >
-                          {status === 'Pending'
-                            ? 'Ongoing'
-                            : status === 'Expired'
-                              ? 'Expired'
-                              : candidate?.suspiciousActivity
-                                ? 'Detected'
-                                : 'Not Detected'}
-                        </td>
-                        {status === 'Pending' && (
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center flex justify-center items-center">
-                            <button
-                              onClick={() => alert('Api Pending')}
-                              className="text-sandybrown pt-2.5"
-                            >
-                              Reset
-                            </button>
-                          </td>
-                        )}
-                        {status === 'Expired' && (
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center flex justify-center items-center">
-                            <button
-                              onClick={() => setExtendUserId(candidate._id)}
-                              className="text-sandybrown pt-2.5"
-                            >
-                              Extend
-                            </button>
-                          </td>
-                        )}
+                        {/* Data for Completed Tab */}
                         {status === 'Completed' && (
-                          <td className="whitespace-nowrap px-3 py-1 text-sm text-gray-500 text-center flex justify-center items-center gap-2">
-                            <div className="flex flex-col gap-1">
-                              <button
-                                className="rounded-[4px] border border-[#ACACAC] p-1 px-2 flex items-center gap-1 text-[#ACACAC] text-sm"
-                                onClick={() =>
-                                  handleUpdateCandidatesStatus('Select', candidate._id)
-                                }
-                              >
-                                <img src="/images/Check.png" className="h-3 w-3" />
-                                <span>Select</span>
-                              </button>
-                              <button
-                                className="rounded-[4px] border border-[#ACACAC] p-1 px-2 flex items-center gap-1 text-[#ACACAC] text-sm"
-                                onClick={() =>
-                                  handleUpdateCandidatesStatus('Reject', candidate._id)
-                                }
-                              >
-                                <img src="/images/Cross.png" className="h-3 w-3" />
-                                <span>Reject</span>
-                              </button>
-                            </div>
-                            <div>
-                              <button onClick={() => alert('Api Pending')}>
-                                <img src="/images/Download2.png" className="h-6 w-6" />
-                              </button>
-                            </div>
-                          </td>
+                          <Fragment>
+                            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0 text-center">
+                              <span className="text-customGray-100">
+                                {candidate.completedOn
+                                  ? dayjs(candidate.createdAt).format('DD MMM, YYYY')
+                                  : '--'}
+                              </span>
+                            </td>
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
+                              {candidate.paiScore ?? '--'}
+                            </td>
+
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
+                              {candidate?.percentile ? candidate?.percentile + '/ 100' : '--'}
+                            </td>
+
+                            <td
+                              className={`whitespace-nowrap px-3 py-4 text-sm text-center ${candidate?.suspiciousActivity ? 'text-[#40B24B]' : 'text-[#FB2121]'}`}
+                            >
+                              {candidate?.suspiciousActivity ? 'Detected' : 'Not Detected'}
+                            </td>
+                            <td className="whitespace-nowrap px-3 py-1 text-sm text-gray-500 text-center flex justify-center items-center gap-2">
+                              <div className="flex flex-col gap-1">
+                                <button
+                                  className="rounded-[4px] border border-[#ACACAC] p-1 px-2 flex items-center gap-1 text-[#ACACAC] text-sm"
+                                  onClick={() =>
+                                    handleUpdateCandidatesStatus('Select', candidate._id)
+                                  }
+                                >
+                                  <img src="/images/Check.png" className="h-3 w-3" />
+                                  <span>Select</span>
+                                </button>
+                                <button
+                                  className="rounded-[4px] border border-[#ACACAC] p-1 px-2 flex items-center gap-1 text-[#ACACAC] text-sm"
+                                  onClick={() =>
+                                    handleUpdateCandidatesStatus('Reject', candidate._id)
+                                  }
+                                >
+                                  <img src="/images/Cross.png" className="h-3 w-3" />
+                                  <span>Reject</span>
+                                </button>
+                              </div>
+                              <div>
+                                <button onClick={() => alert('Api Pending')}>
+                                  <img src="/images/Download2.png" className="h-6 w-6" />
+                                </button>
+                              </div>
+                            </td>
+                          </Fragment>
                         )}
+                        {status === 'Expired' && (
+                          <Fragment>
+                            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0 text-center">
+                              <span className="text-customGray-100">
+                                {candidate?.endsOn
+                                  ? dayjs(candidate?.endsOn).format('DD MMM, YYYY')
+                                  : '--'}
+                              </span>
+                            </td>
+
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
+                              {'--'}
+                            </td>
+
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
+                              {'--'}
+                            </td>
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
+                              {'--'}
+                            </td>
+
+                            <td
+                              className={`whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500`}
+                            >
+                              Expired
+                            </td>
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center flex justify-center items-center">
+                              <button
+                                onClick={() => setExtendUserId(candidate._id)}
+                                className="text-sandybrown pt-2.5"
+                              >
+                                Extend
+                              </button>
+                            </td>
+                          </Fragment>
+                        )}
+                        {status === 'Pending' && (
+                          <Fragment>
+                            {(() => {
+                              if (allTypesInResponseSet.current.has('quiz')) {
+                                const status = candidate?.module?.find(
+                                  (mdl) => mdl.type === 'Quiz',
+                                )?.status;
+                                return (
+                                  <td
+                                    className={`whitespace-nowrap px-3 py-4 text-sm text-center ${status === 'Pending' ? 'text-[#FB2121]' : status === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                  >
+                                    {status === 'Pending' ? 'Interrupted' : status ?? '--'}
+                                  </td>
+                                );
+                              }
+                            })()}
+
+                            {(() => {
+                              if (allTypesInResponseSet.current.has('text to text')) {
+                                const status = candidate?.module?.find(
+                                  (mdl) => mdl.type.toLowerCase() === 'text to text',
+                                )?.status;
+                                return (
+                                  <td
+                                    className={`whitespace-nowrap px-3 py-4 text-sm text-center ${status === 'Pending' ? 'text-[#FB2121]' : status === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                  >
+                                    {status === 'Pending' ? 'Interrupted' : status ?? '--'}
+                                  </td>
+                                );
+                              }
+                            })()}
+                            {(() => {
+                              if (allTypesInResponseSet.current.has('ai video interview')) {
+                                const status = candidate?.module?.find(
+                                  (mdl) => mdl.type.toLowerCase() === 'ai video interview',
+                                )?.status;
+                                return (
+                                  <td
+                                    className={`whitespace-nowrap px-3 py-4 text-sm text-center ${status === 'Pending' ? 'text-[#FB2121]' : status === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                  >
+                                    {status === 'Pending' ? 'Interrupted' : status ?? '--'}
+                                  </td>
+                                );
+                              }
+                            })()}
+                            <td
+                              className={`whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500`}
+                            >
+                              Expired
+                            </td>
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center flex justify-center items-center">
+                              <button
+                                onClick={() => alert('Api Pending')}
+                                className="text-sandybrown pt-2.5"
+                              >
+                                Reset
+                              </button>
+                            </td>
+                          </Fragment>
+                        )}
+
                         {/* <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           {status === 'Completed' ? (
                             'Completed'
