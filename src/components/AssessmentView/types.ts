@@ -100,13 +100,11 @@ export interface IAddCandidateApiPayload {
 export interface ICandidateReportDataReportItem {
   _id: string;
   moduleId: string;
-  report: [
-    {
-      name: string;
-      score: number;
-      _id: string;
-    },
-  ];
+  report: {
+    name: string;
+    score: number;
+    _id: string;
+  }[];
   moduleName: string;
   moduleType: string;
   average: number;
@@ -128,4 +126,5 @@ export interface ICandidateReportData {
   email: string;
   createdAt: string;
   completedOn: string;
+  picture?: string;
 }
