@@ -20,8 +20,8 @@ const CandidateView: FunctionComponent = () => {
   const TabData = [
     { id: 1, text: 'Summary' },
     { id: 2, text: 'Video' },
-    { id: 3, text: 'Aptitude' },
-    { id: 4, text: 'Voice to Text' },
+    // { id: 3, text: 'Aptitude' },
+    // { id: 4, text: 'Voice to Text' },
   ];
 
   const [activeTab, setActiveTab] = useState<{

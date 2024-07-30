@@ -8,11 +8,18 @@ import { Link, useParams } from 'react-router-dom';
 import * as xlsx from 'xlsx';
 import {
   useGetAllCandidatesQuery,
+  useResetModulesMutation,
   useUpdateCandidatesStatusMutation,
 } from '../../../app/services/candidates';
+import {
+  ColumnsForCompletedTable,
+  InitialExpiredTabColumns,
+  InitialPendingTabColumns,
+} from '../../../helpers/constants';
+import { deepClone } from '../../../helpers/utils';
 import ErrorPage from '../../Error/ErrorPage';
 import LoadingScreen from '../../Loading/LoadingScreen';
-import { ICandidate } from '../types';
+import { ICandidate, ICandidateData } from '../types';
 import ExtendModal from './ExtendModal';
 import Header from './Header';
 import Pagination from './Pagination';
@@ -20,65 +27,43 @@ dayjs.locale('en-in');
 dayjs.extend(utc);
 dayjs.extend(timeZone);
 
-let columnsForPendingTable = [
-  { id: 1, apiKey: 'name', text: 'Candidate Name' },
-  { id: 2, apiKey: 'quiz', text: 'Quiz' },
-  { id: 3, apiKey: 'text to text', text: 'Text To Text' },
-  { id: 4, apiKey: 'ai video interview', text: 'Video AI Interview' },
-  { id: 5, apiKey: '', text: 'Test Action' },
-  { id: 6, apiKey: '', text: 'Action' },
-];
-const columnsForExpiredTable = [
-  { id: 1, apiKey: 'name', text: 'Candidate Name' },
-  { id: 2, apiKey: 'expiredOn', text: 'Expired On' },
-  { id: 3, apiKey: 'quizStatus', text: 'Quiz' },
-  { id: 4, apiKey: 'textToTextStatus', text: 'Text To Text' },
-  { id: 5, apiKey: 'videoAiInterviewStatus', text: 'Video AI Interview' },
-  { id: 6, apiKey: '', text: 'Test Action' },
-  { id: 7, apiKey: '', text: 'Action' },
-];
-
-const columnsForCompletedTable = [
-  { id: 1, apiKey: 'name', text: 'Candidate Name' },
-  { id: 2, apiKey: 'completedOn', text: 'Complete On' },
-  { id: 3, apiKey: 'taiScore', text: 'TAI Score' },
-  { id: 4, apiKey: 'percentile', text: 'Percentile' },
-  { id: 5, apiKey: 'suspiciousActivity', text: 'Suspicious Activity' },
-  { id: 6, apiKey: '', text: 'Action' },
-];
-const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | 'Completed' }) => {
-  const [filterStatus, setFilterStatus] = useState<string>(status);
+const PendingTab = ({
+  status: CurrentTab = 'Pending',
+}: {
+  status?: 'Pending' | 'Expired' | 'Completed';
+}) => {
+  const [filterStatus, setFilterStatus] = useState<string>(CurrentTab);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [sizePerPage, setSizePerPage] = useState<number>(10);
   const { assessmentId = '' } = useParams();
+
   const checkbox = useRef<HTMLInputElement>(null);
 
   const [checked, setChecked] = useState(false);
   const [indeterminate, setIndeterminate] = useState(false);
   const [selectedPeople, setSelectedPeople] = useState<string[]>([]);
   const [extendUserId, setExtendUserId] = useState<string>('');
-  const allTypesInResponseSet = useRef(new Set());
+  const [allTypesInResponseSet, setAllTypesInResponseSet] = useState(new Set());
+  const allModulesTypesIncluded = new Set(['ai video interview', 'quiz', 'text to text']);
+  const [candidatesData, setCandidatesData] = useState<ICandidateData | undefined>();
+  const { data, isLoading, isError, isSuccess, isFetching, isUninitialized } =
+    useGetAllCandidatesQuery({
+      id: assessmentId,
+      pageNum: currentPage,
+      pageSize: sizePerPage,
+      status: filterStatus,
+      currentTab: CurrentTab,
+    });
+
   useEffect(() => {
-    setSelectedPeople([]);
-  }, [status]);
-
-  const {
-    data: candidatesData,
-    isLoading,
-    isError,
-    isSuccess,
-    isFetching,
-    isUninitialized,
-  } = useGetAllCandidatesQuery({
-    id: assessmentId,
-    pageNum: currentPage,
-    pageSize: sizePerPage,
-    status: filterStatus,
-    currentTab: status,
-  });
+    setCandidatesData(deepClone(data));
+    const allTypesInResponseSetTemp = new Set(
+      data?.Candidate[0]?.module?.map((mdl) => mdl.type.toLowerCase()),
+    );
+    setAllTypesInResponseSet(allTypesInResponseSetTemp);
+  }, [data]);
   const [updateCandidatesStatus] = useUpdateCandidatesStatusMutation();
-
-  // const [notifyCandidate] = useNotifyCandidateMutation();
+  const [resetModule] = useResetModulesMutation();
 
   const toggleAll = () => {
     setSelectedPeople(
@@ -164,29 +149,27 @@ const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | '
     [selectedPeople, updateCandidatesStatus],
   );
 
-  const updatePendingTabColumns = useCallback(() => {
-    if (
-      status !== 'Pending' ||
-      !candidatesData ||
-      !Array.isArray(candidatesData.Candidate) ||
-      !candidatesData.Candidate.length
-    ) {
-      return;
-    }
-    allTypesInResponseSet.current = new Set(
-      candidatesData?.Candidate[0]?.module?.map((mdl) => mdl.type.toLowerCase()),
-    );
-    const allTypesIncluded = new Set(['ai video interview', 'quiz', 'text to text']);
-    allTypesIncluded.forEach((val) => {
-      if (!allTypesInResponseSet.current.has(val)) {
-        columnsForPendingTable = columnsForPendingTable.filter(({ apiKey }) => apiKey !== val);
-      }
-    });
-  }, [candidatesData, status]);
-
   useEffect(() => {
-    updatePendingTabColumns();
-  }, [updatePendingTabColumns]);
+    setSelectedPeople([]);
+    setChecked(false);
+  }, [CurrentTab]);
+
+  const handleReset = useCallback(
+    async (candidateId?: string) => {
+      try {
+        const candidatesToUpdates = candidateId ? [candidateId] : selectedPeople;
+        if (candidatesToUpdates.length === 0) {
+          toast.error('No Candidate to Update');
+          return;
+        }
+        await resetModule(candidatesToUpdates);
+        toast.success('Updated Successfully');
+      } catch (error) {
+        toast.success('Error Updating Status');
+      }
+    },
+    [resetModule, selectedPeople],
+  );
 
   if (isLoading || isFetching || isUninitialized) {
     return <LoadingScreen />;
@@ -203,8 +186,9 @@ const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | '
           exportDataToCsv={exportDataToCsv}
           filterStatus={filterStatus}
           setFilterStatus={setFilterStatus}
-          statusFromParam={status}
+          statusFromParam={CurrentTab}
           handleUpdateCandidatesStatus={handleUpdateCandidatesStatus}
+          handleReset={handleReset}
         />
         <ExtendModal extendUserId={extendUserId} setExtendUserId={setExtendUserId} />
         <div className="">
@@ -223,20 +207,32 @@ const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | '
                           onChange={toggleAll}
                         />
                       </th>
-                      {(status === 'Pending'
-                        ? columnsForPendingTable
-                        : status === 'Expired'
-                          ? columnsForExpiredTable
-                          : columnsForCompletedTable
-                      ).map((val) => (
-                        <th
-                          key={val.id}
-                          scope="col"
-                          className={`pl-4 pr-3 text-sm font-semibold text-gray-900 ${val.id === 1 ? 'text-left' : 'text-center'}`}
-                        >
-                          <span>{val.text}</span>
-                        </th>
-                      ))}
+                      {(CurrentTab === 'Pending'
+                        ? InitialPendingTabColumns
+                        : CurrentTab === 'Expired'
+                          ? InitialExpiredTabColumns
+                          : ColumnsForCompletedTable
+                      ).map((val) => {
+                        if (
+                          ['Pending', 'Expired'].includes(CurrentTab) &&
+                          allModulesTypesIncluded.has(val.apiKey) &&
+                          !candidatesData?.Candidate[0].module?.find(
+                            (mdl) => mdl.type.toLowerCase() === val.apiKey,
+                          )
+                        ) {
+                          return null;
+                        } else {
+                          return (
+                            <th
+                              key={val.id}
+                              scope="col"
+                              className={`pl-4 pr-3 text-sm font-semibold text-gray-900 ${val.id === 1 ? 'text-left' : 'text-center'}`}
+                            >
+                              <span>{val.text}</span>
+                            </th>
+                          );
+                        }
+                      })}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-customGray-200 bg-white shadow-[0_1px_4px_0_rgba(0,0,0,0.25)]">
@@ -262,7 +258,7 @@ const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | '
                         </td>
                         <td className="whitespace-nowrap pl-4 text-sm font-medium text-gray-900 sm:pl-0 min-w-[8rem]">
                           <Link
-                            to={status === 'Completed' ? `candidate/${candidate._id}` : ''}
+                            to={CurrentTab === 'Completed' ? `candidate/${candidate._id}` : ''}
                             className="pl-4 text-customGray-100 flex flex-col justify-start"
                           >
                             <span>{candidate.name}</span>
@@ -270,7 +266,7 @@ const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | '
                           </Link>
                         </td>
                         {/* Data for Completed Tab */}
-                        {status === 'Completed' && (
+                        {CurrentTab === 'Completed' && (
                           <Fragment>
                             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0 text-center">
                               <span className="text-customGray-100">
@@ -314,14 +310,14 @@ const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | '
                                 </button>
                               </div>
                               <div>
-                                <button onClick={() => alert('Api Pending')}>
+                                <button>
                                   <img src="/images/Download2.png" className="h-6 w-6" />
                                 </button>
                               </div>
                             </td>
                           </Fragment>
                         )}
-                        {status === 'Expired' && (
+                        {CurrentTab === 'Expired' && (
                           <Fragment>
                             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0 text-center">
                               <span className="text-customGray-100">
@@ -330,17 +326,56 @@ const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | '
                                   : '--'}
                               </span>
                             </td>
+                            {(() => {
+                              if (allTypesInResponseSet.has('quiz')) {
+                                const statusModule = candidate?.module?.find(
+                                  (mdl) => mdl.type.toLowerCase() === 'quiz',
+                                )?.status;
+                                return (
+                                  <td
+                                    className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Pending' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                  >
+                                    {statusModule === 'Pending'
+                                      ? 'Interrupted'
+                                      : statusModule ?? '--'}
+                                  </td>
+                                );
+                              }
+                            })()}
 
-                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
-                              {'--'}
-                            </td>
+                            {(() => {
+                              if (allTypesInResponseSet.has('text to text')) {
+                                const statusModule = candidate?.module?.find(
+                                  (mdl) => mdl.type.toLowerCase() === 'text to text',
+                                )?.status;
+                                return (
+                                  <td
+                                    className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Pending' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                  >
+                                    {statusModule === 'Pending'
+                                      ? 'Interrupted'
+                                      : statusModule ?? '--'}
+                                  </td>
+                                );
+                              }
+                            })()}
 
-                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
-                              {'--'}
-                            </td>
-                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
-                              {'--'}
-                            </td>
+                            {(() => {
+                              if (allTypesInResponseSet.has('ai video interview')) {
+                                const statusModule = candidate?.module?.find(
+                                  (mdl) => mdl.type.toLowerCase() === 'ai video interview',
+                                )?.status;
+                                return (
+                                  <td
+                                    className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Pending' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                  >
+                                    {statusModule === 'Pending'
+                                      ? 'Interrupted'
+                                      : statusModule ?? '--'}
+                                  </td>
+                                );
+                              }
+                            })()}
 
                             <td
                               className={`whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500`}
@@ -357,47 +392,54 @@ const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | '
                             </td>
                           </Fragment>
                         )}
-                        {status === 'Pending' && (
+                        {CurrentTab === 'Pending' && (
                           <Fragment>
                             {(() => {
-                              if (allTypesInResponseSet.current.has('quiz')) {
-                                const status = candidate?.module?.find(
-                                  (mdl) => mdl.type === 'Quiz',
+                              if (allTypesInResponseSet.has('quiz')) {
+                                const statusModule = candidate?.module?.find(
+                                  (mdl) => mdl.type.toLowerCase() === 'quiz',
                                 )?.status;
                                 return (
                                   <td
-                                    className={`whitespace-nowrap px-3 py-4 text-sm text-center ${status === 'Pending' ? 'text-[#FB2121]' : status === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                    className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Pending' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
                                   >
-                                    {status === 'Pending' ? 'Interrupted' : status ?? '--'}
+                                    {statusModule === 'Pending'
+                                      ? 'Interrupted'
+                                      : statusModule ?? '--'}
                                   </td>
                                 );
                               }
                             })()}
 
                             {(() => {
-                              if (allTypesInResponseSet.current.has('text to text')) {
-                                const status = candidate?.module?.find(
-                                  (mdl) => mdl.type.toLowerCase() === 'text to text',
+                              if (allTypesInResponseSet.has('text to text')) {
+                                const statusModule = candidate?.module?.find(
+                                  (mdl) => mdl.type.toLowerCase().toLowerCase() === 'text to text',
                                 )?.status;
                                 return (
                                   <td
-                                    className={`whitespace-nowrap px-3 py-4 text-sm text-center ${status === 'Pending' ? 'text-[#FB2121]' : status === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                    className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Pending' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
                                   >
-                                    {status === 'Pending' ? 'Interrupted' : status ?? '--'}
+                                    {statusModule === 'Pending'
+                                      ? 'Interrupted'
+                                      : statusModule ?? '--'}
                                   </td>
                                 );
                               }
                             })()}
                             {(() => {
-                              if (allTypesInResponseSet.current.has('ai video interview')) {
-                                const status = candidate?.module?.find(
-                                  (mdl) => mdl.type.toLowerCase() === 'ai video interview',
+                              if (allTypesInResponseSet.has('ai video interview')) {
+                                const statusModule = candidate?.module?.find(
+                                  (mdl) =>
+                                    mdl.type.toLowerCase().toLowerCase() === 'ai video interview',
                                 )?.status;
                                 return (
                                   <td
-                                    className={`whitespace-nowrap px-3 py-4 text-sm text-center ${status === 'Pending' ? 'text-[#FB2121]' : status === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                    className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Pending' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
                                   >
-                                    {status === 'Pending' ? 'Interrupted' : status ?? '--'}
+                                    {statusModule === 'Pending'
+                                      ? 'Interrupted'
+                                      : statusModule ?? '--'}
                                   </td>
                                 );
                               }
@@ -405,34 +447,20 @@ const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | '
                             <td
                               className={`whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500`}
                             >
-                              Expired
+                              Ongoing
                             </td>
                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center flex justify-center items-center">
                               <button
-                                onClick={() => alert('Api Pending')}
-                                className="text-sandybrown pt-2.5"
+                                onClick={() => handleReset(candidate._id)}
+                                className={`text-[#CC8448] pt-2.5 ${!candidate?.module?.find((mdl) => mdl.status === 'Pending') && 'cursor-not-allowed text-[#CC844866]'}`}
+                                disabled={(() =>
+                                  !candidate?.module?.find((mdl) => mdl.status === 'Pending'))()}
                               >
                                 Reset
                               </button>
                             </td>
                           </Fragment>
                         )}
-
-                        {/* <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {status === 'Completed' ? (
-                            'Completed'
-                          ) : (
-                            <button
-                              className="flex items-center gap-2 text-sandybrown"
-                              onClick={() => {
-                                Clipboard.copy(candidate?.assessmentId);
-                              }}
-                            >
-                              <DocumentDuplicateIcon className="h-[12px] w-[12px]" />
-                              <span>Copy</span>
-                            </button>
-                          )}
-                        </td> */}
                       </tr>
                     ))}
                   </tbody>
@@ -441,9 +469,9 @@ const PendingTab = ({ status = 'Pending' }: { status?: 'Pending' | 'Expired' | '
             </div>
           </div>
           <Pagination
-            totalCandidates={candidatesData.totalCandidates ?? 0}
+            totalCandidates={candidatesData?.totalCandidates ?? 0}
             currentPage={currentPage}
-            totalPages={candidatesData.totalPage}
+            totalPages={candidatesData?.totalPage ?? 0}
             setCurrentPage={setCurrentPage}
             sizePerPage={sizePerPage}
             setSizePerPage={setSizePerPage}

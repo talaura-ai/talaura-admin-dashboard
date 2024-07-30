@@ -55,3 +55,32 @@ export const generateSignedUrlS3 = async (s3url?: string) => {
   const signedUrl = await getSignedUrl(s3Client, command, { expiresIn: 2 * 60 * 60 }); //2hr
   return signedUrl;
 };
+
+export const deepClone = <T>(obj: T): T => {
+  // Check for null or non-object types
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+
+  // Handle Date objects
+  if (obj instanceof Date) {
+    return new Date(obj.getTime()) as T;
+  }
+
+  // Handle Array objects
+  if (Array.isArray(obj)) {
+    return obj.map((item) => deepClone(item)) as unknown as T;
+  }
+
+  // Handle generic objects
+  if (obj instanceof Object) {
+    const cloneObj: { [key: string]: any } = {};
+    for (const key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        cloneObj[key] = deepClone(obj[key]);
+      }
+    }
+    return cloneObj as T;
+  }
+  return obj;
+};

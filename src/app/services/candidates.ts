@@ -37,9 +37,17 @@ export const candidatesApi = createApi({
       query: (args) => {
         const { id, pageSize = 6, status, pageNum = 0, currentTab } = args;
 
-        let url = `organization/candidate/fetchCandidate?assessmentId=${id}`;
-        if (currentTab === 'Completed') {
-          url = `organization/candidate/fetchCandidateCompleted?assessmentId=${id}`;
+        let url = '';
+        switch (currentTab) {
+          case 'Pending':
+            url = `organization/candidate/fetchCandidate?assessmentId=${id}`;
+            break;
+          case 'Expired':
+            url = `organization/candidate/fetchExpiredCandidate?assessmentId=${id}`;
+            break;
+          case 'Completed':
+            url = `organization/candidate/fetchCandidateCompleted?assessmentId=${id}`;
+            break;
         }
         if (pageSize) {
           url += `&pageSize=${pageSize}`;
@@ -60,6 +68,13 @@ export const candidatesApi = createApi({
         url: `organization/candidate/fetchReport`,
         method: 'POST',
         body: { candidateId },
+      }),
+    }),
+    resetModules: builder.mutation<ICandidateReportData, string[]>({
+      query: (candidateIds: string[]) => ({
+        url: `organization/candidate/resetModules`,
+        method: 'POST',
+        body: { candidates: candidateIds },
       }),
     }),
 
@@ -122,4 +137,5 @@ export const {
   useNotifyCandidateMutation,
   useExtendCandidateAssessmentDurationMutation,
   useUpdateCandidatesStatusMutation,
+  useResetModulesMutation,
 } = candidatesApi;
