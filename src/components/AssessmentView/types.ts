@@ -103,6 +103,7 @@ export interface ICandidateReportDataReportItem {
   report: {
     name: string;
     score: number;
+    text?: number;
     _id: string;
   }[];
   moduleName: string;

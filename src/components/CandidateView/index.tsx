@@ -6,6 +6,7 @@ import ErrorPage from '../Error/ErrorPage';
 import LoadingScreen from '../Loading/LoadingScreen';
 import CandidateDashBoard from './CandidateDashBoard';
 import VideoView from './VideoView';
+import TextToTextView from './TextToTextView';
 
 const CandidateView: FunctionComponent = () => {
   const location = useLocation();
@@ -21,7 +22,7 @@ const CandidateView: FunctionComponent = () => {
     { id: 1, text: 'Summary', apiKey: '' },
     { id: 2, text: 'Video', apiKey: 'ai video interview' },
     // { id: 3, text: 'Aptitude', apiKey: 'quiz' },
-    { id: 4, text: 'Voice to Text', apiKey: 'text to text' },
+    { id: 4, text: 'Text to Text', apiKey: 'voice to text' },
   ];
 
   const [activeTab, setActiveTab] = useState<{
@@ -34,6 +35,8 @@ const CandidateView: FunctionComponent = () => {
         return <CandidateDashBoard candidateData={candidateData} />;
       case 'Video':
         return <VideoView candidateData={candidateData} />;
+      case 'Text to Text':
+        return <TextToTextView candidateData={candidateData} />;
       default:
         return <VideoView candidateData={candidateData} />;
     }

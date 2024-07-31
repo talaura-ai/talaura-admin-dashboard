@@ -48,7 +48,7 @@ const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) 
 
   return (
     <div className="flex flex-col w-full">
-      <div className="self-end flex justify-between mb-4 w-full">
+      <div className="self-end flex justify-between mb-4 mt-2 w-full">
         <h5 className="text-customGray-100 text-xl font-bold"></h5>
         <div className="row1_col2 flex gap-2 text-base font-bold text-black">
           <div className="container flex items-center justify-center ">
@@ -116,17 +116,52 @@ const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) 
           </div>
         </div>
       </div>
-      <div className="w-full border border-[#E0E0E0] shadow-[0_4px_4px_0_(0,0,0,0.25)] rounded-[10px] bg-white">
-        <div className="flex px-4 pt-5 pb-2.5 border-b-2 border-bottom-#[#D6D6D6]">
-          <span className="text-2xl text-black text-left font-Sansation_Bold">AI Context</span>
+      <div className="flex flex-row gap-2.5">
+        <div
+          className={`${reportData?.report && reportData?.report.length > 0 ? 'w-1/2' : 'w-full'} border border-[#E0E0E0] shadow-[0_4px_4px_0_(0,0,0,0.25)] rounded-[10px] bg-white`}
+        >
+          <div className="flex px-4 pt-5 pb-2.5 border-b-2 border-bottom-#[#D6D6D6]">
+            <span className="text-2xl text-black text-left font-Sansation_Bold">AI Context</span>
+          </div>
+          <div className="py-4 px-10 text-black text-left text-sm">
+            <p
+              dangerouslySetInnerHTML={{
+                __html: reportData?.description?.replace(/(\d)(?=\.)/g, '<br>$1') ?? '',
+              }}
+            />
+          </div>
         </div>
-        <div className="py-4 px-10 text-black text-left text-sm">
-          <p
-            dangerouslySetInnerHTML={{
-              __html: reportData?.description?.replace(/(\d)(?=\.)/g, '<br>$1') ?? '',
-            }}
-          />
-        </div>
+        {reportData?.report && reportData?.report.length > 0 && (
+          <div className="w-1/2 border border-[#E0E0E0] shadow-[0_4px_4px_0_(0,0,0,0.25)] rounded-[10px] bg-white">
+            <div className="flex px-4 pt-5 pb-2.5 border-b-2 border-bottom-#[#D6D6D6]">
+              <span className="text-2xl text-black text-left font-Sansation_Bold">
+                Skill Wise Report
+              </span>
+            </div>
+            <div className="py-4 px-10 text-black text-left text-sm">
+              {reportData?.report.map((rpt) => (
+                <div key={rpt._id}>
+                  <div className={`flex flex-row justify-start items-center mb-5 gap-2 w-full`}>
+                    <div className="chat-text max-w-[80%]">
+                      <h4 className={`text-[#7D7C7C] text-base font-bold text-left`}>
+                        {rpt.name}: <span className="text-[#FB2121]">{rpt.score}%</span>
+                      </h4>
+                    </div>
+                  </div>
+                  {rpt?.text && (
+                    <div
+                      className={`flex flex-row-reverse justify-start items-center mb-5 gap-2 w-full`}
+                    >
+                      <div className="chat-text  max-w-[80%]">
+                        <p className={`text-black text-base text-right`}>{rpt.text}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
