@@ -216,7 +216,8 @@ const PendingTab = ({
                         if (
                           ['Pending', 'Expired'].includes(CurrentTab) &&
                           allModulesTypesIncluded.has(val.apiKey) &&
-                          !candidatesData?.Candidate[0].module?.find(
+                          candidatesData?.Candidate.length &&
+                          !candidatesData?.Candidate[0]?.module?.find(
                             (mdl) => mdl.type.toLowerCase() === val.apiKey,
                           )
                         ) {
