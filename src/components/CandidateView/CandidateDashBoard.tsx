@@ -31,7 +31,7 @@ const CandidateDashBoard = ({ candidateData }: { candidateData?: ICandidateRepor
             <div>
               <h6 className="text-[#1F1F25] text-base font-bold">TAL Score</h6>
             </div>
-            <div className="flex justify-between items-center gap-2">
+            {/* <div className="flex justify-between items-center gap-2">
               <p className='text-[#3B82F6] text-base font-bold"'>View Details</p>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -45,14 +45,14 @@ const CandidateDashBoard = ({ candidateData }: { candidateData?: ICandidateRepor
                   fill="#3B82F6"
                 />
               </svg>
-            </div>
+            </div> */}
           </div>
           <div className="flex justify-center mt-4 overflow-hidden">
             <div className="w-[204px] h-[102px] border-[20px] border-b-0 rounded-t-full border-[#CCFFD1] flex justify-center relative z-0">
               <div
                 className={`w-[204px] h-[102px] border-[20px] border-b-0 rounded-t-full border-[#40B24B] flex justify-center absolute bottom-0 z-10 origin-bottom rotate-[-20deg]`}
                 style={{
-                  transform: `rotate(${(candidateData?.paiScore ?? 0) * 1.8 + 180}deg)`,
+                  transform: `rotate(${Math.min(candidateData?.paiScore ?? 0, 100) * 1.8 + 180}deg)`,
                 }}
               ></div>
               <div className="self-end">
@@ -68,7 +68,7 @@ const CandidateDashBoard = ({ candidateData }: { candidateData?: ICandidateRepor
             <div>
               <h6 className="text-[#1F1F25] text-base font-bold">Percentile</h6>
             </div>
-            <div className="flex justify-between items-center gap-2">
+            {/* <div className="flex justify-between items-center gap-2">
               <p className='text-[#3B82F6] text-base font-bold"'>View Details</p>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -82,14 +82,14 @@ const CandidateDashBoard = ({ candidateData }: { candidateData?: ICandidateRepor
                   fill="#3B82F6"
                 />
               </svg>
-            </div>
+            </div> */}
           </div>
           <div className="flex justify-center mt-4 overflow-hidden">
             <div className="w-[204px] h-[102px] border-[20px] border-b-0 rounded-t-full border-[#CCFFD1] flex justify-center relative z-0">
               <div
                 className={`w-[204px] h-[102px] border-[20px] border-b-0 rounded-t-full border-[#40B24B] flex justify-center absolute bottom-0 z-10 origin-bottom`}
                 style={{
-                  transform: `rotate(${(candidateData?.cognitiveScore ?? 0) * 1.8 + 180}deg)`,
+                  transform: `rotate(${Math.min(candidateData?.cognitiveScore ?? 0, 100) * 1.8 + 180}deg)`,
                 }}
               ></div>
               <div className="self-end">

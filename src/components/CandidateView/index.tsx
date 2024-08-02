@@ -63,12 +63,12 @@ const CandidateView: FunctionComponent = () => {
           assessmentName={candidateData?.name}
         />
         <div className="self-stretch flex flex-row flex-wrap items-start justify-start relative max-w-full mt-4">
-          <div className="self-end absolute bottom-4 right-0">
+          {/* <div className="self-end absolute bottom-4 right-0">
             <button className="bg-[#CC8448] flex gap-2 items-center text-white px-2 py-3 rounded-lg">
               <img src="/images/Download.png" className="h-[25px] w-[25px]" />
               <span>Download PDF</span>
             </button>
-          </div>
+          </div> */}
           {TabData.map((tab) => {
             if (
               !tab.apiKey ||

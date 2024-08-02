@@ -20,7 +20,10 @@ const CandidateReportAccordion = ({
           <span className="text-green-300 text-lg font-bold whitespace-nowrap">
             {report?.average ?? 0} %
           </span>
-          <button className="flex" onClick={() => setCurrentExpandedReportId(report._id ?? '')}>
+          <button
+            className="flex"
+            onClick={() => setCurrentExpandedReportId(isExpanded ? '' : report._id ?? '')}
+          >
             <span className="text-xs text-customGray-250 ml-1">Correct</span>
             {isExpanded ? (
               <ChevronUpIcon className="w-[12px] h-[16px] mr-2 ml-2.5" />
