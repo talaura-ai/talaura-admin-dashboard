@@ -89,11 +89,11 @@ const CandidateDashBoard = ({ candidateData }: { candidateData?: ICandidateRepor
               <div
                 className={`w-[204px] h-[102px] border-[20px] border-b-0 rounded-t-full border-[#40B24B] flex justify-center absolute bottom-0 z-10 origin-bottom`}
                 style={{
-                  transform: `rotate(${Math.min(candidateData?.cognitiveScore ?? 0, 100) * 1.8 + 180}deg)`,
+                  transform: `rotate(${Math.min(candidateData?.percentile ?? 0, 100) * 1.8 + 180}deg)`,
                 }}
               ></div>
               <div className="self-end">
-                <h4 className="text-[#0A0A0A] text-2xl">{candidateData?.cognitiveScore}%</h4>
+                <h4 className="text-[#0A0A0A] text-2xl">{candidateData?.percentile ?? 0}%</h4>
                 <p className="text-sm text-[#737373]">Completed</p>
               </div>
             </div>

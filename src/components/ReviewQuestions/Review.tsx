@@ -30,7 +30,7 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module }) => {
   return (
     <>
       <div className="relative w-full z-[999]">
-        <div className="grid grid-cols-1 h-[340px] overflow-y-auto">
+        <div className="grid grid-cols-1 h-[450px] overflow-y-auto">
           <div className="flex flex-col rounded-lg shadow-inner bg-white p-8 overflow-scroll z-50">
             <h2 className="font-Sansation_Bold font-[700]">Sample Questions</h2>
             {(currentModule?.type === 'Quiz' ? questions.slice(0, 5) : questions)?.map(

@@ -121,6 +121,7 @@ export interface ICandidateReportData {
   report: ICandidateReportDataReportItem[];
   paiScore: number;
   cognitiveScore: number;
+  percentile?: number;
   startsAt: string;
   endsOn: string;
   name: string;

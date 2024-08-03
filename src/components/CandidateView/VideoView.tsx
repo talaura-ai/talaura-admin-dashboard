@@ -16,7 +16,7 @@ const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) 
         return toast.error('No video found');
       }
       setIsVideoLoading(true);
-      const urlObject = new URL(reportData?.videoUrl);
+      const urlObject = new URL(reportData?.videoUrl.replace('%2F', '/'));
       const videoPath = urlObject.pathname.slice(1);
       const signedUrl = await generateSignedUrlS3(videoPath);
       setVideoSignedUrl(signedUrl);

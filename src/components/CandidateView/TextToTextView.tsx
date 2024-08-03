@@ -39,7 +39,7 @@ const TextToTextView = ({ candidateData }: { candidateData?: ICandidateReportDat
           <div className="flex justify-between px-4 pt-5 pb-2.5 border-b-2 border-bottom-#[#D6D6D6]">
             <h2 className="text-2xl text-black text-left font-Sansation_Bold">Transcript</h2>
             <h2 className="text-2xl text-[#40B24B] text-left font-Sansation_Bold">
-              Score: {candidateData?.cognitiveScore}%
+              Score: {reportData?.average ?? 0}%
             </h2>
           </div>
           <div className="chat-container h-[254px] overflow-scroll p-[18px]">

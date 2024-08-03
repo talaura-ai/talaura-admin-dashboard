@@ -55,7 +55,7 @@ const ModuleCard: React.FC<any> = (props) => {
         setWeight(+selectedModule.Weightage);
       }
       if (selectedModule?.time) {
-        setStateTime(+selectedModule.time);
+        setStateTime(Math.max(+selectedModule.time, 10));
       }
     }
   }, [selectedModule]);
@@ -104,7 +104,7 @@ const ModuleCard: React.FC<any> = (props) => {
     >
       <div className="flex flex-row items-center justify-between">
         <div className="grow justify-between items-start flex gap-8 pr-10">
-          <h1 className="text-orange-text">{type}</h1>
+          <h1 className="text-orange-text">{type === 'Voice to Text' ? 'Text To Text' : type}</h1>
         </div>
         {/* {!reviewAble && (
           <>
@@ -253,7 +253,7 @@ const ModuleCard: React.FC<any> = (props) => {
                   <button
                     className="border rounded-md bg-golden-200 mx-2 px-2 text-lg"
                     onClick={() => {
-                      setStateTime((prev) => (prev !== 0 ? prev - 10 : prev));
+                      setStateTime((prev) => (prev > 10 ? prev - 10 : prev));
                     }}
                   >
                     -
@@ -264,7 +264,7 @@ const ModuleCard: React.FC<any> = (props) => {
                   <button
                     className="border rounded-md bg-golden-200 mx-2 px-2 text-lg"
                     onClick={() => {
-                      setStateTime((prev) => (prev !== 60 ? prev + 10 : prev));
+                      setStateTime((prev) => (prev < 60 ? prev + 10 : prev));
                     }}
                   >
                     +

@@ -34,8 +34,8 @@ const Footer = () => {
     handleSubmit,
   } = useForm<IFormInput>({
     defaultValues: {
-      startDateTime: timeDateRoundOffToNextHour.format('YYYY-MM-DD[T]hh:mm'),
-      endDateTime: timeDateRoundOffToNextHour.add(1, 'hour').format('YYYY-MM-DD[T]hh:mm'),
+      startDateTime: timeDateRoundOffToNextHour.format('YYYY-MM-DD[T]HH:mm'),
+      endDateTime: timeDateRoundOffToNextHour.add(2, 'hour').format('YYYY-MM-DD[T]HH:mm'),
     },
   });
 
@@ -78,7 +78,7 @@ const Footer = () => {
               type="datetime-local"
               {...register('startDateTime', {
                 required: true,
-                min: dayjs().format('YYYY-MM-DD[T]hh:mm'),
+                min: dayjs().format('YYYY-MM-DD[T]HH:mm'),
               })}
               className="h-full pl-10 border border-customGray-80"
             />
@@ -98,7 +98,7 @@ const Footer = () => {
               type="datetime-local"
               {...register('endDateTime', {
                 required: true,
-                min: dayjs(getValues('endDateTime')).format('YYYY-MM-DD[T]hh:mm'),
+                min: dayjs(getValues('endDateTime')).format('YYYY-MM-DD[T]HH:mm'),
               })}
               className="h-full pl-10 border border-customGray-80"
             />

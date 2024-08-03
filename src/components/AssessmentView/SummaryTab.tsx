@@ -66,7 +66,7 @@ const SummaryTab = ({ assessmentData }: { assessmentData?: IAssessmentDetails })
                   {assessmentData?.assessments[0].totalCandidates ?? 0}
                 </span>
               </div>
-              <span className="self-stretch relative text-[0.875rem] inline-block text-customGray-100 min-w-[2.688rem] font-bold z-[1]">
+              <span className="self-stretch relative text-[0.875rem] inline-block text-customGray-100 min-w-[2.688rem] font-bold z-[1] text-center">
                 Invites
               </span>
             </div>
@@ -76,8 +76,8 @@ const SummaryTab = ({ assessmentData }: { assessmentData?: IAssessmentDetails })
                   {assessmentData?.assessments[0]?.registeredCandidates ?? 0}
                 </span>
               </div>
-              <span className="self-stretch relative text-[0.875rem] inline-block text-customGray-100 min-w-[2.688rem] font-bold z-[1]">
-                Ongoing
+              <span className="self-stretch relative text-[0.875rem] inline-block text-customGray-100 min-w-[2.688rem] font-bold z-[1] text-center">
+                Pending
               </span>
             </div>
             <div className="shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] h-[110px] py-2.5 w-[100px] rounded-xl bg-white flex flex-col items-start justify-start px-[1.5rem] box-border gap-[0.187rem] z-[1]">
@@ -86,20 +86,20 @@ const SummaryTab = ({ assessmentData }: { assessmentData?: IAssessmentDetails })
                   {assessmentData?.assessments[0]?.completeCandidates ?? 0}
                 </span>
               </div>
-              <span className="self-stretch relative text-[0.875rem] inline-block text-customGray-100 min-w-[2.688rem] font-bold z-[1]">
+              <span className="self-stretch relative text-[0.875rem] inline-block text-customGray-100 min-w-[2.688rem] font-bold z-[1] text-center">
                 Completed
               </span>
             </div>
-            <div className="shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] h-[110px] py-2.5 w-[100px] rounded-xl bg-white flex flex-col items-start justify-start px-[1.5rem] box-border gap-[0.187rem] z-[1]">
+            {/* <div className="shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] h-[110px] py-2.5 w-[100px] rounded-xl bg-white flex flex-col items-start justify-start px-[1.5rem] box-border gap-[0.187rem] z-[1]">
               <div className="flex flex-row items-start justify-start py-[0rem] px-[0.062rem]">
                 <span className="relative inline-block min-w-[2.563rem] z-[1] font-bold mq450:text-[1.688rem] mq1050:text-[2.25rem]">
                   {assessmentData?.assessments[0]?.pendingCandidates ?? 0}
                 </span>
               </div>
-              <span className="self-stretch relative text-[0.875rem] inline-block text-customGray-100 min-w-[2.688rem] font-bold z-[1]">
+              <span className="self-stretch relative text-[0.875rem] inline-block text-customGray-100 min-w-[2.688rem] font-bold z-[1] text-center">
                 Pending
               </span>
-            </div>
+            </div> */}
           </div>
           <div className="w-full flex flex-col gap-7">
             <div className="self-stretch shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] rounded-xl bg-white flex flex-row items-end justify-between py-8 pr-[0rem] pl-[1.687rem] box-border max-w-full gap-[1.25rem] z-[1] text-[0.875rem] text-customGray-100 mq750:flex-wrap mq750:pl-[1.25rem] mq750:pr-[1.25rem] mq750:box-border">

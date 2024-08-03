@@ -2,7 +2,7 @@
 import { Dispatch, SetStateAction, useEffect } from 'react';
 
 const Header = ({
-  exportDataToCsv,
+  // exportDataToCsv,
   setFilterStatus,
   statusFromParam,
   handleUpdateCandidatesStatus,
@@ -70,7 +70,7 @@ const Header = ({
         </button>
 
       */}
-        {statusFromParam === 'Expired' && (
+        {/* {statusFromParam === 'Expired' && (
           <button
             className="cursor-pointer [border:none] p-2 bg-peru-100 flex-1 rounded-3xs flex flex-row items-start justify-start box-border min-w-[6.438rem] z-[1] hover:bg-peru-200"
             // onClick={() => alert('Api Pending')}
@@ -79,7 +79,7 @@ const Header = ({
               Extend
             </div>
           </button>
-        )}
+        )} */}
         {statusFromParam === 'Pending' && (
           <button
             className="cursor-pointer [border:none] p-2 bg-peru-100 flex-1 rounded-3xs flex flex-row items-start justify-start box-border min-w-[6.438rem] z-[1] hover:bg-peru-200"
@@ -110,7 +110,7 @@ const Header = ({
             </button>
           </>
         )}
-        <div className="h-10 w-1 bg-customGray-150" />
+        {/* <div className="h-10 w-1 bg-customGray-150" />
         <button
           className="cursor-pointer [border:none] py-[0.5rem] pr-[0.5rem] pl-[1rem] bg-peru-100 flex-1 rounded-3xs flex flex-row items-start justify-start box-border min-w-[6.438rem] z-[1] hover:bg-peru-200"
           onClick={exportDataToCsv}
@@ -119,7 +119,7 @@ const Header = ({
           <div className="flex-1 relative text-base font-sansation text-white text-center z-[1] mq450:text-[1.188rem]">
             Excel
           </div>
-        </button>
+        </button> */}
       </div>
     </div>
   );

@@ -23,6 +23,7 @@ import { ICandidate, ICandidateData } from '../types';
 import ExtendModal from './ExtendModal';
 import Header from './Header';
 import Pagination from './Pagination';
+import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 dayjs.locale('en-in');
 dayjs.extend(utc);
 dayjs.extend(timeZone);
@@ -292,29 +293,43 @@ const PendingTab = ({
                             <td className="whitespace-nowrap px-3 py-1 text-sm text-gray-500 text-center flex justify-center items-center gap-2">
                               <div className="flex flex-col gap-1">
                                 <button
-                                  className="rounded-[4px] border border-[#ACACAC] p-1 px-2 flex items-center gap-1 text-[#ACACAC] text-sm"
+                                  className={`rounded-[4px] border p-1 px-2 flex items-center gap-1  ${candidate?.selectStatus === 'Select' ? 'border-[#40B24B] text-[#40B24B] cursor-not-allowed' : 'border-[#ACACAC] text-[#ACACAC]'} text-sm`}
                                   onClick={() =>
                                     handleUpdateCandidatesStatus('Select', candidate._id)
                                   }
+                                  disabled={candidate?.selectStatus === 'Select'}
                                 >
-                                  <img src="/images/Check.png" className="h-3 w-3" />
+                                  <CheckCircleIcon
+                                    fontSize={20}
+                                    color={
+                                      candidate?.selectStatus === 'Select' ? '#40B24B' : '#ACACAC'
+                                    }
+                                    className="h-3 w-3"
+                                  />
                                   <span>Select</span>
                                 </button>
                                 <button
-                                  className="rounded-[4px] border border-[#ACACAC] p-1 px-2 flex items-center gap-1 text-[#ACACAC] text-sm"
+                                  className={`rounded-[4px] border p-1 px-2 flex items-center gap-1  ${candidate?.selectStatus === 'Reject' ? 'border-[#FB2121] text-[#FB2121] cursor-not-allowed' : 'border-[#ACACAC] text-[#ACACAC]'} text-sm`}
                                   onClick={() =>
                                     handleUpdateCandidatesStatus('Reject', candidate._id)
                                   }
+                                  disabled={candidate?.selectStatus === 'Reject'}
                                 >
-                                  <img src="/images/Cross.png" className="h-3 w-3" />
+                                  <XCircleIcon
+                                    fontSize={20}
+                                    color={
+                                      candidate?.selectStatus === 'Reject' ? '#FB2121' : '#ACACAC'
+                                    }
+                                    className={'h-3 w-3'}
+                                  />
                                   <span>Reject</span>
                                 </button>
                               </div>
-                              <div>
+                              {/* <div>
                                 <button>
                                   <img src="/images/Download2.png" className="h-6 w-6" />
                                 </button>
-                              </div>
+                              </div> */}
                             </td>
                           </Fragment>
                         )}
