@@ -18,9 +18,9 @@ const AddedCandidatesTable = () => {
           </span>
         </div>
         <div className="row2 self-center w-full">
-          <div className="table_container overflow-scroll max-h-[450px]">
-            <table className="w-full divide-y divide-customGray-250 bg-white rounded-md">
-              <thead className="border-collapse">
+          <div className="table_container overflow-scroll max-h-[350px]">
+            <table className="w-full divide-y divide-customGray-250 bg-white rounded-md border-collapse">
+              <thead className="border-collapse sticky top-0 z-1">
                 <tr className="divide-customGray-250 divide-x">
                   {columns.map((val, idx) => (
                     <th

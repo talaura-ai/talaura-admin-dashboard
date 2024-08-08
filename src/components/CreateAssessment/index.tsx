@@ -78,7 +78,7 @@ const CreateAssessment = () => {
   const [questions, setQuestions] = useState([]);
   const [page, setPage] = useState(0);
 
-  const [skillsData, setSkillsData] = useState<any>([]);
+  const [skillsData, setSkillsData] = useState<string[]>([]);
   const [saveQuestionPage, setSaveQuestionPage] = useState(0);
   const jdPage = 0;
   const [skillsPage, setSkillsPage] = useState(0);
@@ -86,8 +86,6 @@ const CreateAssessment = () => {
   const [reviewAssessmentPage, setReviewAssessmentPage] = useState(0);
 
   const { selectedSkills } = useAppSelector((state) => state.skills);
-
-  useEffect(() => {}, []);
 
   useEffect(() => {
     setSkillsPage(() => jdPage + 1);
@@ -343,24 +341,27 @@ const CreateAssessment = () => {
       return true;
     }
 
-    if (!initialQuestionValue) {
+    if (
+      page === jdPage &&
+      (!jdData || jdData.length < 3 || !initialQuestionValue || initialQuestionValue.length < 3)
+    ) {
       return true;
     }
 
-    if (initialQuestionValue.length < 2) {
-      return true;
-    }
-
-    if (page === jdPage && (!jdData || jdData.length < 3)) {
-      return true;
-    }
-
-    if (page === modulesPage) {
-      return false;
+    if (page === skillsPage) {
+      return selectedSkills.length === 0;
     }
 
     return false;
-  }, [actionLoading, btnState, initialQuestionValue, jdData, jdPage, modulesPage, page]);
+  }, [
+    actionLoading,
+    btnState,
+    initialQuestionValue,
+    jdData,
+    page,
+    selectedSkills.length,
+    skillsPage,
+  ]);
 
   const isBackDisabled = useCallback(() => {
     if (btnState === 'hideAll') {
@@ -596,12 +597,7 @@ const CreateAssessment = () => {
       setJdData={setJDData}
       conversation_id={conversation_id}
     />,
-    <Skills
-      // @ts-ignore
-      skills={skillsData}
-      setSkillsData={setSkillsData}
-      generateSkills={generateSkills}
-    />,
+    <Skills skills={skillsData} setSkillsData={setSkillsData} generateSkills={generateSkills} />,
     <Modules />,
     <ReviewAssessments />,
   ];

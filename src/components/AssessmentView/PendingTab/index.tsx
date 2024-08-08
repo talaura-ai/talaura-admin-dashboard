@@ -16,7 +16,7 @@ import {
   InitialExpiredTabColumns,
   InitialPendingTabColumns,
 } from '../../../helpers/constants';
-import { deepClone } from '../../../helpers/utils';
+import { deepClone, stringToArrayBuffer } from '../../../helpers/utils';
 import ErrorPage from '../../Error/ErrorPage';
 import LoadingScreen from '../../Loading/LoadingScreen';
 import { ICandidate, ICandidateData } from '../types';
@@ -72,14 +72,6 @@ const PendingTab = ({
     );
     setChecked(!checked && !indeterminate);
     setIndeterminate(false);
-  };
-  const stringToArrayBuffer = (s: string) => {
-    const buf = new ArrayBuffer(s.length);
-    const view = new Uint8Array(buf);
-    for (let i = 0; i < s.length; i++) {
-      view[i] = s.charCodeAt(i) & 0xff;
-    }
-    return buf;
   };
 
   const exportDataToCsv = async () => {

@@ -14,7 +14,7 @@ export const inviteCandidateSlice = createSlice({
     removeCandidateFromInviteList: (state, action: PayloadAction<string>) => {
       return state.filter((candidate) => candidate.email !== action.payload);
     },
-    clearInviteList: () => initialState,
+    clearInviteList: (state) => state,
   },
 });
 

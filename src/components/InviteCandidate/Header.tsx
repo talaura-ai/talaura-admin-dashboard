@@ -1,4 +1,6 @@
-const Header = () => {
+import { IAssessmentDetails } from '../AssessmentView/types';
+
+const Header = ({ assessmentData }: { assessmentData?: IAssessmentDetails }) => {
   return (
     <>
       <div
@@ -17,7 +19,7 @@ const Header = () => {
                 <a
                   className={`[text-decoration:none] relative text-base font-bold inline-block min-w-[1.875rem] z-[1] mq450:text-[1.188rem]`}
                 >
-                  A1
+                  {assessmentData?.assessments[0].name ?? 'Assessment Name'}
                 </a>
                 <div className="flex flex-col items-start justify-start px-[0rem] pb-[0rem] text-base mx-2">
                   &gt;

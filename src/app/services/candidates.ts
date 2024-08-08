@@ -99,8 +99,12 @@ export const candidatesApi = createApi({
 
     inviteCandidate: builder.mutation<
       {
-        status: string;
-        [key: string]: unknown;
+        status: boolean;
+        existingCandidate: {
+          name: string;
+          email: string;
+        }[];
+        assessmentId: string;
       },
       unknown
     >({

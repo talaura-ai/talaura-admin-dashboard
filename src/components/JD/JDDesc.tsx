@@ -132,7 +132,7 @@ const JDDesc: React.FC<IJDDesc> = ({
           </div>
           {isError && (
             <p className="mt-1 text-[#FB2121] text-sm font-bold">
-              *Assessment Description is mandatory{' '}
+              Assessment description with minimum 3 alphabet is mandatory
             </p>
           )}
         </div>

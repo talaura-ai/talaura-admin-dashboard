@@ -1,31 +1,44 @@
-import { useState } from 'react';
-import IMAGES from '../../assets/images/Images';
-import { Transition, Dialog, TransitionChild, DialogPanel } from '@headlessui/react';
-import { classNames } from '../Core/classNames';
+import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react';
+import { Dispatch, SetStateAction, useState } from 'react';
+import {
+  addSkill,
+  addSkillInSelectedSkills,
+  removeSelectedSkill,
+} from '../../app/features/skillsSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { addSkill, removeSelectedSkill, setSelectedSkill } from '../../app/features/skillsSlice';
+import IMAGES from '../../assets/images/Images';
+import { classNames } from '../Core/classNames';
+import { formatAndUniqueSkills } from '../../helpers/utils';
+import toast from 'react-hot-toast';
 
-export interface ISkils {
-  setSkillsData: any;
+export interface ISkills {
+  skills: string[];
+  setSkillsData: Dispatch<SetStateAction<string[]>>;
+  generateSkills: () => Promise<boolean | undefined>;
 }
 
-const Skills: React.FC<ISkils> = () => {
+const Skills: React.FC<ISkills> = () => {
   const { skills, selectedSkills } = useAppSelector((state) => state.skills);
   const [open, setOpen] = useState(false);
   const [customSkill, setCustomSkill] = useState('');
   const dispatch = useAppDispatch();
 
   const handleSubmitNewSkill = () => {
+    if (selectedSkills.length === formatAndUniqueSkills([...selectedSkills, customSkill]).length) {
+      toast.error('Skill already exists');
+      return;
+    }
     dispatch(addSkill(customSkill));
-    dispatch(setSelectedSkill(customSkill));
+    dispatch(addSkillInSelectedSkills(customSkill));
     setOpen(false);
+    setCustomSkill('');
   };
 
   const handleCheckboxChange = (event: { target: { value: any; checked: any } }) => {
     const { value, checked } = event.target;
 
     if (checked) {
-      dispatch(setSelectedSkill(value));
+      dispatch(addSkillInSelectedSkills(value));
     } else {
       dispatch(removeSelectedSkill(value));
     }
@@ -33,10 +46,10 @@ const Skills: React.FC<ISkils> = () => {
 
   return (
     <div className="mt-10">
-      <label className="text-black text-2xl font-Sansation ml-10">
-        Based on the details provided, below are the skills recommended.
-        <span className="text-gray-400">(Edit skills)</span>
-      </label>
+      <p className="text-black text-2xl font-Sansation ml-10">
+        Based on the description, below skills are recommended to be tested.
+      </p>
+      <p className="ml-10 text-black">(You can add or remove skills.)</p>
       <div className="relative mt-10 ml-10 w-[75vw] flex-wrap grid grid-cols-3">
         {skills.map((skill: any, idx: number) => {
           return (

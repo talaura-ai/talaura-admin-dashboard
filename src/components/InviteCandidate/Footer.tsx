@@ -5,16 +5,22 @@ import { useParams } from 'react-router-dom';
 import { clearInviteList } from '../../app/features/inviteCandidateSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useInviteCandidateMutation } from '../../app/services/candidates';
-import { IAddCandidateApiPayload } from '../AssessmentView/types';
-import { useMemo } from 'react';
+import { IAddCandidateApiPayload, IAssessmentDetails } from '../AssessmentView/types';
+import { useMemo, useState } from 'react';
+import DuplicateCandidatesModal from './DuplicateCandidatesModal';
 
 interface IFormInput {
   startDateTime: string;
   endDateTime: string;
 }
-const Footer = () => {
+const Footer = ({ assessmentData }: { assessmentData?: IAssessmentDetails }) => {
   const allCandidates = useAppSelector((state) => state.inviteCandidate);
+  const assessmentTotalDuration =
+    assessmentData?.assessments[0].module.reduce((prev, curr) => (prev += +curr.time), 0) ?? 60;
   const { assessmentId = '' } = useParams();
+  const [duplicateCandidates, setDuplicateCandidates] = useState<{ name: string; email: string }[]>(
+    [],
+  );
   const dispatch = useAppDispatch();
   const [inviteAllCandidate] = useInviteCandidateMutation();
 
@@ -27,21 +33,23 @@ const Footer = () => {
     return now;
   }, []);
 
-  const {
-    register,
-    formState: { isValid },
-    getValues,
-    handleSubmit,
-  } = useForm<IFormInput>({
+  const { register, getValues, handleSubmit, watch } = useForm<IFormInput>({
     defaultValues: {
       startDateTime: timeDateRoundOffToNextHour.format('YYYY-MM-DD[T]HH:mm'),
-      endDateTime: timeDateRoundOffToNextHour.add(2, 'hour').format('YYYY-MM-DD[T]HH:mm'),
+      endDateTime: timeDateRoundOffToNextHour
+        .add(assessmentTotalDuration, 'minute')
+        .format('YYYY-MM-DD[T]HH:mm'),
     },
   });
 
   const onSubmitHandler: SubmitHandler<IFormInput> = async (data, e) => {
     try {
       e?.preventDefault();
+      const isAnyInvalid = allCandidates.find((cnd) => cnd.isValid === false);
+      if (isAnyInvalid) {
+        toast.error('Please remove invalid entries.');
+        return;
+      }
       const payload: IAddCandidateApiPayload = {
         assessmentId,
         candidates: allCandidates.filter((cnd) => cnd.isValid === true),
@@ -50,13 +58,39 @@ const Footer = () => {
       };
       const response = await inviteAllCandidate(payload);
       if (response.data?.status) {
-        toast.success('Invite Successfully Sent and Local Invite List is Cleared');
-        dispatch(clearInviteList());
+        if (response.data.existingCandidate.length) {
+          if (response.data.existingCandidate.length === allCandidates.length) {
+            toast.error('No Candidates are invited');
+          } else {
+            toast.error('Some Candidates are duplicate');
+          }
+          setDuplicateCandidates(response.data.existingCandidate);
+          return;
+        } else {
+          toast.success('Invite Successfully Sent and Local Invite List is Cleared');
+          dispatch(clearInviteList());
+        }
       }
     } catch (error) {
       toast.error('Error Inviting');
     }
   };
+
+  const startDateTime = watch('startDateTime');
+  const endDateTime = watch('endDateTime');
+
+  const isInviteBtnDisabled = useMemo(() => {
+    if (allCandidates.find((cnd) => cnd.isValid == false)) {
+      return true;
+    }
+
+    const startDateTimeInForm = dayjs(startDateTime);
+    const endDateTimeInForm = dayjs(endDateTime);
+    if (endDateTimeInForm.diff(startDateTimeInForm, 'minute') < assessmentTotalDuration) {
+      return true;
+    }
+    return false;
+  }, [allCandidates, assessmentTotalDuration, endDateTime, startDateTime]);
 
   return (
     <footer className="self-end mt-[20px]">
@@ -106,8 +140,9 @@ const Footer = () => {
         </div>
         <div className="col3 flex justify-center self-end">
           <button
-            className={`${isValid ? 'bg-peru-100 cursor-pointer' : 'bg-golden-200 cursor-not-allowed'} [border:none] px-2 flex-1 rounded-3xs 
-                                      flex flex-row items-center justify-start box-border min-w-[6.438rem] h-[50px] z-[1] hover:bg-peru-100`}
+            disabled={isInviteBtnDisabled}
+            className={`${!isInviteBtnDisabled ? 'bg-peru-100 cursor-pointer  hover:bg-peru-100' : 'bg-golden-200 cursor-not-allowed'} [border:none] px-2 flex-1 rounded-3xs 
+                                      flex flex-row items-center justify-start box-border min-w-[6.438rem] h-[50px] z-[1]`}
             type="submit"
           >
             <img src="/images/PaperPlane.png" className="h-[25px] w-[25px] object-cover" alt="" />
@@ -117,6 +152,10 @@ const Footer = () => {
           </button>
         </div>
       </form>
+      <DuplicateCandidatesModal
+        duplicateCandidates={duplicateCandidates}
+        setDuplicateCandidates={setDuplicateCandidates}
+      />
     </footer>
   );
 };

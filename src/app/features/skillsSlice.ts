@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { formatAndUniqueSkills } from '../../helpers/utils';
 
 const initialState: any = { skills: [], selectedSkills: [] };
 
@@ -7,53 +8,25 @@ export const skillsSlice = createSlice({
   name: 'skills',
   initialState,
   reducers: {
-    setSkills: (state, action: PayloadAction<any>) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      if (Array.isArray(action.payload)) {
-        state.skills = Array.from(new Set(action.payload));
-      } else {
-        state.skills = action.payload;
-      }
+    setSkills: (state, action: PayloadAction<string[]>) => {
+      state.skills = formatAndUniqueSkills(action.payload);
     },
     getAllSkills: (state) => {
       return state.skills;
     },
-    addSkill: (state, action: PayloadAction<any>) => {
-      const finalSkills = new Set([...state.skills, action.payload]);
-      state.skills = Array.from(finalSkills);
+    addSkill: (state, action: PayloadAction<string>) => {
+      state.skills = formatAndUniqueSkills([...state.skills, action.payload]);
     },
-    addSkillInSelectedSkills: (state, action: PayloadAction<any>) => {
-      const finalSkills = new Set([...state.selectedSkills, action.payload]);
-
-      state.selectedSkills = Array.from(finalSkills);
+    addSkillInSelectedSkills: (state, action: PayloadAction<string>) => {
+      state.selectedSkills = formatAndUniqueSkills([...state.skills, action.payload]);
     },
     getSelectedSkills: (state) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
       state.selectedSkills;
     },
-    setSelectedSkill: (state, action: PayloadAction<any>) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      if (Array.isArray(action.payload)) {
-        state.selectedSkills = Array.from(new Set(action.payload));
-      } else {
-        const finalSkills = new Set([...state.selectedSkills, action.payload]);
-        state.selectedSkills = Array.from(finalSkills);
-      }
+    setSelectedSkill: (state, action: PayloadAction<string[]>) => {
+      state.selectedSkills = formatAndUniqueSkills(action.payload);
     },
     removeSelectedSkill: (state, action: PayloadAction<any>) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
       state.selectedSkills = state.selectedSkills.filter((item: string) => item !== action.payload);
     },
     resetSkillsSlice: () => initialState,

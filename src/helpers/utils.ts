@@ -84,3 +84,27 @@ export const deepClone = <T>(obj: T): T => {
   }
   return obj;
 };
+
+export const formatAndUniqueSkills = (skills: string[]) =>
+  Array.from(
+    new Set(
+      skills.map((skl) =>
+        skl
+          .trim()
+          .split(' ')
+          .map((splitted) =>
+            splitted.length ? splitted[0].toUpperCase() + splitted.slice(1).toLowerCase() : '',
+          )
+          .join(' '),
+      ),
+    ),
+  );
+
+export const stringToArrayBuffer = (s: string) => {
+  const buf = new ArrayBuffer(s.length);
+  const view = new Uint8Array(buf);
+  for (let i = 0; i < s.length; i++) {
+    view[i] = s.charCodeAt(i) & 0xff;
+  }
+  return buf;
+};

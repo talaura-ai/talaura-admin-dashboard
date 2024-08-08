@@ -91,7 +91,7 @@ const Input: React.FC<IInput> = ({
 
           {isError && (
             <p className="ml-10 mt-1 text-[#FB2121] text-sm font-bold">
-              *Assessment name is mandatory{' '}
+              Assessment name with minimum 3 alphabet is mandatory.
             </p>
           )}
         </div>
