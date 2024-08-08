@@ -31,6 +31,7 @@ export interface IAssessmentDetails {
       name: string;
       type: string;
       time: string;
+      noOfQuestions: number;
     }[];
 
     createdAt: Date;

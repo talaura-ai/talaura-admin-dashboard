@@ -49,7 +49,7 @@ const Skills: React.FC<ISkills> = () => {
       <p className="text-black text-2xl font-Sansation ml-10">
         Based on the description, below skills are recommended to be tested.
       </p>
-      <p className="ml-10 text-black">(You can add or remove skills.)</p>
+      <p className="ml-10 text-gray-500">(You can add or remove skills.)</p>
       <div className="relative mt-10 ml-10 w-[75vw] flex-wrap grid grid-cols-3">
         {skills.map((skill: any, idx: number) => {
           return (

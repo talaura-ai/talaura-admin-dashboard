@@ -60,41 +60,41 @@ const SummaryTab = ({ assessmentData }: { assessmentData?: IAssessmentDetails })
       <div className="flex-1 flex flex-row items-start justify-start gap-[1.187rem] mq1050:flex-wrap">
         <div className="flex-1 flex flex-row items-start justify-start gap-[1.5rem] max-w-full">
           <div className="self-stretch flex flex-col items-center justify-start gap-[1.25rem] max-w-full mq750:flex-wrap">
-            <div className="shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] h-[110px] py-2.5 w-[100px] rounded-xl bg-white flex flex-col items-start justify-start px-[1.5rem] box-border gap-[0.187rem] z-[1]">
-              <div className="flex flex-row items-start justify-start py-[0rem] px-[0.062rem]">
-                <span className="relative inline-block min-w-[2.563rem] z-[1] font-bold mq450:text-[1.688rem] mq1050:text-[2.25rem]">
+            <div className="shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] h-[110px] py-2.5 w-[100px] rounded-xl bg-white flex flex-col items-start justify-start text-center box-border gap-[0.187rem] z-[1]">
+              <div className="flex flex-row items-center justify-center w-full py-[0rem] px-[0.062rem]">
+                <p className="relative min-w-[2.563rem] z-[1] font-bold mq450:text-[1.688rem] mq1050:text-[2.25rem]">
                   {assessmentData?.assessments[0].totalCandidates ?? 0}
-                </span>
+                </p>
               </div>
               <span className="self-stretch relative text-[0.875rem] inline-block text-customGray-100 min-w-[2.688rem] font-bold z-[1] text-center">
                 Invites
               </span>
             </div>
-            <div className="shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] h-[110px] py-2.5 w-[100px] rounded-xl bg-white flex flex-col items-start justify-start px-[1.5rem] box-border gap-[0.187rem] z-[1]">
-              <div className="flex flex-row items-start justify-start py-[0rem] px-[0.062rem]">
-                <span className="relative inline-block min-w-[2.563rem] z-[1] font-bold mq450:text-[1.688rem] mq1050:text-[2.25rem]">
+            <div className="shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] h-[110px] py-2.5 w-[100px] rounded-xl bg-white flex flex-col items-start justify-start text-center box-border gap-[0.187rem] z-[1]">
+              <div className="flex flex-row items-center justify-center w-full py-[0rem] px-[0.062rem]">
+                <p className="relative min-w-[2.563rem] z-[1] font-bold mq450:text-[1.688rem] mq1050:text-[2.25rem]">
                   {assessmentData?.assessments[0]?.registeredCandidates ?? 0}
-                </span>
+                </p>
               </div>
               <span className="self-stretch relative text-[0.875rem] inline-block text-customGray-100 min-w-[2.688rem] font-bold z-[1] text-center">
                 Pending
               </span>
             </div>
-            <div className="shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] h-[110px] py-2.5 w-[100px] rounded-xl bg-white flex flex-col items-start justify-start px-[1.5rem] box-border gap-[0.187rem] z-[1]">
-              <div className="flex flex-row items-start justify-start py-[0rem] px-[0.062rem]">
-                <span className="relative inline-block min-w-[2.563rem] z-[1] font-bold mq450:text-[1.688rem] mq1050:text-[2.25rem]">
+            <div className="shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] h-[110px] py-2.5 w-[100px] rounded-xl bg-white flex flex-col items-start justify-start text-center box-border gap-[0.187rem] z-[1]">
+              <div className="flex flex-row items-center justify-center w-full py-[0rem] px-[0.062rem]">
+                <p className="relative min-w-[2.563rem] z-[1] font-bold mq450:text-[1.688rem] mq1050:text-[2.25rem]">
                   {assessmentData?.assessments[0]?.completeCandidates ?? 0}
-                </span>
+                </p>
               </div>
               <span className="self-stretch relative text-[0.875rem] inline-block text-customGray-100 min-w-[2.688rem] font-bold z-[1] text-center">
                 Completed
               </span>
             </div>
-            {/* <div className="shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] h-[110px] py-2.5 w-[100px] rounded-xl bg-white flex flex-col items-start justify-start px-[1.5rem] box-border gap-[0.187rem] z-[1]">
-              <div className="flex flex-row items-start justify-start py-[0rem] px-[0.062rem]">
-                <span className="relative inline-block min-w-[2.563rem] z-[1] font-bold mq450:text-[1.688rem] mq1050:text-[2.25rem]">
+            {/* <div className="shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] h-[110px] py-2.5 w-[100px] rounded-xl bg-white flex flex-col items-start justify-start text-center box-border gap-[0.187rem] z-[1]">
+              <div className="flex flex-row items-center justify-center w-full py-[0rem] px-[0.062rem]">
+                <p className="relative min-w-[2.563rem] z-[1] font-bold mq450:text-[1.688rem] mq1050:text-[2.25rem]">
                   {assessmentData?.assessments[0]?.pendingCandidates ?? 0}
-                </span>
+                </p>
               </div>
               <span className="self-stretch relative text-[0.875rem] inline-block text-customGray-100 min-w-[2.688rem] font-bold z-[1] text-center">
                 Pending
@@ -131,8 +131,12 @@ const SummaryTab = ({ assessmentData }: { assessmentData?: IAssessmentDetails })
                         alt=""
                         className="h-[30px] w-[30px]"
                       />
-                      <span className="my-1">{mdl.type}</span>
-                      <span className="text-customGray-100 text-sm">{mdl.time} minutes</span>
+                      <span className="my-1">
+                        {mdl.type === 'Voice to Text' ? 'Text To Text' : mdl.type}
+                      </span>
+                      <span className="text-customGray-100 text-sm">
+                        {mdl.noOfQuestions} Questions
+                      </span>
                     </div>
                   ))}
                 </div>

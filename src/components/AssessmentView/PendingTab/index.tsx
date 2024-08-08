@@ -44,8 +44,8 @@ const PendingTab = ({
   const [indeterminate, setIndeterminate] = useState(false);
   const [selectedPeople, setSelectedPeople] = useState<string[]>([]);
   const [extendUserId, setExtendUserId] = useState<string>('');
-  const [allTypesInResponseSet, setAllTypesInResponseSet] = useState(new Set());
-  const allModulesTypesIncluded = new Set(['ai video interview', 'quiz', 'text to text']);
+  // const [allTypesInResponseSet, setAllTypesInResponseSet] = useState(new Set());
+  // const allModulesTypesIncluded = new Set(['ai video interview', 'quiz', 'text to text']);
   const [candidatesData, setCandidatesData] = useState<ICandidateData | undefined>();
   const { data, isLoading, isError, isSuccess, isFetching, isUninitialized } =
     useGetAllCandidatesQuery({
@@ -58,10 +58,10 @@ const PendingTab = ({
 
   useEffect(() => {
     setCandidatesData(deepClone(data));
-    const allTypesInResponseSetTemp = new Set(
-      data?.Candidate[0]?.module?.map((mdl) => mdl.type.toLowerCase()),
-    );
-    setAllTypesInResponseSet(allTypesInResponseSetTemp);
+    // const allTypesInResponseSetTemp = new Set(
+    //   data?.Candidate[0]?.module?.map((mdl) => mdl.type.toLowerCase()),
+    // );
+    // setAllTypesInResponseSet(new Set(['ai video interview', 'quiz', 'text to text']));
   }, [data]);
   const [updateCandidatesStatus] = useUpdateCandidatesStatusMutation();
   const [resetModule] = useResetModulesMutation();
@@ -206,26 +206,27 @@ const PendingTab = ({
                           ? InitialExpiredTabColumns
                           : ColumnsForCompletedTable
                       ).map((val) => {
-                        if (
-                          ['Pending', 'Expired'].includes(CurrentTab) &&
-                          allModulesTypesIncluded.has(val.apiKey) &&
-                          candidatesData?.Candidate.length &&
-                          !candidatesData?.Candidate[0]?.module?.find(
-                            (mdl) => mdl.type.toLowerCase() === val.apiKey,
-                          )
-                        ) {
-                          return null;
-                        } else {
-                          return (
-                            <th
-                              key={val.id}
-                              scope="col"
-                              className={`pl-4 pr-3 text-sm font-semibold text-gray-900 ${val.id === 1 ? 'text-left' : 'text-center'}`}
-                            >
-                              <span>{val.text}</span>
-                            </th>
-                          );
-                        }
+                        // if (
+                        //   ['Pending', 'Expired'].includes(CurrentTab) &&
+                        //   allModulesTypesIncluded.has(val.apiKey) &&
+                        //   candidatesData?.Candidate.length &&
+                        //   !candidatesData?.Candidate[0]?.module?.find(
+                        //     (mdl) => mdl.type.toLowerCase() === val.apiKey,
+                        //   ) &&
+                        //   false
+                        // ) {
+                        //   return null;
+                        // } else {
+                        return (
+                          <th
+                            key={val.id}
+                            scope="col"
+                            className={`pl-4 pr-3 text-sm font-semibold text-gray-900 ${val.id === 1 ? 'text-left' : 'text-center'}`}
+                          >
+                            <span>{val.text}</span>
+                          </th>
+                        );
+                        // }
                       })}
                     </tr>
                   </thead>
@@ -335,54 +336,54 @@ const PendingTab = ({
                               </span>
                             </td>
                             {(() => {
-                              if (allTypesInResponseSet.has('quiz')) {
-                                const statusModule = candidate?.module?.find(
-                                  (mdl) => mdl.type.toLowerCase() === 'quiz',
-                                )?.status;
-                                return (
-                                  <td
-                                    className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Pending' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
-                                  >
-                                    {statusModule === 'Pending'
-                                      ? 'Interrupted'
-                                      : statusModule ?? '--'}
-                                  </td>
-                                );
-                              }
+                              // if (allTypesInResponseSet.has('quiz')) {
+                              const statusModule = candidate?.module?.find(
+                                (mdl) => mdl.type.toLowerCase() === 'quiz',
+                              )?.status;
+                              return (
+                                <td
+                                  className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Pending' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                >
+                                  {statusModule === 'Pending'
+                                    ? 'Interrupted'
+                                    : statusModule ?? '--'}
+                                </td>
+                              );
+                              // }
                             })()}
 
                             {(() => {
-                              if (allTypesInResponseSet.has('text to text')) {
-                                const statusModule = candidate?.module?.find(
-                                  (mdl) => mdl.type.toLowerCase() === 'text to text',
-                                )?.status;
-                                return (
-                                  <td
-                                    className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Pending' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
-                                  >
-                                    {statusModule === 'Pending'
-                                      ? 'Interrupted'
-                                      : statusModule ?? '--'}
-                                  </td>
-                                );
-                              }
+                              // if (allTypesInResponseSet.has('text to text')) {
+                              const statusModule = candidate?.module?.find(
+                                (mdl) => mdl.type.toLowerCase() === 'text to text',
+                              )?.status;
+                              return (
+                                <td
+                                  className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Pending' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                >
+                                  {statusModule === 'Pending'
+                                    ? 'Interrupted'
+                                    : statusModule ?? '--'}
+                                </td>
+                              );
+                              // }
                             })()}
 
                             {(() => {
-                              if (allTypesInResponseSet.has('ai video interview')) {
-                                const statusModule = candidate?.module?.find(
-                                  (mdl) => mdl.type.toLowerCase() === 'ai video interview',
-                                )?.status;
-                                return (
-                                  <td
-                                    className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Pending' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
-                                  >
-                                    {statusModule === 'Pending'
-                                      ? 'Interrupted'
-                                      : statusModule ?? '--'}
-                                  </td>
-                                );
-                              }
+                              // if (allTypesInResponseSet.has('ai video interview')) {
+                              const statusModule = candidate?.module?.find(
+                                (mdl) => mdl.type.toLowerCase() === 'ai video interview',
+                              )?.status;
+                              return (
+                                <td
+                                  className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Pending' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                >
+                                  {statusModule === 'Pending'
+                                    ? 'Interrupted'
+                                    : statusModule ?? '--'}
+                                </td>
+                              );
+                              // }
                             })()}
 
                             <td
@@ -403,54 +404,54 @@ const PendingTab = ({
                         {CurrentTab === 'Pending' && (
                           <Fragment>
                             {(() => {
-                              if (allTypesInResponseSet.has('quiz')) {
-                                const statusModule = candidate?.module?.find(
-                                  (mdl) => mdl.type.toLowerCase() === 'quiz',
-                                )?.status;
-                                return (
-                                  <td
-                                    className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Pending' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
-                                  >
-                                    {statusModule === 'Pending'
-                                      ? 'Interrupted'
-                                      : statusModule ?? '--'}
-                                  </td>
-                                );
-                              }
+                              // if (allTypesInResponseSet.has('quiz')) {
+                              const statusModule = candidate?.module?.find(
+                                (mdl) => mdl.type.toLowerCase() === 'quiz',
+                              )?.status;
+                              return (
+                                <td
+                                  className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Pending' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                >
+                                  {statusModule === 'Pending'
+                                    ? 'Interrupted'
+                                    : statusModule ?? '--'}
+                                </td>
+                              );
+                              // }
                             })()}
 
                             {(() => {
-                              if (allTypesInResponseSet.has('text to text')) {
-                                const statusModule = candidate?.module?.find(
-                                  (mdl) => mdl.type.toLowerCase().toLowerCase() === 'text to text',
-                                )?.status;
-                                return (
-                                  <td
-                                    className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Pending' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
-                                  >
-                                    {statusModule === 'Pending'
-                                      ? 'Interrupted'
-                                      : statusModule ?? '--'}
-                                  </td>
-                                );
-                              }
+                              // if (allTypesInResponseSet.has('text to text')) {
+                              const statusModule = candidate?.module?.find(
+                                (mdl) => mdl.type.toLowerCase().toLowerCase() === 'voice to text',
+                              )?.status;
+                              return (
+                                <td
+                                  className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Pending' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                >
+                                  {statusModule === 'Pending'
+                                    ? 'Interrupted'
+                                    : statusModule ?? '--'}
+                                </td>
+                              );
+                              // }
                             })()}
                             {(() => {
-                              if (allTypesInResponseSet.has('ai video interview')) {
-                                const statusModule = candidate?.module?.find(
-                                  (mdl) =>
-                                    mdl.type.toLowerCase().toLowerCase() === 'ai video interview',
-                                )?.status;
-                                return (
-                                  <td
-                                    className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Pending' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
-                                  >
-                                    {statusModule === 'Pending'
-                                      ? 'Interrupted'
-                                      : statusModule ?? '--'}
-                                  </td>
-                                );
-                              }
+                              // if (allTypesInResponseSet.has('ai video interview')) {
+                              const statusModule = candidate?.module?.find(
+                                (mdl) =>
+                                  mdl.type.toLowerCase().toLowerCase() === 'ai video interview',
+                              )?.status;
+                              return (
+                                <td
+                                  className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Pending' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                >
+                                  {statusModule === 'Pending'
+                                    ? 'Interrupted'
+                                    : statusModule ?? '--'}
+                                </td>
+                              );
+                              // }
                             })()}
                             <td
                               className={`whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500`}
