@@ -61,12 +61,11 @@ const ModuleCard: React.FC<any> = (props) => {
   }, [selectedModule]);
 
   const onChangeWeightage = (e: any) => {
-    console.log('e.target.value', e.target.value, typeof e.target.value);
-    const value = Math.max(isNaN(+e.target.value) ? 0 : +e.target.value, 10);
+    const value = isNaN(+e.target.value) ? 0 : +e.target.value;
     setWeight(value);
   };
   const handleChangeWeightage = async (val: string) => {
-    const value = Math.max(isNaN(+val) ? 0 : +val, 10);
+    const value = isNaN(+val) ? 0 : +val;
 
     dispatch(
       updateWeightage({

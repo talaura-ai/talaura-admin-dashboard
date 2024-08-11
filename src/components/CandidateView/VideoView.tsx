@@ -123,7 +123,7 @@ const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) 
           <div className="flex px-4 pt-5 pb-2.5 border-b-2 border-bottom-#[#D6D6D6]">
             <span className="text-2xl text-black text-left font-Sansation_Bold">AI Context</span>
           </div>
-          <div className="py-4 px-10 text-black text-left text-sm">
+          <div className="py-4 px-10 text-black text-left text-sm  max-h-[264px] overflow-y-scroll">
             <p
               dangerouslySetInnerHTML={{
                 __html: reportData?.description?.replace(/(\d)(?=\.)/g, '<br>$1') ?? '',
@@ -138,7 +138,7 @@ const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) 
                 Skill Wise Report
               </span>
             </div>
-            <div className="py-4 px-10 text-black text-left text-sm">
+            <div className="py-4 px-10 text-black text-left text-sm max-h-[264px] overflow-y-scroll">
               {reportData?.report.map((rpt) => (
                 <div key={rpt._id}>
                   <div className={`flex flex-row justify-start items-center mb-5 gap-2 w-full`}>

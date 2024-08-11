@@ -45,6 +45,10 @@ const Footer = ({ assessmentData }: { assessmentData?: IAssessmentDetails }) => 
   const onSubmitHandler: SubmitHandler<IFormInput> = async (data, e) => {
     try {
       e?.preventDefault();
+      if (!allCandidates.length) {
+        toast.error('Please add some candidate first.');
+        return;
+      }
       const isAnyInvalid = allCandidates.find((cnd) => cnd.isValid === false);
       if (isAnyInvalid) {
         toast.error('Please remove invalid entries.');
@@ -80,7 +84,7 @@ const Footer = ({ assessmentData }: { assessmentData?: IAssessmentDetails }) => 
   const endDateTime = watch('endDateTime');
 
   const isInviteBtnDisabled = useMemo(() => {
-    if (allCandidates.find((cnd) => cnd.isValid == false)) {
+    if (allCandidates.find((cnd) => cnd.isValid == false) || !allCandidates.length) {
       return true;
     }
 

@@ -141,10 +141,20 @@ const CreateAssessment = () => {
   };
 
   const getQuestionAndAddToModule = async () => {
-    const totalWeightage = selectedModules.reduce(
-      (acc: any, val: { Weightage: any }) => Number(val.Weightage) + Number(acc),
-      0,
-    );
+    let isAnySelectedModuleWeightageLessThan10: IModuleType | undefined;
+    const totalWeightage = selectedModules.reduce((acc: number, val: IModuleType) => {
+      if (val.Weightage < 10) {
+        isAnySelectedModuleWeightageLessThan10 = val;
+      }
+      return Number(val.Weightage) + Number(acc);
+    }, 0);
+
+    if (isAnySelectedModuleWeightageLessThan10) {
+      toast.error(
+        `Minimum weightage of ${isAnySelectedModuleWeightageLessThan10.type === 'Voice to Text' ? 'Text To Text' : isAnySelectedModuleWeightageLessThan10.type} should be more than 10`,
+      );
+      return;
+    }
     if (totalWeightage !== 100) {
       toast.error('Weightage should be equal to 100%');
       return undefined;
@@ -340,10 +350,13 @@ const CreateAssessment = () => {
     if (actionLoading || btnState === 'hideAll') {
       return true;
     }
-
+    const alphabeticCharacters = jdData.match(/[a-zA-Z]/g);
+    // Check if the number of alphabetic characters is 3 or more
+    // return alphabeticCharacters && alphabeticCharacters.length >= 3;
     if (
-      page === jdPage &&
-      (!jdData || jdData.length < 3 || !initialQuestionValue || initialQuestionValue.length < 3)
+      (page === jdPage && (!alphabeticCharacters || alphabeticCharacters.length < 3)) ||
+      !initialQuestionValue ||
+      initialQuestionValue.length < 3
     ) {
       return true;
     }

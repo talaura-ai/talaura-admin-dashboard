@@ -37,7 +37,9 @@ const JDDesc: React.FC<IJDDesc> = ({
   }, [aiMessage, isJobDescriptionRequired, setJdData]);
 
   const handleErrorOnTextChange = (text: string) => {
-    if (text.length < 3) {
+    const alphabeticCharacters = text.match(/[a-zA-Z]/g);
+    console.log(alphabeticCharacters);
+    if (alphabeticCharacters && alphabeticCharacters.length < 3) {
       setIsError(true);
     } else {
       setIsError(false);

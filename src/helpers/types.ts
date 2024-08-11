@@ -36,7 +36,7 @@ export interface IModuleType {
   }[];
   skills: string[];
   weightage: string;
-  Weightage: string;
+  Weightage: number;
   time: string;
   _id: string;
 }

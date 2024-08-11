@@ -18,7 +18,7 @@ export const skillsSlice = createSlice({
       state.skills = formatAndUniqueSkills([...state.skills, action.payload]);
     },
     addSkillInSelectedSkills: (state, action: PayloadAction<string>) => {
-      state.selectedSkills = formatAndUniqueSkills([...state.skills, action.payload]);
+      state.selectedSkills = formatAndUniqueSkills([...state.selectedSkills, action.payload]);
     },
     getSelectedSkills: (state) => {
       state.selectedSkills;
