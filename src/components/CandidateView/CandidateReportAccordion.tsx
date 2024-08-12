@@ -1,6 +1,7 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import { Dispatch, SetStateAction } from 'react';
 import { ICandidateReportDataReportItem } from '../AssessmentView/types';
+import { getColorAccordingToScore } from '../../helpers/utils';
 
 const CandidateReportAccordion = ({
   report,
@@ -15,16 +16,24 @@ const CandidateReportAccordion = ({
   return (
     <div className="container border border-customGray-20 shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-col w-full p-4 rounded-md bg-[#FEFCF5]">
       <div className=" items-center  flex justify-between ">
-        <h4 className="text-xl font-bold text-customGray-300 truncate">{report.moduleName}</h4>
+        <h4 className="text-xl font-bold text-customGray-300 truncate">{report.moduleType}</h4>
         <div className="flex items-center">
-          <span className="text-green-300 text-lg font-bold whitespace-nowrap">
+          <span
+            className="text-lg font-bold whitespace-nowrap"
+            style={{ color: getColorAccordingToScore(report.average, 1) }}
+          >
             {report?.average ?? 0} %
           </span>
           <button
             className="flex"
             onClick={() => setCurrentExpandedReportId(isExpanded ? '' : report._id ?? '')}
           >
-            <span className="text-xs text-customGray-250 ml-1">Correct</span>
+            <span
+              className="text-xs ml-1"
+              style={{ color: getColorAccordingToScore(report.average, 1) }}
+            >
+              Correct
+            </span>
             {isExpanded ? (
               <ChevronUpIcon className="w-[12px] h-[16px] mr-2 ml-2.5" />
             ) : (
@@ -47,8 +56,11 @@ const CandidateReportAccordion = ({
                 </div>
               </div>
               <div className="mb-1">
-                <span className="text-xs whitespace-nowrap">
-                  <span className="font-bold text-gray-900">{dt?.score}%</span>
+                <span
+                  className="text-xs whitespace-nowrap"
+                  style={{ color: getColorAccordingToScore(dt?.score, 1) }}
+                >
+                  <span className="font-bold">{dt?.score}%</span>
                   {'  '} Correct
                 </span>
               </div>

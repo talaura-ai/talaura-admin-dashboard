@@ -7,6 +7,7 @@ import { useExtendCandidateAssessmentDurationMutation } from '../../../app/servi
 const ExtendModal = (props: {
   extendUserId: string;
   setExtendUserId: Dispatch<SetStateAction<string>>;
+  refetchCandidateList: any;
 }) => {
   const { extendUserId, setExtendUserId } = props;
   const [startDateTime, setStartDateTime] = useState<string>(dayjs().format('YYYY-MM-DD[T]hh:mm'));
@@ -31,6 +32,7 @@ const ExtendModal = (props: {
       });
       toast.success('Done');
       setExtendUserId('');
+      props.refetchCandidateList();
     } catch (error) {
       toast.error('Failed');
       setExtendUserId('');

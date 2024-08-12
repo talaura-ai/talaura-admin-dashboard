@@ -8,6 +8,7 @@ import { useInviteCandidateMutation } from '../../app/services/candidates';
 import { IAddCandidateApiPayload, IAssessmentDetails } from '../AssessmentView/types';
 import { useMemo, useState } from 'react';
 import DuplicateCandidatesModal from './DuplicateCandidatesModal';
+import { useLazyGetAssessmentByIDQuery } from '../../app/services/assessments';
 
 interface IFormInput {
   startDateTime: string;
@@ -18,6 +19,7 @@ const Footer = ({ assessmentData }: { assessmentData?: IAssessmentDetails }) => 
   const assessmentTotalDuration =
     assessmentData?.assessments[0].module.reduce((prev, curr) => (prev += +curr.time), 0) ?? 60;
   const { assessmentId = '' } = useParams();
+  const [getAssessmentByIdApi] = useLazyGetAssessmentByIDQuery();
   const [duplicateCandidates, setDuplicateCandidates] = useState<{ name: string; email: string }[]>(
     [],
   );
@@ -75,6 +77,7 @@ const Footer = ({ assessmentData }: { assessmentData?: IAssessmentDetails }) => 
           dispatch(clearInviteList());
         }
       }
+      await getAssessmentByIdApi(assessmentId);
     } catch (error) {
       toast.error('Error Inviting');
     }

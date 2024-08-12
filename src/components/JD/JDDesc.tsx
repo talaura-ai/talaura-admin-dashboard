@@ -38,8 +38,7 @@ const JDDesc: React.FC<IJDDesc> = ({
 
   const handleErrorOnTextChange = (text: string) => {
     const alphabeticCharacters = text.match(/[a-zA-Z]/g);
-    console.log(alphabeticCharacters);
-    if (alphabeticCharacters && alphabeticCharacters.length < 3) {
+    if ((alphabeticCharacters && alphabeticCharacters.length < 3) || !alphabeticCharacters) {
       setIsError(true);
     } else {
       setIsError(false);

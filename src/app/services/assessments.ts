@@ -47,6 +47,7 @@ export const assessmentApi = createApi({
     }),
     getAssessmentByID: builder.query<IAssessmentDetails, string>({
       query: (id) => `organization/assessment/getAssessmentDetail/${id}`,
+      providesTags: ['Assessments'],
     }),
     createAssessment: builder.mutation({
       query: (data) => ({
@@ -115,6 +116,7 @@ export const {
   useGetQuestionsQuery,
   useSaveSkillsToAssessmentMutation,
   useGetAssessmentByIDQuery,
+  useLazyGetAssessmentByIDQuery,
   useSaveModulesToAssessmentMutation,
   useSaveQuestionsToAssessmentMutation,
   useDuplicateAssessmentMutation,

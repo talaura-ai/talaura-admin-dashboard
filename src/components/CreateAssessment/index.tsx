@@ -151,7 +151,7 @@ const CreateAssessment = () => {
 
     if (isAnySelectedModuleWeightageLessThan10) {
       toast.error(
-        `Minimum weightage of ${isAnySelectedModuleWeightageLessThan10.type === 'Voice to Text' ? 'Text To Text' : isAnySelectedModuleWeightageLessThan10.type} should be more than 10`,
+        `Minimum weightage of ${isAnySelectedModuleWeightageLessThan10.type === 'Voice to Text' ? 'Text To Text' : isAnySelectedModuleWeightageLessThan10.type} should be more than or equal to 10`,
       );
       return;
     }

@@ -1,5 +1,5 @@
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react';
-import { EllipsisHorizontalIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, NavLink } from 'react-router-dom';
@@ -220,7 +220,7 @@ const AssessmentPage = () => {
                           <Menu as="div" className="inline-block text-left">
                             <div>
                               <MenuButton className="inline-flex w-full justify-center   bg-white px-3 py-2 text-sm font-semibold text-gray-400   font-Sansation_Regular">
-                                <EllipsisHorizontalIcon className="h-5 w-5" aria-hidden="true" />{' '}
+                                {/* <EllipsisHorizontalIcon className="h-5 w-5" aria-hidden="true" />{' '} */}
                               </MenuButton>
                             </div>
 

@@ -27,7 +27,7 @@ export const candidatesApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Candidates'],
+  tagTypes: ['Candidates', 'Assessments'],
 
   endpoints: (builder) => ({
     getAllCandidates: builder.query<
@@ -113,7 +113,7 @@ export const candidatesApi = createApi({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: ['Candidates'],
+      invalidatesTags: ['Candidates', 'Assessments'],
     }),
     updateCandidatesStatus: builder.mutation<
       unknown,
@@ -136,6 +136,7 @@ export const candidatesApi = createApi({
 // auto-generated based on the defined endpoints
 export const {
   useGetAllCandidatesQuery,
+  useLazyGetAllCandidatesQuery,
   useInviteCandidateMutation,
   useGetCandidateReportsMutation,
   useNotifyCandidateMutation,

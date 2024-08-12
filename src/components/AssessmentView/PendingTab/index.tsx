@@ -1,3 +1,4 @@
+import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import dayjs from 'dayjs';
 import 'dayjs/locale/en-in';
 import timeZone from 'dayjs/plugin/timezone';
@@ -23,7 +24,6 @@ import { ICandidate, ICandidateData } from '../types';
 import ExtendModal from './ExtendModal';
 import Header from './Header';
 import Pagination from './Pagination';
-import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 dayjs.locale('en-in');
 dayjs.extend(utc);
 dayjs.extend(timeZone);
@@ -47,14 +47,21 @@ const PendingTab = ({
   // const [allTypesInResponseSet, setAllTypesInResponseSet] = useState(new Set());
   // const allModulesTypesIncluded = new Set(['ai video interview', 'quiz', 'text to text']);
   const [candidatesData, setCandidatesData] = useState<ICandidateData | undefined>();
-  const { data, isLoading, isError, isSuccess, isFetching, isUninitialized } =
-    useGetAllCandidatesQuery({
-      id: assessmentId,
-      pageNum: currentPage,
-      pageSize: sizePerPage,
-      status: filterStatus,
-      currentTab: CurrentTab,
-    });
+  const {
+    data,
+    isLoading,
+    isError,
+    isSuccess,
+    isFetching,
+    isUninitialized,
+    refetch: refetchCandidateList,
+  } = useGetAllCandidatesQuery({
+    id: assessmentId,
+    pageNum: currentPage,
+    pageSize: sizePerPage,
+    status: filterStatus,
+    currentTab: CurrentTab,
+  });
 
   useEffect(() => {
     setCandidatesData(deepClone(data));
@@ -135,11 +142,12 @@ const PendingTab = ({
           candidates: candidatesToUpdates,
         });
         toast.success('Updated Successfully');
+        refetchCandidateList();
       } catch (error) {
         toast.success('Error Updating Status');
       }
     },
-    [selectedPeople, updateCandidatesStatus],
+    [refetchCandidateList, selectedPeople, updateCandidatesStatus],
   );
 
   useEffect(() => {
@@ -157,11 +165,12 @@ const PendingTab = ({
         }
         await resetModule(candidatesToUpdates);
         toast.success('Updated Successfully');
+        refetchCandidateList();
       } catch (error) {
         toast.success('Error Updating Status');
       }
     },
-    [resetModule, selectedPeople],
+    [refetchCandidateList, resetModule, selectedPeople],
   );
 
   if (isLoading || isFetching || isUninitialized) {
@@ -183,7 +192,11 @@ const PendingTab = ({
           handleUpdateCandidatesStatus={handleUpdateCandidatesStatus}
           handleReset={handleReset}
         />
-        <ExtendModal extendUserId={extendUserId} setExtendUserId={setExtendUserId} />
+        <ExtendModal
+          extendUserId={extendUserId}
+          setExtendUserId={setExtendUserId}
+          refetchCandidateList={refetchCandidateList}
+        />
         <div className="">
           <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full pb-2 align-middle sm:px-6 lg:px-8">
@@ -279,18 +292,18 @@ const PendingTab = ({
                             </td>
 
                             <td
-                              className={`whitespace-nowrap px-3 py-4 text-sm text-center ${candidate?.suspiciousActivity ? 'text-[#40B24B]' : 'text-[#FB2121]'}`}
+                              className={`whitespace-nowrap px-3 py-4 text-sm text-center ${candidate?.suspiciousActivity ? 'text-[#FB2121]' : 'text-[#40B24B]'}`}
                             >
                               {candidate?.suspiciousActivity ? 'Detected' : 'Not Detected'}
                             </td>
                             <td className="whitespace-nowrap px-3 py-1 text-sm text-gray-500 text-center flex justify-center items-center gap-2">
                               <div className="flex flex-col gap-1">
                                 <button
-                                  className={`rounded-[4px] border p-1 px-2 flex items-center gap-1  ${candidate?.selectStatus === 'Select' ? 'border-[#40B24B] text-[#40B24B] cursor-not-allowed' : 'border-[#ACACAC] text-[#ACACAC]'} text-sm`}
+                                  className={`rounded-[4px] border p-1 px-2 flex items-center gap-1  ${candidate?.selectStatus === 'Select' ? 'border-[#40B24B] text-[#40B24B]' : 'border-[#ACACAC] text-[#ACACAC]'} text-sm ${Boolean(candidate?.selectStatus) && 'cursor-not-allowed'}`}
                                   onClick={() =>
                                     handleUpdateCandidatesStatus('Select', candidate._id)
                                   }
-                                  disabled={candidate?.selectStatus === 'Select'}
+                                  disabled={Boolean(candidate?.selectStatus)}
                                 >
                                   <CheckCircleIcon
                                     fontSize={20}
@@ -302,11 +315,11 @@ const PendingTab = ({
                                   <span>Select</span>
                                 </button>
                                 <button
-                                  className={`rounded-[4px] border p-1 px-2 flex items-center gap-1  ${candidate?.selectStatus === 'Reject' ? 'border-[#FB2121] text-[#FB2121] cursor-not-allowed' : 'border-[#ACACAC] text-[#ACACAC]'} text-sm`}
+                                  className={`rounded-[4px] border p-1 px-2 flex items-center gap-1  ${candidate?.selectStatus === 'Reject' ? 'border-[#FB2121] text-[#FB2121]' : 'border-[#ACACAC] text-[#ACACAC]'} text-sm  ${Boolean(candidate?.selectStatus) && 'cursor-not-allowed'}`}
                                   onClick={() =>
                                     handleUpdateCandidatesStatus('Reject', candidate._id)
                                   }
-                                  disabled={candidate?.selectStatus === 'Reject'}
+                                  disabled={Boolean(candidate?.selectStatus)}
                                 >
                                   <XCircleIcon
                                     fontSize={20}

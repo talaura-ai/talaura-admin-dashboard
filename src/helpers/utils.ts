@@ -108,3 +108,13 @@ export const stringToArrayBuffer = (s: string) => {
   }
   return buf;
 };
+
+export const getColorAccordingToScore = (score: number, opacity: number) => {
+  if (score >= 80) {
+    return `rgba(64, 178, 75, ${opacity ?? 1})`;
+  } else if (score >= 50) {
+    return `rgba(216, 185, 104, ${opacity ?? 1})`;
+  } else {
+    return `rgba(64, 178, 75, ${opacity ?? 1})`;
+  }
+};

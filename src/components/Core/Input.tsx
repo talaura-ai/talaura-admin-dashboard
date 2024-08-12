@@ -40,7 +40,8 @@ const Input: React.FC<IInput> = ({
   const [isError, setIsError] = useState<boolean>(false);
 
   const handleErrorOnTextChange = (text: string) => {
-    if (text.length < 3) {
+    const alphabeticCharacters = text.match(/[a-zA-Z]/g);
+    if ((alphabeticCharacters && alphabeticCharacters.length < 3) || !alphabeticCharacters) {
       setIsError(true);
     } else {
       setIsError(false);

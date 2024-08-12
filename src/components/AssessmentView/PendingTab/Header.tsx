@@ -24,7 +24,9 @@ const Header = ({
   }, [setFilterStatus, statusFromParam]);
 
   return (
-    <div className="flex justify-between w-full items-center bg-white py-4 px-2.5 rounded-t-xl mb-2">
+    <div
+      className={`flex justify-between w-full items-center bg-white py-4 px-2.5 rounded-t-xl mb-2 ${statusFromParam === 'Completed' && 'hidden'}`}
+    >
       <div className="col1 flex gap-2">
         <div className="relative mt-2 rounded-md shadow-sm">
           {/* <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
