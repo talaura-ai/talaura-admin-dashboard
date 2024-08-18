@@ -367,7 +367,7 @@ const PendingTab = ({
                                     )?.status;
                                     return (
                                       <td
-                                        className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Interrupted' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                        className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Interrupted' ? 'text-[#FB2121]' : statusModule === 'Completed' || statusModule === 'Ongoing' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
                                       >
                                         {statusModule}
                                       </td>
@@ -382,7 +382,7 @@ const PendingTab = ({
                                     )?.status;
                                     return (
                                       <td
-                                        className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Interrupted' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                        className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Interrupted' ? 'text-[#FB2121]' : statusModule === 'Completed' || statusModule === 'Ongoing' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
                                       >
                                         {statusModule}
                                       </td>
@@ -397,7 +397,7 @@ const PendingTab = ({
                                     )?.status;
                                     return (
                                       <td
-                                        className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Interrupted' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                        className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Interrupted' ? 'text-[#FB2121]' : statusModule === 'Completed' || statusModule === 'Ongoing' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
                                       >
                                         {statusModule}
                                       </td>
@@ -429,7 +429,7 @@ const PendingTab = ({
                                     )?.status;
                                     return (
                                       <td
-                                        className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Interrupted' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                        className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Interrupted' ? 'text-[#FB2121]' : statusModule === 'Completed' || statusModule === 'Ongoing' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
                                       >
                                         {statusModule}
                                       </td>
@@ -445,7 +445,7 @@ const PendingTab = ({
                                     )?.status;
                                     return (
                                       <td
-                                        className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Interrupted' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                        className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Interrupted' ? 'text-[#FB2121]' : statusModule === 'Completed' || statusModule === 'Ongoing' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
                                       >
                                         {statusModule}
                                       </td>
@@ -461,7 +461,7 @@ const PendingTab = ({
                                     )?.status;
                                     return (
                                       <td
-                                        className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Interrupted' ? 'text-[#FB2121]' : statusModule === 'Completed' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
+                                        className={`whitespace-nowrap px-3 py-4 text-sm text-center ${statusModule === 'Interrupted' ? 'text-[#FB2121]' : statusModule === 'Completed' || statusModule === 'Ongoing' ? 'text-[#40B24B]' : 'text-[#7D7C7C]'}`}
                                       >
                                         {statusModule}
                                       </td>
