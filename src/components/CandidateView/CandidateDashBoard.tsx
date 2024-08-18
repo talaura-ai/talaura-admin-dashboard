@@ -95,7 +95,7 @@ const CandidateDashBoard = ({ candidateData }: { candidateData?: ICandidateRepor
             <div
               className="w-[204px] h-[102px] border-[20px] border-b-0 rounded-t-full border-[#CCFFD1] flex justify-center relative z-0"
               style={{
-                borderColor: getColorAccordingToScore(candidateData?.paiScore ?? 0, 0.5),
+                borderColor: getColorAccordingToScore(candidateData?.percentile ?? 0, 0.5),
                 opacity: 0.5,
               }}
             >
@@ -103,7 +103,7 @@ const CandidateDashBoard = ({ candidateData }: { candidateData?: ICandidateRepor
                 className={`w-[204px] h-[102px] border-[20px] border-b-0 rounded-t-full border-[#40B24B] flex justify-center absolute bottom-0 z-10 origin-bottom`}
                 style={{
                   transform: `rotate(${Math.min(candidateData?.percentile ?? 0, 100) * 1.8 + 180}deg)`,
-                  borderColor: getColorAccordingToScore(candidateData?.paiScore ?? 0, 1),
+                  borderColor: getColorAccordingToScore(candidateData?.percentile ?? 0, 1),
                 }}
               ></div>
               <div className="self-end">
@@ -113,7 +113,7 @@ const CandidateDashBoard = ({ candidateData }: { candidateData?: ICandidateRepor
             </div>
           </div>
         </div>
-        <div className="card2 bg-green-200 shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] rounded-md overflow-hidden mt-4 pt-4 text-center h-[210px] w-[300px] flex flex-col justify-between">
+        {/* <div className="card2 bg-green-200 shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] rounded-md overflow-hidden mt-4 pt-4 text-center h-[210px] w-[300px] flex flex-col justify-between">
           <div className="row1">
             <span className="font-bold text-customGray-100 text-xl">AI Proctoring</span>
           </div>
@@ -124,7 +124,7 @@ const CandidateDashBoard = ({ candidateData }: { candidateData?: ICandidateRepor
           <div className="col1_row3 bg-green-400 p-2">
             <h5 className="text-white font-bold text-xl">View Summary</h5>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="col2 w-[calc(100%-300px)]">
         <div className="col2_card1 shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] rounded-md overflow-hidden p-4 bg-white">

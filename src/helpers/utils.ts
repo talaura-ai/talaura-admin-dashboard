@@ -115,6 +115,6 @@ export const getColorAccordingToScore = (score: number, opacity: number) => {
   } else if (score >= 50) {
     return `rgba(216, 185, 104, ${opacity ?? 1})`;
   } else {
-    return `rgba(64, 178, 75, ${opacity ?? 1})`;
+    return `rgba(251, 33, 33, ${opacity ?? 1})`;
   }
 };

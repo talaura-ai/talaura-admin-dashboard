@@ -16,7 +16,9 @@ const CandidateReportAccordion = ({
   return (
     <div className="container border border-customGray-20 shadow-[0_4px_4px_rgba(0,0,0,0.25)] flex flex-col w-full p-4 rounded-md bg-[#FEFCF5]">
       <div className=" items-center  flex justify-between ">
-        <h4 className="text-xl font-bold text-customGray-300 truncate">{report.moduleType}</h4>
+        <h4 className="text-xl font-bold text-customGray-300 truncate">
+          {report.moduleType === 'Voice to Text' ? 'Text To Text' : report.moduleType}
+        </h4>
         <div className="flex items-center">
           <span
             className="text-lg font-bold whitespace-nowrap"

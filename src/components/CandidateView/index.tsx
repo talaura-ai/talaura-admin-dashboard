@@ -11,6 +11,11 @@ import TextToTextView from './TextToTextView';
 const CandidateView: FunctionComponent = () => {
   const location = useLocation();
   const activeTabFromLocation = location?.state?.activeTab;
+
+  const [activeTab, setActiveTab] = useState<{
+    text: string;
+  }>();
+
   const { candidateId = '' } = useParams();
 
   const [
@@ -18,29 +23,45 @@ const CandidateView: FunctionComponent = () => {
     { isLoading, isError, isSuccess, isUninitialized, data: candidateData },
   ] = useGetCandidateReportsMutation();
 
-  const TabData = [
-    { id: 1, text: 'Summary', apiKey: '' },
-    { id: 2, text: 'Video', apiKey: 'ai video interview' },
-    // { id: 3, text: 'Aptitude', apiKey: 'quiz' },
-    { id: 4, text: 'Text to Text', apiKey: 'voice to text' },
-  ];
+  const TabData = useMemo(() => {
+    const allTabs = [
+      { id: 1, text: 'Summary', apiKey: '' },
+      { id: 2, text: 'Video', apiKey: 'ai video interview' },
+      // { id: 3, text: 'Aptitude', apiKey: 'quiz' },
+      { id: 4, text: 'Text to Text', apiKey: 'voice to text' },
+    ];
+    if (!candidateData) {
+      return [];
+    } else {
+      const allTypesInResponseSet = new Set(
+        candidateData?.report?.map((rpt) => rpt.moduleType.toLowerCase()),
+      );
+      return allTabs.filter((tab) => tab.apiKey === '' || allTypesInResponseSet.has(tab.apiKey));
+    }
+  }, [candidateData]);
 
-  const [activeTab, setActiveTab] = useState<{
-    text: string;
-  }>(TabData[activeTabFromLocation || 0]);
+  useEffect(() => {
+    if (candidateData && TabData.length) {
+      setActiveTab(TabData[activeTabFromLocation || 0]);
+    }
+  }, [TabData, activeTabFromLocation, candidateData]);
 
   const activeTabComponent = useMemo(() => {
-    switch (activeTab.text) {
-      case 'Summary':
-        return <CandidateDashBoard candidateData={candidateData} />;
-      case 'Video':
-        return <VideoView candidateData={candidateData} />;
-      case 'Text to Text':
-        return <TextToTextView candidateData={candidateData} />;
-      default:
-        return <VideoView candidateData={candidateData} />;
+    if (candidateData && activeTab && activeTab?.text) {
+      switch (activeTab?.text) {
+        case 'Summary':
+          return <CandidateDashBoard candidateData={candidateData} />;
+        case 'Video':
+          return <VideoView candidateData={candidateData} />;
+        case 'Text to Text':
+          return <TextToTextView candidateData={candidateData} />;
+        default:
+          return <VideoView candidateData={candidateData} />;
+      }
+    } else {
+      return <CandidateDashBoard candidateData={candidateData} />;
     }
-  }, [activeTab.text, candidateData]);
+  }, [activeTab, candidateData]);
 
   useEffect(() => {
     if (candidateId) getCandidatesReports(candidateId);
@@ -78,15 +99,15 @@ const CandidateView: FunctionComponent = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab)}
-                  className={`cursor-pointer [border:none] pt-[0.625rem] px-[0rem] pb-[0rem] rounded-t-mini rounded-b-none flex flex-col items-start justify-start box-border gap-[0.312rem] z-[2] ${activeTab.text === tab.text ? 'bg-antiquewhite' : ''}`}
+                  className={`cursor-pointer [border:none] pt-[0.625rem] px-[0rem] pb-[0rem] rounded-t-mini rounded-b-none flex flex-col items-start justify-start box-border gap-[0.312rem] z-[2] ${activeTab && activeTab?.text === tab.text ? 'bg-antiquewhite' : ''}`}
                 >
                   <div className="self-stretch relative flex flex-row items-start justify-start py-[0rem] pr-[1.375rem] pl-[1.312rem]">
                     <h3
-                      className={`mb-1 flex-1 relative whitespace-nowrap text-[1.25rem] inline-block font-sansation text-center min-w-[5.638rem] z-[3] mq450:text-[1rem]  ${activeTab.text === tab.text ? 'text-sandybrown' : ''}`}
+                      className={`mb-1 flex-1 relative whitespace-nowrap text-[1.25rem] inline-block font-sansation text-center min-w-[5.638rem] z-[3] mq450:text-[1rem]  ${activeTab && activeTab?.text === tab.text ? 'text-sandybrown' : ''}`}
                     >
                       {tab.text}
                     </h3>
-                    {activeTab.text === tab.text && (
+                    {activeTab && activeTab.text === tab.text && (
                       <div className="filed_bar h-[8px] w-full bg-sandybrown absolute bottom-[-8px] left-0 " />
                     )}
                   </div>

@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
-import { generateSignedUrlS3 } from '../../helpers/utils';
+import { generateSignedUrlS3, getColorAccordingToScore } from '../../helpers/utils';
 import { ICandidateReportData } from '../AssessmentView/types';
 import LoadingScreen from '../Loading/LoadingScreen';
 
@@ -67,8 +67,14 @@ const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) 
       </div>
       <div className="row2 flex gap-4 justify-between mb-3">
         <div className="w-1/2 border border-[#E0E0E0] shadow-[0_4px_4px_0_(0,0,0,0.25)] rounded-[10px] bg-white">
-          <div className="bg-[#E4FFE0] pt-[10px] pb-3">
-            <span className="text-[#40B24B] font-Sansation_Regular font-bold text-xl">
+          <div
+            className={` pt-[10px] pb-3`}
+            style={{ backgroundColor: getColorAccordingToScore(reportData?.average ?? 0, 0.5) }}
+          >
+            <span
+              className={`font-Sansation_Regular font-bold text-xl`}
+              style={{ color: getColorAccordingToScore(reportData?.average ?? 0, 1) }}
+            >
               Interview Score : {reportData?.average ?? 0}
             </span>
           </div>
@@ -144,7 +150,14 @@ const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) 
                   <div className={`flex flex-row justify-start items-center mb-5 gap-2 w-full`}>
                     <div className="chat-text max-w-[80%]">
                       <h4 className={`text-[#7D7C7C] text-base font-bold text-left`}>
-                        {rpt.name}: <span className="text-[#FB2121]">{rpt.score}%</span>
+                        {rpt.name}:{' '}
+                        <span
+                          style={{
+                            color: getColorAccordingToScore(rpt.score ?? 0, 1),
+                          }}
+                        >
+                          {rpt.score}%
+                        </span>
                       </h4>
                     </div>
                   </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ICandidateReportData } from '../AssessmentView/types';
+import { getColorAccordingToScore } from '../../helpers/utils';
 
 const TextToTextView = ({ candidateData }: { candidateData?: ICandidateReportData }) => {
   const reportData = candidateData?.report.find((rp) => rp.moduleType === 'Voice to Text');
@@ -38,7 +39,12 @@ const TextToTextView = ({ candidateData }: { candidateData?: ICandidateReportDat
           </div>
           <div className="flex justify-between px-4 pt-5 pb-2.5 border-b-2 border-bottom-#[#D6D6D6]">
             <h2 className="text-2xl text-black text-left font-Sansation_Bold">Transcript</h2>
-            <h2 className="text-2xl text-[#40B24B] text-left font-Sansation_Bold">
+            <h2
+              className="text-2xl text-left font-Sansation_Bold"
+              style={{
+                color: getColorAccordingToScore(reportData?.average ?? 0, 1),
+              }}
+            >
               Score: {reportData?.average ?? 0}%
             </h2>
           </div>
@@ -95,7 +101,14 @@ const TextToTextView = ({ candidateData }: { candidateData?: ICandidateReportDat
                 <div className={`flex flex-row justify-start items-center mb-5 gap-2 w-full`}>
                   <div className="chat-text max-w-[80%]">
                     <h4 className={`text-[#7D7C7C] text-base font-bold text-left`}>
-                      {rpt.name}: <span className="text-[#FB2121]">{rpt.score}%</span>
+                      {rpt.name}:{' '}
+                      <span
+                        style={{
+                          color: getColorAccordingToScore(rpt.score ?? 0, 1),
+                        }}
+                      >
+                        {rpt.score}%
+                      </span>
                     </h4>
                   </div>
                 </div>
