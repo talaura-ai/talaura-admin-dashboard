@@ -476,10 +476,10 @@ const PendingTab = ({
                                 <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center flex justify-center items-center">
                                   <button
                                     onClick={() => handleReset(candidate._id)}
-                                    className={`text-[#CC8448] pt-2.5 ${!candidate?.module?.find((mdl) => mdl.status === 'Pending') && 'cursor-not-allowed text-[#CC844866]'}`}
+                                    className={`text-[#CC8448] pt-2.5 ${!candidate?.module?.find((mdl) => mdl.status === 'Interrupted') && 'cursor-not-allowed text-[#CC844866]'}`}
                                     disabled={(() =>
                                       !candidate?.module?.find(
-                                        (mdl) => mdl.status === 'Pending',
+                                        (mdl) => mdl.status === 'Interrupted',
                                       ))()}
                                   >
                                     Reset
