@@ -23,6 +23,7 @@ const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) 
       setIsVideoPlayed(true);
       setIsVideoLoading(false);
     } catch (error: any) {
+      console.log('Error playing Video', error);
       toast.error(error?.message ?? 'Unable to play video');
       setIsVideoLoading(false);
     }

@@ -30,12 +30,12 @@ const CandidateReportAccordion = ({
             className="flex"
             onClick={() => setCurrentExpandedReportId(isExpanded ? '' : report._id ?? '')}
           >
-            <span
+            {/* <span
               className="text-xs ml-1"
               style={{ color: getColorAccordingToScore(report.average, 1) }}
             >
               Correct
-            </span>
+            </span> */}
             {isExpanded ? (
               <ChevronUpIcon className="w-[12px] h-[16px] mr-2 ml-2.5" />
             ) : (
@@ -63,7 +63,7 @@ const CandidateReportAccordion = ({
                   style={{ color: getColorAccordingToScore(dt?.score, 1) }}
                 >
                   <span className="font-bold">{dt?.score}%</span>
-                  {'  '} Correct
+                  {/* {'  '} Correct */}
                 </span>
               </div>
             </div>

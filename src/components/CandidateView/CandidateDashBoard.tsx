@@ -64,7 +64,7 @@ const CandidateDashBoard = ({ candidateData }: { candidateData?: ICandidateRepor
               ></div>
               <div className="self-end">
                 <h4 className="text-[#0A0A0A] text-2xl">{candidateData?.paiScore}%</h4>
-                <p className="text-sm text-[#737373]">Completed</p>
+                {/* <p className="text-sm text-[#737373]">Completed</p> */}
               </div>
             </div>
           </div>
@@ -93,14 +93,13 @@ const CandidateDashBoard = ({ candidateData }: { candidateData?: ICandidateRepor
           </div>
           <div className="flex justify-center mt-4 overflow-hidden">
             <div
-              className="w-[204px] h-[102px] border-[20px] border-b-0 rounded-t-full border-[#CCFFD1] flex justify-center relative z-0"
+              className="w-[204px] h-[102px] border-[20px] border-b-0 rounded-t-full flex justify-center relative z-0"
               style={{
                 borderColor: getColorAccordingToScore(candidateData?.percentile ?? 0, 0.5),
-                opacity: 0.5,
               }}
             >
               <div
-                className={`w-[204px] h-[102px] border-[20px] border-b-0 rounded-t-full border-[#40B24B] flex justify-center absolute bottom-0 z-10 origin-bottom`}
+                className={`w-[204px] h-[102px] border-[20px] border-b-0 rounded-t-full flex justify-center absolute bottom-0 z-10 origin-bottom`}
                 style={{
                   transform: `rotate(${Math.min(candidateData?.percentile ?? 0, 100) * 1.8 + 180}deg)`,
                   borderColor: getColorAccordingToScore(candidateData?.percentile ?? 0, 1),
@@ -108,7 +107,7 @@ const CandidateDashBoard = ({ candidateData }: { candidateData?: ICandidateRepor
               ></div>
               <div className="self-end">
                 <h4 className="text-[#0A0A0A] text-2xl">{candidateData?.percentile ?? 0}%</h4>
-                <p className="text-sm text-[#737373]">Completed</p>
+                {/* <p className="text-sm text-[#737373]">Completed</p> */}
               </div>
             </div>
           </div>
