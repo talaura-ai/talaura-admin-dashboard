@@ -53,6 +53,7 @@ const AddCandidates = () => {
         mobile: data.mobile,
       });
       if (res) {
+        toast.success('Candidate added successfully');
         reset();
       } else {
         toast.error('Candidate With Email or Mobile Already Exists');

@@ -199,6 +199,7 @@ const PendingTab = ({
               handleReset={handleReset}
             />
             <ExtendModal
+            assessmentId={assessmentId}
               extendUserId={extendUserId}
               setExtendUserId={setExtendUserId}
               refetchCandidateList={refetchCandidateList}

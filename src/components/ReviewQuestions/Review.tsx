@@ -29,13 +29,13 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module }) => {
 
   return (
     <>
-      <div className="relative w-full z-[999]">
+      {/* <div className="relative w-full z-[999]">
         <div className="grid grid-cols-1 h-[450px] overflow-y-auto">
           <div className="flex flex-col rounded-lg shadow-inner bg-white p-8 overflow-scroll z-50">
-            <h2 className="font-Sansation_Bold font-[700]">Sample Questions</h2>
-            {(currentModule?.type === 'Quiz' ? questions.slice(0, 5) : questions)?.map(
+            {/* <h2 className="font-Sansation_Bold font-[700]">Sample Questions</h2> */}
+            {/* {(currentModule?.type === 'Quiz' ? questions.slice(0, 5) : questions)?.map(
               (v: any, index: number) => (
-                <div key={v?.title + index} className="flex my-2 items-center">
+                <div key={v?.title + index} className="flex my-2 items-center"> */}
                   {/* <div className="flex h-6 items-center">
                   <input
                     id="review"
@@ -51,7 +51,7 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module }) => {
                     className="h-6 w-6 rounded border-gray-300 bg-white shadow-xl text-orange-text checked:bg-orange-text ring-0"
                   />
                 </div> */}
-                  <div className="ml-4">
+                  {/* <div className="ml-4">
                     {v.type === 'Quiz' ? (
                       <h3 className="text-[16px] text-[#000000] font-Sansation">Q. {v?.title}</h3>
                     ) : (
@@ -63,9 +63,9 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module }) => {
                     )}
                     <h3 className="text-[16px] text-[#000000] font-Sansation">{v?.description}</h3>
                   </div>
-                </div>
-              ),
-            )}
+                </div> */}
+             {/* /</> ),
+            )} */}
             {/* <div>
               <button
                 className="flex flex-row mt-4 items-center gap-3"
@@ -75,7 +75,7 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module }) => {
                 <span className="text-light-orange">Add New Question</span>
               </button>
             </div> */}
-            <div className="flex flex-row justify-center items-center">
+            {/* <div className="flex flex-row justify-center items-center">
               {!questions?.length ? (
                 <h1>
                   No Questions found in <span className="text-orange-text">{module?.name}</span>{' '}
@@ -84,7 +84,7 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module }) => {
               ) : (
                 <></>
               )}
-            </div>
+            </div> */}
 
             {/* <div className="flex flex-row mt-6 justify-center">
               <button
@@ -107,9 +107,9 @@ const ReviewQuestions: React.FC<ReviewQuestionsProps> = ({ module }) => {
                 Done
               </button>
             </div> */}
-          </div>
+          {/* </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

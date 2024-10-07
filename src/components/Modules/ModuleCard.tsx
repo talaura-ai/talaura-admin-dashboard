@@ -17,7 +17,7 @@ const ModuleCard: React.FC<any> = (props) => {
   const {
     name,
     type,
-    noOfQuestions,
+    // noOfQuestions,
     // skills,
     // time,
     fromReviewAssessmentScreen,
@@ -145,9 +145,9 @@ const ModuleCard: React.FC<any> = (props) => {
       </div>
       <div className="flex flex-row items-center justify-between mt-2">
         <div className={`flex  flex-col`}>
-          {fromReviewAssessmentScreen && (
+          {/* {fromReviewAssessmentScreen && (
             <span className="text-xs text-[#BDBDBD]">{noOfQuestions ?? 0} questions</span>
-          )}
+          )} */}
           <div className="flex">
             <h1 className="">Skills</h1>
             {editable && selectedModule?.type !== 'Sandbox' && (

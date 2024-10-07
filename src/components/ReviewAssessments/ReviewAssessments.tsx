@@ -23,7 +23,7 @@ const ReviewAssessments: React.FC<ReviewAssessmentsProps> = () => {
             />
           </div>
         ) : ( */}
-        <div className="flex flex-col gap-x-8 gap-y-3 h-[450px] overflow-y-auto w-1/2 mr-2">
+        <div className="flex flex-col gap-x-8 gap-y-3 h-[450px] overflow-y-auto w-1/1 mr-2">
           {selectedModules?.map((v, index: number) => (
             <Fragment key={index}>
               <ModuleCard

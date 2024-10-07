@@ -115,6 +115,7 @@ export interface ICandidateReportDataReportItem {
   accuracy?: string;
   areaToImprove?: string;
   videoUrl?: string;
+  audioUrl?: string;
 }
 export interface ICandidateReportData {
   status: boolean;

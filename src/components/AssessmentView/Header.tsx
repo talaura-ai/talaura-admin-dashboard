@@ -17,6 +17,7 @@ const Header = ({
     state.assessments.find((assessment) => assessment?._id === assessmentId),
   );
 
+  console.log('assess', typeof Number(assessmentData?.module[0]?.time));
   return (
     <div
       className={`self-stretch flex flex-row items-start justify-start py-[0rem] pr-[0.062rem] pl-[0.187rem] box-border max-w-full text-center text-[1.5rem] text-customGray-100 font-sansation`}
@@ -25,9 +26,12 @@ const Header = ({
         <div className="flex flex-col items-start justify-start pt-[0rem] px-[0rem] pb-[0.062rem] box-border max-w-full">
           <div className="self-stretch flex flex-col items-start justify-start max-w-full">
             <div className="flex flex-row items-start justify-start">
-              <a className="[text-decoration:none] flex-1 relative text-base font-bold text-[inherit] z-[1] mq450:text-[1.188rem]">
+              <Link
+                to={'/assessments'}
+                className="[text-decoration:none] flex-1 relative text-base font-bold text-[inherit] z-[1] mq450:text-[1.188rem]"
+              >
                 Assessments
-              </a>
+              </Link>
               <div className="flex flex-col items-start justify-start px-[0rem] pb-[0rem] text-base mx-2">
                 &gt;
               </div>
@@ -42,11 +46,12 @@ const Header = ({
                   <div className="flex flex-col items-start justify-start px-[0rem] pb-[0rem] text-base mx-2">
                     &gt;
                   </div>
-                  <a
+                  <Link
+                  to={`/assessment/view/${assessmentId}`}
                     className={`[text-decoration:none] relative text-base font-bold inline-block min-w-[1.875rem] z-[1] mq450:text-[1.188rem]`}
                   >
                     Completed
-                  </a>
+                  </Link>
                   <div className="flex flex-col items-start justify-start px-[0rem] pb-[0rem] text-base mx-2">
                     &gt;
                   </div>
@@ -88,6 +93,7 @@ const Header = ({
               <Link
                 className="cursor-pointer [border:none] py-[0.5rem] pr-[0.5rem] pl-[1.5rem] bg-peru-100 flex-1 rounded-3xs flex flex-row items-start justify-start box-border min-w-[6.438rem] z-[1] hover:bg-peru-200"
                 to={`/assessments/view/${assessmentId}/invite`}
+                state={{ duration: assessmentData?.module[0]?.time }}
               >
                 <img src="/images/PaperPlane.png" className="h-[25px] object-cover" alt="" />
                 <div className="flex-1 relative text-base font-sansation text-white text-center z-[1] mq450:text-[1.188rem]">

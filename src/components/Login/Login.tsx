@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import IMAGES from '../../assets/images/Images';
 import { useLoginMutation } from '../../app/services/auth';
-import { EnvelopeIcon, UserIcon } from '@heroicons/react/24/outline';
+import { EnvelopeIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { login } from '../../app/features/adminSlice';
@@ -12,6 +12,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [useLogin, result] = useLoginMutation();
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const admin = useAppSelector((state) => state.admin);
@@ -121,7 +122,7 @@ export default function Login() {
                       <input
                         id="password"
                         name="password"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         autoComplete="current-password"
                         required
                         className="block w-full shadow-none border-0	 py-1.5  placeholder:text-gray-400  sm:text-sm sm:leading-6 outline-none focus:outline-none focus-visible:outline-none focus:shadow-none focus-visible:shadow-none
@@ -133,8 +134,21 @@ export default function Login() {
                         placeholder="Please Enter Password"
                         disabled={isDisabled}
                       />
-                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                        <UserIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                      <div className=" absolute inset-y-0 right-0 flex items-center pr-3">
+                        {/* <UserIcon className="h-5 w-5 text-gray-400" aria-hidden="true" /> */}
+                        {showPassword ? (
+                          <EyeIcon
+                            className="h-5 w-5 text-gray-400 cursor-pointer"
+                            aria-hidden="true"
+                            onClick={() => setShowPassword(false)}
+                          />
+                        ) : (
+                          <EyeSlashIcon
+                            className="h-5 w-5 text-gray-400 cursor-pointer"
+                            aria-hidden="true"
+                            onClick={() => setShowPassword(true)}
+                          />
+                        )}
                       </div>
                     </div>
                   </div>

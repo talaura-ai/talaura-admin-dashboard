@@ -4,7 +4,7 @@ import { IAssessmentDetails } from '../../components/AssessmentView/types';
 import { AssessmentsState } from '../../helpers/types';
 import { RootState } from '../store';
 
-const BASE_URL = 'https://fantasytradingleague.com/api/talaura/';
+const BASE_URL = 'https://dwtc.apiserver.talaura.ai/';
 
 // Define a service using a base URL and expected endpoints
 export const assessmentApi = createApi({

@@ -6,7 +6,7 @@ const Header = ({
   setFilterStatus,
   statusFromParam,
   handleUpdateCandidatesStatus,
-  handleReset,
+  // handleReset,
 }: {
   exportDataToCsv: () => void;
   setFilterStatus: Dispatch<SetStateAction<string>>;
@@ -75,14 +75,14 @@ const Header = ({
         {/* {statusFromParam === 'Expired' && (
           <button
             className="cursor-pointer [border:none] p-2 bg-peru-100 flex-1 rounded-3xs flex flex-row items-start justify-start box-border min-w-[6.438rem] z-[1] hover:bg-peru-200"
-            // onClick={() => alert('Api Pending')}
+            onClick={() => alert('Api Pending')}
           >
             <div className="flex-1 relative text-base font-sansation text-white text-center z-[1] mq450:text-[1.188rem]">
               Extend
             </div>
           </button>
         )} */}
-        {statusFromParam === 'Pending' && (
+        {/* {statusFromParam === 'Pending' && (
           <button
             className="cursor-pointer [border:none] p-2 bg-peru-100 flex-1 rounded-3xs flex flex-row items-start justify-start box-border min-w-[6.438rem] z-[1] hover:bg-peru-200"
             onClick={() => handleReset()}
@@ -91,7 +91,7 @@ const Header = ({
               Reset
             </div>
           </button>
-        )}
+        )} */}
         {statusFromParam === 'Completed' && (
           <>
             <button

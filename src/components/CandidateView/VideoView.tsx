@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { generateSignedUrlS3, getColorAccordingToScore } from '../../helpers/utils';
 import { ICandidateReportData } from '../AssessmentView/types';
@@ -8,7 +8,27 @@ const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) 
   const [isVideoPlayed, setIsVideoPlayed] = useState<boolean>(false);
   const [videoSignedUrl, setVideoSignedUrl] = useState<string>('');
   const [isVideoLoading, setIsVideoLoading] = useState<boolean>(false);
+  const [audioUrl, setAudioUrl] = useState<string | undefined>('');
   const reportData = candidateData?.report.find((rp) => rp.moduleType === 'AI Video Interview');
+
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const mediaControls = () => {
+    if (videoRef.current && audioRef.current) {
+      if (!videoRef.current.paused && !audioRef.current.paused) {
+        videoRef.current.pause();
+        audioRef.current.pause();
+      } else {
+        videoRef.current.play();
+        audioRef.current.play();
+      }
+    }
+  };
+
+  console.log('audio', candidateData?.report[0]?.audioUrl);
+
+  console.log('video url', videoSignedUrl);
 
   const createSignedUrl = useCallback(async () => {
     try {
@@ -19,9 +39,16 @@ const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) 
       const urlObject = new URL(reportData?.videoUrl.replace('%2F', '/'));
       const videoPath = urlObject.pathname.slice(1);
       const signedUrl = await generateSignedUrlS3(videoPath);
+
       setVideoSignedUrl(signedUrl);
       setIsVideoPlayed(true);
+      setAudioUrl(candidateData?.report[0]?.audioUrl);
+
       setIsVideoLoading(false);
+      if (videoRef.current && audioRef.current) {
+        videoRef.current.play();
+        audioRef.current.play();
+      }
     } catch (error: any) {
       console.log('Error playing Video', error);
       toast.error(error?.message ?? 'Unable to play video');
@@ -83,11 +110,17 @@ const VideoView = ({ candidateData }: { candidateData?: ICandidateReportData }) 
             {isVideoLoading ? (
               <LoadingScreen />
             ) : isVideoPlayed ? (
-              <div className="h-full w-full">
-                <video className="w-full h-[254px] p-2" controls autoPlay>
+              <div className="h-full w-full " onClick={() => mediaControls()}>
+                <video
+                  className="w-full h-[254px] p-2 pointer-events-none"
+                  controls
+                  autoPlay
+                  ref={videoRef}
+                >
                   <source src={videoSignedUrl} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
+                <audio src={audioUrl} controls autoPlay ref={audioRef} className="hidden" />
               </div>
             ) : (
               <button onClick={createSignedUrl}>

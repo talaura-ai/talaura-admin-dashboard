@@ -2,7 +2,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../store';
 
-const BASE_URL = 'https://fantasytradingleague.com/api/talaura/';
+const BASE_URL = 'https://dwtc.apiserver.talaura.ai/';
 
 // Define a service using a base URL and expected endpoints
 export const assessmentProfilesApi = createApi({

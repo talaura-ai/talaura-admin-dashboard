@@ -134,9 +134,11 @@ const SummaryTab = ({ assessmentData }: { assessmentData?: IAssessmentDetails })
                       <span className="my-1">
                         {mdl.type === 'Voice to Text' ? 'Text To Text' : mdl.type}
                       </span>
-                      <span className="text-customGray-100 text-sm">
-                        {mdl.noOfQuestions} Questions
-                      </span>
+                      {mdl?.type.toLowerCase() !== 'ai video interview' ? (
+                        <span className="text-customGray-100 text-sm">
+                          {mdl.noOfQuestions} Questions
+                        </span>
+                      ) : null}
                     </div>
                   ))}
                 </div>

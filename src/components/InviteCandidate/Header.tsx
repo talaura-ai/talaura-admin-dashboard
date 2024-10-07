@@ -1,6 +1,11 @@
 import { IAssessmentDetails } from '../AssessmentView/types';
+import { Link, useParams } from 'react-router-dom';
 
 const Header = ({ assessmentData }: { assessmentData?: IAssessmentDetails }) => {
+  // const { assessmentId } = useParams();
+
+  const { assessmentId } = useParams();
+
   return (
     <>
       <div
@@ -10,17 +15,21 @@ const Header = ({ assessmentData }: { assessmentData?: IAssessmentDetails }) => 
           <div className="flex flex-col items-start justify-start pt-[0rem] px-[0rem] pb-[0.062rem] box-border max-w-full">
             <div className="self-stretch flex flex-col items-start justify-start max-w-full">
               <div className="flex flex-row items-start justify-start">
-                <a className="[text-decoration:none] flex-1 relative text-base font-bold text-[inherit] z-[1] mq450:text-[1.188rem]">
+                <Link
+                  to={'/'}
+                  className="[text-decoration:none] flex-1 relative text-base font-bold text-[inherit] z-[1] mq450:text-[1.188rem]"
+                >
                   Assessments
-                </a>
+                </Link>
                 <div className="flex flex-col items-start justify-start px-[0rem] pb-[0rem] text-base mx-2">
                   &gt;
                 </div>
-                <a
+                <Link
+                  to={`/assessment/view/${assessmentId}`}
                   className={`[text-decoration:none] relative text-base font-bold inline-block min-w-[1.875rem] z-[1] mq450:text-[1.188rem]`}
                 >
                   {assessmentData?.assessments[0].name ?? 'Assessment Name'}
-                </a>
+                </Link>
                 <div className="flex flex-col items-start justify-start px-[0rem] pb-[0rem] text-base mx-2">
                   &gt;
                 </div>

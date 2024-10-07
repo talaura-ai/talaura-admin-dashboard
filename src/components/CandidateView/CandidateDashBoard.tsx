@@ -3,9 +3,19 @@ import { ICandidateReportData } from '../AssessmentView/types';
 import CandidateReportAccordion from './CandidateReportAccordion';
 import { useState } from 'react';
 import { getColorAccordingToScore } from '../../helpers/utils';
+import {
+  Radar,
+  RadarChart,
+  PolarGrid,
+  Legend,
+  PolarAngleAxis,
+  ResponsiveContainer,
+  PolarRadiusAxis,
+} from 'recharts';
 
 const CandidateDashBoard = ({ candidateData }: { candidateData?: ICandidateReportData }) => {
   const [currentExpandedReportId, setCurrentExpandedReportId] = useState<string>('');
+  const [scoreReport] = useState(candidateData?.report?.map((report) => report?.report).flat());
 
   return (
     <div className="main_content flex w-full pt-4 gap-4">
@@ -27,7 +37,7 @@ const CandidateDashBoard = ({ candidateData }: { candidateData?: ICandidateRepor
             <h5>{candidateData?.email ?? 'user email'}</h5>
           </div>
         </div> */}
-        <div className="card2 bg-white shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] rounded-md overflow-hidden mt-4 pt-4 px-6 text-center h-[210px] w-[300px] flex flex-col">
+        <div className="card2 bg-white shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] rounded-md overflow-hidden pt-4 px-6 text-center h-[210px] w-[300px] flex flex-col">
           <div className="flex justify-between items-center">
             <div>
               <h6 className="text-[#1F1F25] text-base font-bold">TAL Score</h6>
@@ -180,8 +190,8 @@ const CandidateDashBoard = ({ candidateData }: { candidateData?: ICandidateRepor
             </div>
           </div>
         </div>
-        <div className="col2_card2 shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] rounded-md overflow-hidden px-6 py-4 bg-white mt-4">
-          <div className="row1 flex justify-between mb-4">
+        <div className="col2_card2 rounded-md overflow-hidden py-0 mt-0">
+          {/* <div className="row1 flex justify-between mb-4">
             <h5 className="text-customGray-100 text-xl font-bold">Assessment Report</h5>
             <div className="row1_col2 flex gap-2 text-base font-bold text-black">
               <div className="container flex items-center justify-center ">
@@ -197,7 +207,7 @@ const CandidateDashBoard = ({ candidateData }: { candidateData?: ICandidateRepor
                 <span>High</span>
               </div>
             </div>
-          </div>
+          </div> */}
           {/* <div className="row2 flex gap-4">
             <div className="row2_card1 border border-customGray-20 shadow-[0px_4px_4px_0px_rgba(0,_0,_0,_0.25)] rounded-md overflow-hidden px-6 py-4 w-[212px] h-[231px] text-center flex flex-col justify-center items-center">
               <h5 className="text-black text-2xl font-bold">TAL Score</h5>
@@ -274,15 +284,47 @@ const CandidateDashBoard = ({ candidateData }: { candidateData?: ICandidateRepor
               </div>
             </div>
           </div> */}
-          <div className="row3 flex flex-col flex-wrap mt-4 gap-4 items-baseline">
-            {candidateData?.report?.map((report) => (
-              <CandidateReportAccordion
-                report={report}
-                key={report._id}
-                currentExpandedReportId={currentExpandedReportId}
-                setCurrentExpandedReportId={setCurrentExpandedReportId}
-              />
-            ))}
+          <div className="flex justify-center items-center gap-4 ">
+            <div className="row3 flex flex-col flex-wrap mt-4 gap-4 items-baseline w-1/2 h-80 overflow-hidden bg-white shadow-md rounded-md">
+              {candidateData?.report?.map((report) => (
+                <CandidateReportAccordion
+                  report={report}
+                  key={report._id}
+                  currentExpandedReportId={currentExpandedReportId}
+                  setCurrentExpandedReportId={setCurrentExpandedReportId}
+                />
+              ))}
+            </div>
+            <div className="row3 flex flex-col flex-wrap mt-4 gap-4 items-baseline w-1/2 h-80 bg-white shadow-md rounded-md relative">
+              <h4 className="text-xl font-bold text-customGray-300 truncate absolute top-4 left-4">
+                Scoring Radar Chart
+              </h4>
+              <ResponsiveContainer width="100%" height="100%" className={'mt-8'}>
+                <RadarChart cx="50%" cy="50%" outerRadius="80%" data={scoreReport}>
+                  <PolarGrid gridType="circle" stroke="#dadada" radialLines={true} />
+                  <PolarAngleAxis dataKey="Score" />
+
+                  <PolarRadiusAxis tickCount={10} tickFormatter={() => ''} />
+                  <circle cx="50%" cy="50%" r="31.5%" stroke="#000" fill="none" strokeWidth={1} />
+
+                  <Radar
+                    name="Score"
+                    dataKey="score"
+                    stroke="#ddaf82"
+                    fill="#eedbc2"
+                    fillOpacity={0.5}
+                    dot={{ r: 2, strokeWidth: 1, fill: '#4B4B4B', stroke: '#4B4B4B' }}
+                  />
+                  <Legend
+                    layout="vertical"
+                    verticalAlign="top"
+                    align="right"
+                    wrapperStyle={{ paddingLeft: 20, top: -16 }}
+                  />
+                  <Legend />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </div>
       </div>

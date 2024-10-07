@@ -1,19 +1,22 @@
 import dayjs from 'dayjs';
+import { useEffect, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 import { clearInviteList } from '../../app/features/inviteCandidateSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useLazyGetAssessmentByIDQuery } from '../../app/services/assessments';
 import { useInviteCandidateMutation } from '../../app/services/candidates';
 import { IAddCandidateApiPayload, IAssessmentDetails } from '../AssessmentView/types';
-import { useMemo, useState } from 'react';
 import DuplicateCandidatesModal from './DuplicateCandidatesModal';
-import { useLazyGetAssessmentByIDQuery } from '../../app/services/assessments';
 
 interface IFormInput {
   startDateTime: string;
   endDateTime: string;
 }
+
+const timeDuration: number = 3;
+
 const Footer = ({ assessmentData }: { assessmentData?: IAssessmentDetails }) => {
   const allCandidates = useAppSelector((state) => state.inviteCandidate);
   const assessmentTotalDuration =
@@ -35,27 +38,56 @@ const Footer = ({ assessmentData }: { assessmentData?: IAssessmentDetails }) => 
     return now;
   }, []);
 
-  const { register, getValues, handleSubmit, watch } = useForm<IFormInput>({
+  const { register, watch, handleSubmit, setValue } = useForm<IFormInput>({
     defaultValues: {
       startDateTime: timeDateRoundOffToNextHour.format('YYYY-MM-DD[T]HH:mm'),
       endDateTime: timeDateRoundOffToNextHour
-        .add(assessmentTotalDuration, 'minute')
+        .add(timeDuration, 'hour')
         .format('YYYY-MM-DD[T]HH:mm'),
     },
   });
 
+  const startDateTime = watch('startDateTime');
+  const endDateTime = watch('endDateTime');
+
   const onSubmitHandler: SubmitHandler<IFormInput> = async (data, e) => {
     try {
       e?.preventDefault();
+
+      if (!startDateTime || !endDateTime) {
+        toast.error('Please Select Start and End Date-Time');
+        return;
+      }
+      const start = dayjs(startDateTime);
+      const currTime = dayjs();
+      if (start.isBefore(currTime.set('minute', currTime.get('minute') - 1))) {
+        toast.error('Start date/time must be after current date/time');
+        return;
+      }
+
+      if (dayjs(endDateTime).isBefore(dayjs(startDateTime))) {
+        toast.error('End date/time must be after the start date/time.');
+        return;
+      }
+
+      if (dayjs(endDateTime).diff(dayjs(startDateTime), 'minute') <= assessmentTotalDuration) {
+        toast.error(
+          `There must be at least a ${assessmentTotalDuration} minute gap between start and end time.`,
+        );
+        return;
+      }
+
       if (!allCandidates.length) {
         toast.error('Please add some candidate first.');
         return;
       }
+
       const isAnyInvalid = allCandidates.find((cnd) => cnd.isValid === false);
       if (isAnyInvalid) {
         toast.error('Please remove invalid entries.');
         return;
       }
+
       const payload: IAddCandidateApiPayload = {
         assessmentId,
         candidates: allCandidates.filter((cnd) => cnd.isValid === true),
@@ -83,21 +115,41 @@ const Footer = ({ assessmentData }: { assessmentData?: IAssessmentDetails }) => 
     }
   };
 
-  const startDateTime = watch('startDateTime');
-  const endDateTime = watch('endDateTime');
-
   const isInviteBtnDisabled = useMemo(() => {
     if (allCandidates.find((cnd) => cnd.isValid == false) || !allCandidates.length) {
       return true;
     }
+  }, [allCandidates]);
 
-    const startDateTimeInForm = dayjs(startDateTime);
-    const endDateTimeInForm = dayjs(endDateTime);
-    if (endDateTimeInForm.diff(startDateTimeInForm, 'minute') < assessmentTotalDuration) {
-      return true;
-    }
-    return false;
-  }, [allCandidates, assessmentTotalDuration, endDateTime, startDateTime]);
+  // const selectedStartTime = dayjs(watch('startDateTime'));
+  // const selectedEndTime = dayjs(watch('endDateTime'));
+  // const minEndTime = selectedStartTime.add(30, 'minute');
+
+  // useEffect(() => {
+  //   const firstDate = dayjs(selectedStartTime);
+  //   const secondDate = dayjs(selectedEndTime);
+  //   const diffInMinutes = secondDate.diff(firstDate) / 60000;
+
+  //   if (selectedEndTime.isBefore(selectedStartTime)) {
+  //     toast.error('End date/time must be after the start and current timestamp.');
+  //   } else if (diffInMinutes < location?.state?.duration) {
+  //     toast.error(
+  //       `The duration between start and end date/time must be at least ${location?.state?.duration} mins” where ${location?.state?.duration} is duration of assessment`,
+  //     );
+  //   }
+  // }, [errors, location?.state?.duration, minEndTime, selectedEndTime, selectedStartTime]);
+
+  useEffect(() => {
+    const start = dayjs(startDateTime);
+    const newEnd = start.add(timeDuration, 'hour');
+    setValue('endDateTime', newEnd.format('YYYY-MM-DD[T]HH:mm'));
+  }, [setValue, startDateTime, timeDateRoundOffToNextHour]);
+
+  // const onError = (errors: any) => {
+  //   if (errors?.startDateTime?.message) {
+  //     return toast.error(errors?.startDateTime?.message);
+  //   }
+  // };
 
   return (
     <footer className="self-end mt-[20px]">
@@ -109,19 +161,25 @@ const Footer = ({ assessmentData }: { assessmentData?: IAssessmentDetails }) => 
           <div className="text_container text-lg text-black">
             <span>Assessment start date & time</span>
           </div>
+
           <div className="input_container h-[40px] relative">
             <img
               src="/images/CalendarGreen.png"
               className="h-[25px] w-[25px] object-cover absolute top-1.5 left-4"
               alt=""
             />
+
             <input
               type="datetime-local"
               {...register('startDateTime', {
-                required: true,
-                min: dayjs().format('YYYY-MM-DD[T]HH:mm'),
+                // required: true,
+                // min: {
+                //   value: dayjs().format('YYYY-MM-DD[T]HH:mm'),
+                //   message: 'Selected start date/time cannot be in past',
+                // },
               })}
               className="h-full pl-10 border border-customGray-80"
+              // min={new Date().toISOString().slice(0, 16)}
             />
           </div>
         </div>
@@ -138,10 +196,14 @@ const Footer = ({ assessmentData }: { assessmentData?: IAssessmentDetails }) => 
             <input
               type="datetime-local"
               {...register('endDateTime', {
-                required: true,
-                min: dayjs(getValues('endDateTime')).format('YYYY-MM-DD[T]HH:mm'),
+                // required: true,
+                // min: {
+                //   value: dayjs(watch('endDateTime')).format('YYYY-MM-DD[T]HH:mm'),
+                //   message: 'End date/time must be after the start and current timestamp.',
+                // },
               })}
               className="h-full pl-10 border border-customGray-80"
+              // min={new Date().toISOString().slice(0, 16)}
             />
           </div>
         </div>
@@ -149,7 +211,7 @@ const Footer = ({ assessmentData }: { assessmentData?: IAssessmentDetails }) => 
           <button
             disabled={isInviteBtnDisabled}
             className={`${!isInviteBtnDisabled ? 'bg-peru-100 cursor-pointer  hover:bg-peru-100' : 'bg-golden-200 cursor-not-allowed'} [border:none] px-2 flex-1 rounded-3xs 
-                                      flex flex-row items-center justify-start box-border min-w-[6.438rem] h-[50px] z-[1]`}
+            flex flex-row items-center justify-start box-border min-w-[6.438rem] h-[50px] z-[1]`}
             type="submit"
           >
             <img src="/images/PaperPlane.png" className="h-[25px] w-[25px] object-cover" alt="" />

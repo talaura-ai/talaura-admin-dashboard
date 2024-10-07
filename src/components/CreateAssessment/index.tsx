@@ -160,14 +160,14 @@ const CreateAssessment = () => {
       return undefined;
     }
     try {
-      const promiseMap = selectedModules.map(async (selectedModule: IModuleType) => {
+      const promiseMap = selectedModules.map(async (selectedModule: IModuleType,) => {
         const headers = new Headers();
         headers.append('Content-Type', 'application/json');
         const fetchModuleQuestionRes = await fetch(
           `${AI_API_URL}${ModuleTypesURLS[selectedModule.type as keyof typeof ModuleTypesURLS]}`,
           {
             method: 'POST',
-            body: JSON.stringify({ ...selectedModule }),
+            body: JSON.stringify({ ...selectedModule,description: jdData }),
             headers,
           },
         );
@@ -295,6 +295,7 @@ const CreateAssessment = () => {
       const result = await createAssessment({
         profile: initialQuestionProfile.name,
         name: initialQuestionValue,
+        description: jdData,
       });
 
       if (result.data.status === true) {

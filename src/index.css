@@ -76,7 +76,7 @@
 
   .gradient-y-r {
     border-radius: 92.361px;
-    background: var(--Gradient-Miami, linear-gradient(143deg, #ffbf1a 5.36%, #ff4080 94.64%));
+    background: var(--Gradient-Miami, linear-gradient(143deg, #e4a76f 5.36%, #e4a76f 94.64%));
   }
   .scrollbar::-webkit-scrollbar {
     width: 8px;

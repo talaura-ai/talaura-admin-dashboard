@@ -20,22 +20,22 @@ const AddedCandidatesTable = () => {
         <div className="row2 self-center w-full">
           <div className="table_container overflow-scroll max-h-[350px]">
             <table className="w-full divide-y divide-customGray-250 bg-white rounded-md border-collapse">
-              <thead className="border-collapse sticky top-0 z-1">
-                <tr className="divide-customGray-250 divide-x">
+              <thead className="border-collapse sticky top-0 z-1 bg-white border-none">
+                <tr className="">
                   {columns.map((val, idx) => (
                     <th
                       key={idx}
                       scope="col"
-                      className={`py-3 pl-4 pr-3 text-sm font-semibold text-gray-900 text-left`}
+                      className={`py-3 pl-4 pr-3 text-sm font-semibold text-gray-900  ${val === 'Remove' ? 'text-center' : 'text-left'}`}
                     >
-                      <span className="text-lg text-black">{val}</span>
+                      <span className="text-lg text-black ">{val}</span>  
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody className="divide-y divide-customGray-250 shadow-[0_1px_4px_0_rgba(0,0,0,0.25)] text-sandybrown">
                 {allCandidates?.map((candidate, idx) => (
-                  <tr key={idx} className={`text-left even:bg-gray-30 even:bg-gray-50`}>
+                  <tr key={idx} className={`text-left even:bg-gray-30 odd:bg-gray-50`}>
                     <td
                       className={`whitespace-nowrap py-1.5 pl-4 text-sm font-medium text-customGray-100 sm:pl-0 min-w-[15rem] text-lg ${!candidate.isValid && '!text-[#FB2121]'}`}
                     >
