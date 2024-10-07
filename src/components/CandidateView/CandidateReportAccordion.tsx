@@ -1,4 +1,3 @@
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import { Dispatch, SetStateAction } from 'react';
 import { ICandidateReportDataReportItem } from '../AssessmentView/types';
 import { getColorAccordingToScore } from '../../helpers/utils';
@@ -6,7 +5,7 @@ import { getColorAccordingToScore } from '../../helpers/utils';
 const CandidateReportAccordion = ({
   report,
   currentExpandedReportId,
-  setCurrentExpandedReportId,
+  // setCurrentExpandedReportId,
 }: {
   report: ICandidateReportDataReportItem;
   currentExpandedReportId: string;

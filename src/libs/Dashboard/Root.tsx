@@ -20,6 +20,8 @@ import Peoples from '../../components/Peoples/Peoples';
 import Reports from '../../components/Reports/Reports';
 import Sidebar from './Sidebar';
 
+import CreateJD from '../../components/Assessment/CreateJD';
+
 const Root = () => {
   const { token } = useAppSelector((state) => state.admin);
   const redirectIfUser = () => {
@@ -76,6 +78,7 @@ const Root = () => {
           />
           <Route path="peoples" element={<Peoples />} errorElement={<ErrorPage />} />
           <Route path="reports" element={<Reports />} errorElement={<ErrorPage />} />
+          <Route path="assessments/test" element={<CreateJD />} errorElement={<ErrorPage />} />
         </Route>
       </>,
     ),
