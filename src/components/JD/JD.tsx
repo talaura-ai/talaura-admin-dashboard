@@ -214,6 +214,7 @@ const JD: React.FC<IJD> = ({
                 setAssisstantMessage={setAssisstantMessage}
                 assistantMessage={assistantMessage}
                 jdVisible={jdVisible}
+                openModal={() => null}
               />
             </div>
 

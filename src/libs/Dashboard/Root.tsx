@@ -81,7 +81,11 @@ const Root = () => {
           <Route path="reports" element={<Reports />} errorElement={<ErrorPage />} />
           {/* Below this pages added recently */}
           <Route path="assessments/test" element={<CreateJD />} errorElement={<ErrorPage />} />
-          <Route path="assessments/test2" element={<AddJd />} errorElement={<ErrorPage />} />
+          <Route
+            path="/assessments/jd-description"
+            element={<AddJd />}
+            errorElement={<ErrorPage />}
+          />
         </Route>
       </>,
     ),

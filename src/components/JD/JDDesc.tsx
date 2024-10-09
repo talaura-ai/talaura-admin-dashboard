@@ -15,7 +15,7 @@ export interface IJDDesc {
   setAssisstantMessage: any;
   actionButtonsVisible?: any;
   jdVisible?: any;
-  openModal: any;
+  openModal: () => void;
 }
 
 const JDDesc: React.FC<IJDDesc> = ({

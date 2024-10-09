@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import uploadLogo from '../../assets/images/icons/Upload to the Cloud.png';
+import { useNavigate } from 'react-router-dom';
 
 interface FileUploadModalProps {
   isOpen: boolean;
@@ -7,6 +8,7 @@ interface FileUploadModalProps {
 }
 
 const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
 
   // Function to handle file drop
@@ -50,7 +52,10 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClose }) =>
 
       fetch('http://34.93.76.248:8000/upload_jd', requestOptions)
         .then((response) => response.json())
-        .then((result) => console.log(result))
+        .then((result) => {
+          console.log(result);
+          navigate('/assessments/jd-description', { state: { res: result } });
+        })
         .catch((error) => console.error(error));
     } catch (error) {
       console.log(error);
