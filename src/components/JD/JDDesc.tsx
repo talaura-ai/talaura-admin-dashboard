@@ -15,6 +15,7 @@ export interface IJDDesc {
   setAssisstantMessage: any;
   actionButtonsVisible?: any;
   jdVisible?: any;
+  openModal: any;
 }
 
 const JDDesc: React.FC<IJDDesc> = ({
@@ -26,6 +27,7 @@ const JDDesc: React.FC<IJDDesc> = ({
   assistantMessage,
   setAssisstantMessage,
   actionButtonsVisible,
+  openModal,
 }) => {
   const [aiMessage, setAiMessage] = useState('');
   const [isError, setIsError] = useState<boolean>(false);
@@ -114,7 +116,7 @@ const JDDesc: React.FC<IJDDesc> = ({
         <div>
           <div className="mt-10 bg-white">
             <Textarea
-              rows={6}
+              rows={3}
               name="jd_descriptions"
               id="jd_descriptions"
               onBlur={(e) => {
@@ -136,6 +138,15 @@ const JDDesc: React.FC<IJDDesc> = ({
               Assessment description with minimum 3 alphabet is mandatory
             </p>
           )}
+          <p className="text-center my-4">Or</p>
+          <button
+            type="button"
+            onClick={openModal}
+            style={{ margin: '0px 25%' }}
+            className="w-1/2 bg-[#FFF6ED] text-[#CA9A6F] font-medium py-3 px-6 rounded-lg border border-[#CA9A6F] mb-4 transition-all hover:bg-orange-200"
+          >
+            Upload Job Descriptions
+          </button>{' '}
         </div>
       )}
     </>

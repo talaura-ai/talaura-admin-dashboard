@@ -13,6 +13,7 @@ const InitialQuestion: React.FC<any> = ({
   setJdData,
   conversation_id,
   loading,
+  openModal,
 }) => {
   const [assistantMessage, setAssistantMessage] = useState('');
 
@@ -105,6 +106,7 @@ const InitialQuestion: React.FC<any> = ({
               setAssisstantMessage={setAssistantMessage}
               assistantMessage={assistantMessage}
               jdVisible={true}
+              openModal={openModal}
             />
           </div>
         </div>

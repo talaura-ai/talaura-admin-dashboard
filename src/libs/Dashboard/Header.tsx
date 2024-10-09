@@ -3,6 +3,7 @@ import { useAppDispatch } from '../../app/hooks';
 import { logout } from '../../app/features/adminSlice';
 import IMAGES from '../../assets/images/Images';
 import logoGif from '../../assets/gif/dwtclogo.png';
+import { useEffect } from 'react';
 interface IHeader {
   user?: any;
   setSidebarOpen: any;
@@ -12,8 +13,16 @@ const Header: React.FC<IHeader> = ({ user, setSidebarOpen }) => {
   const handleLogout = () => {
     sessionStorage.clear();
     window.location.reload();
+    localStorage.clear();
     dispatch(logout());
   };
+
+  useEffect(() => {
+    const intervalId = setInterval(handleLogout, 3600000);
+
+    return () => clearInterval(intervalId);
+  }, [dispatch]);
+
   return (
     <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4  bg-white px-4  sm:gap-x-6 sm:px-6 lg:px-8">
       <button

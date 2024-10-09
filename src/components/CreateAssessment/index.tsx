@@ -38,6 +38,7 @@ import ReviewAssessments from '../ReviewAssessments/ReviewAssessments';
 import Skills from '../Skills/Skills';
 import Step from './Step';
 import SwiperNavButton from './SwiperNavButton';
+import FileUploadModal from './Jdupload';
 
 export const ActionButtonContext = createContext<any>('');
 
@@ -63,6 +64,11 @@ const CreateAssessment = () => {
 
   const [initialQuestionValue, setInitialQuestionValue] = useState('');
   const [initialQuestionProfile, setInitialQuestionProfile] = useState<any>();
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   useEffect(() => {
     if (profileData && profileData.status) {
@@ -160,14 +166,14 @@ const CreateAssessment = () => {
       return undefined;
     }
     try {
-      const promiseMap = selectedModules.map(async (selectedModule: IModuleType,) => {
+      const promiseMap = selectedModules.map(async (selectedModule: IModuleType) => {
         const headers = new Headers();
         headers.append('Content-Type', 'application/json');
         const fetchModuleQuestionRes = await fetch(
           `${AI_API_URL}${ModuleTypesURLS[selectedModule.type as keyof typeof ModuleTypesURLS]}`,
           {
             method: 'POST',
-            body: JSON.stringify({ ...selectedModule,description: jdData }),
+            body: JSON.stringify({ ...selectedModule, description: jdData }),
             headers,
           },
         );
@@ -610,6 +616,7 @@ const CreateAssessment = () => {
       jdData={jdData}
       setJdData={setJDData}
       conversation_id={conversation_id}
+      openModal={openModal}
     />,
     <Skills skills={skillsData} setSkillsData={setSkillsData} generateSkills={generateSkills} />,
     <Modules />,
@@ -622,7 +629,6 @@ const CreateAssessment = () => {
       <div className="flex flex-col">
         <ActionButtonContext.Provider value={{ btnState, setBtnState }}>
           <Step steps={steps} setSteps={setSteps} />
-
           <div className="mx-5">
             <Swiper
               modules={[Navigation, Pagination, Scrollbar, A11y]}
@@ -667,6 +673,7 @@ const CreateAssessment = () => {
                 })}
               </div>
             </Swiper>
+            <FileUploadModal isOpen={isModalOpen} onClose={closeModal} />
           </div>
         </ActionButtonContext.Provider>
       </div>

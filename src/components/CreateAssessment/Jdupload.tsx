@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import plus from '../../assets/images/icons/Plus.png';
-import play from '../../assets/images/icons/Play_Button_Circled.png';
 import uploadLogo from '../../assets/images/icons/Upload to the Cloud.png';
 
 interface FileUploadModalProps {
@@ -17,6 +15,8 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClose }) =>
     const files = Array.from(event.dataTransfer.files);
     setUploadedFiles((prevFiles) => [...prevFiles, ...files]);
 
+    uploadJd([...uploadedFiles, ...files]);
+
     alert(`${files.length} file(s) successfully uploaded.`);
   };
 
@@ -24,6 +24,8 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClose }) =>
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
     setUploadedFiles((prevFiles) => [...prevFiles, ...files]);
+
+    uploadJd([...uploadedFiles, ...files]);
 
     alert(`${files.length} file(s) successfully uploaded.`);
   };
@@ -33,9 +35,31 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClose }) =>
     event.preventDefault(); // Required to allow the drop event
   };
 
+  const uploadJd = (files: File[]) => {
+    try {
+      const formdata = new FormData();
+      formdata.append('user_id', '123');
+      formdata.append('conversation_id', 'conv123');
+      files.map((file) => formdata.append('file', file));
+
+      const requestOptions: any = {
+        method: 'POST',
+        body: formdata,
+        redirect: 'follow',
+      };
+
+      fetch('http://34.93.76.248:8000/upload_jd', requestOptions)
+        .then((response) => response.json())
+        .then((result) => console.log(result))
+        .catch((error) => console.error(error));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     isOpen && (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+      <div className="fixed bg-black bg-opacity-40 z-10 flex justify-center items-center w-screen top-0 h-screen left-0">
         <div className="bg-[#F9F7F0] rounded-lg shadow-lg p-6 max-w-md w-full relative">
           {/* Close Button */}
           <button className="absolute top-2 right-2 text-black" onClick={onClose}>
@@ -67,7 +91,7 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClose }) =>
           </div>
 
           {/* Uploaded Files Preview */}
-          {uploadedFiles.length > 0 && (
+          {/* {uploadedFiles.length > 0 && (
             <div className="mt-4">
               <h4 className="font-semibold text-gray-600">Uploaded Files:</h4>
               <ul className="list-disc pl-5">
@@ -78,62 +102,11 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClose }) =>
                 ))}
               </ul>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     )
   );
 };
 
-// Main Component
-const CreateJD: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-
-  return (
-    <div className="flex justify-center items-start h-screen">
-      <div className="w-full p-8 rounded-lg ">
-        {/* Header */}
-        <h1 className="text-2xl font-bold text-black mb-6">Create Requisition</h1>
-
-        {/* Stepper */}
-        <div className="relative flex items-center mb-10">
-          <div className="w-full bg-gray-200 h-2 flex-grow rounded-full">
-            <div className="bg-gradient-to-r from-orange-400 to-orange-200 h-full w-1/2 rounded-full"></div>
-          </div>
-          <div className="absolute -left-4 bg-white border border-orange-300 w-8 h-8 rounded-full flex items-center justify-center overflow-hidden">
-            <img src={plus} alt="plus icon" className="w-[30px] h-[30px] relative object-cover" />
-          </div>
-          <div className="absolute -right-4 bg-white border border-gray-300 w-8 h-8 rounded-full flex items-center justify-center overflow-hidden">
-            <img src={play} alt="play icon" className="w-[30px] h-[30px] relative object-cover" />
-          </div>
-        </div>
-
-        <div className="flex justify-between mb-8 text-gray-400">
-          <span className="text-orange-400 font-semibold">Job Description</span>
-          <span className="font-semibold">Assessment Modules</span>
-        </div>
-
-        {/* Upload Buttons */}
-        <div className="flex flex-col items-center mt-[144px]">
-          <button
-            type="button"
-            onClick={openModal}
-            className="w-full sm:w-2/3 lg:w-1/2 bg-[#FFF6ED] text-[#CA9A6F] font-medium py-3 px-6 rounded-lg border border-[#CA9A6F] mb-4 transition-all hover:bg-orange-200"
-          >
-            Upload Job Description
-          </button>
-          <span className="text-gray-400 my-[41px]">or</span>
-          <button className="w-full sm:w-2/3 lg:w-1/2 bg-white text-black font-medium py-3 px-6 rounded-lg border border-gray-300 transition-all hover:bg-gray-100">
-            Create Job Description
-          </button>
-        </div>
-      </div>
-      <FileUploadModal isOpen={isModalOpen} onClose={closeModal} />
-    </div>
-  );
-};
-
-export default CreateJD;
+export default FileUploadModal;

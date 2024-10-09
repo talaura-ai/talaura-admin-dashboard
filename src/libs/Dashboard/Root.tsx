@@ -21,6 +21,7 @@ import Reports from '../../components/Reports/Reports';
 import Sidebar from './Sidebar';
 
 import CreateJD from '../../components/Assessment/CreateJD';
+import AddJd from '../../components/Assessment/AddJd';
 
 const Root = () => {
   const { token } = useAppSelector((state) => state.admin);
@@ -78,7 +79,9 @@ const Root = () => {
           />
           <Route path="peoples" element={<Peoples />} errorElement={<ErrorPage />} />
           <Route path="reports" element={<Reports />} errorElement={<ErrorPage />} />
+          {/* Below this pages added recently */}
           <Route path="assessments/test" element={<CreateJD />} errorElement={<ErrorPage />} />
+          <Route path="assessments/test2" element={<AddJd />} errorElement={<ErrorPage />} />
         </Route>
       </>,
     ),
